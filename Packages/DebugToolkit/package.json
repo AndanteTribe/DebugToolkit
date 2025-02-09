@@ -1,0 +1,14 @@
+{
+  "name": "jp.tsuchidaz.debugtoolkit",
+  "version": "0.0.0",
+  "displayName": "Debug Toolkit",
+  "description": "A toolkit for debugging and profiling Unity applications.",
+  "unity": "2022.3",
+  "dependencies": {
+    "com.unity.modules.uielements": "1.0.0"
+  },
+  "author": {
+    "name": "TsuchidaZ",
+    "url": "https://github.com/syogakusya/DebugToolkit"
+  }
+}
