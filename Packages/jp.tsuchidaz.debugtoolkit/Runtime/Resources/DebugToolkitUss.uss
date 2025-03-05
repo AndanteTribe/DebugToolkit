@@ -139,6 +139,7 @@
     background-color: var(--debug-toolkit-color-highlight);
     border-color: var(--debug-toolkit-color-lowlight);
     border-width: 0;
+    border-radius: var(--debug-toolkit-px-radius-small);
     padding: var(--debug-toolkit-px-space-small);
     padding-top: 6px;
     padding-bottom: 6px;
