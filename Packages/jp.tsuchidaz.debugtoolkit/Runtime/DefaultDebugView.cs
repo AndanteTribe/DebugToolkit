@@ -5,6 +5,7 @@ namespace DebugToolkit
 {
     public class DefaultDebugView : DebugViewerBase
     {
+        private bool _isDragging = false;
             public override VisualElement Start()
             {
                 var safeAreaContainer = base.Start();
@@ -26,7 +27,7 @@ namespace DebugToolkit
                 window.AddToClassList("debug-window");
                 windowMaster.Add(window);
                 
-                var foldout = new Foldout { text = "DebugMenu", value = true };
+                var foldout = new Foldout { text = "DebugMenu", value = true, name = "DebugMenuHandler"};
                 window.Add(foldout);
                 
                 var tabView = new TabView();
