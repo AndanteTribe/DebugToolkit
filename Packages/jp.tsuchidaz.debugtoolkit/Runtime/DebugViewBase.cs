@@ -21,10 +21,17 @@ namespace DebugToolkit
         public ThemeStyleSheet? themeStyleSheet { get; set; }
 
         /// <summary>
+        /// タブが追加される親要素.
+        /// </summary>
+        private VisualElement _tabView;
+
+        public void Start() => Setup();
+
+        /// <summary>
         /// エントリーポイント.
         /// </summary>
         /// <returns>ルート要素.</returns>
-        public virtual VisualElement Start()
+        protected virtual VisualElement Setup()
         {
             var obj = new GameObject("DebugToolkit");
             Object.DontDestroyOnLoad(obj);
@@ -45,7 +52,41 @@ namespace DebugToolkit
             var root = uiDocument.rootVisualElement;
             var safeAreaContainer = new SafeAreaContainer();
             root.Add(safeAreaContainer);
-            return safeAreaContainer;
+
+            var styleSheet = Resources.Load<StyleSheet>("DebugToolkitUss");
+                
+            var window = new VisualElement();
+            window.styleSheets.Add(styleSheet);
+            window.AddToClassList("debug-toolkit-master");
+            safeAreaContainer.Add(window);
+                
+            var foldout = new Foldout { text = "DebugMenu", value = true, name = "DebugMenuHandler"};
+            window.Add(foldout);
+                
+            _tabView = new TabView();
+            foldout.Add(_tabView);
+                
+            return _tabView;
+        }
+
+        /// <summary>
+        /// デバックメニューにタブを追加するメソッド.
+        /// </summary>
+        /// <param name="label">
+        /// タブのラベル.
+        /// </param>
+        /// <returns>
+        /// ユーザが要素を追加するルート要素.
+        /// </returns>
+        protected VisualElement AddTab(string label)
+        {
+            var tab = new Tab { label = label };
+            _tabView.Add(tab);
+                
+            var scrollView = new ScrollView();
+            tab.Add(scrollView);
+
+            return scrollView;
         }
     }
 }

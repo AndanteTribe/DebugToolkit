@@ -15,14 +15,6 @@
 .debug-toolkit-master {
     flex-grow: 1;
     font-size: 12px;
-}
-
-.debug-toolkit-master * {
-    margin: 0;
-    padding: 0;
-}
-
-.debug-toolkit-master .debug-window{
     position: absolute;
     border-radius: var(--debug-toolkit-px-radius-medium);
     width: 400px;
@@ -32,6 +24,12 @@
     transition-duration: 0.5s;
     transition-timing-function: ease-in;
 }
+
+.debug-toolkit-master * {
+    margin: 0;
+    padding: 0;
+}
+
 /*--- ラベル　----------------------------------------------------------------*/
 .debug-toolkit-master .unity-label {
     color: var(--debug-toolkit-color-text);
@@ -76,7 +74,7 @@
     align-items: stretch;
 }
 
-.debug-toolkit-master .debug-window .unity-foldout {
+.debug-toolkit-master > .unity-foldout {
     border-radius: var(--debug-toolkit-px-radius-medium);
 }
 
@@ -97,12 +95,12 @@
 }
 
 /*--- トグル -----------------------------------------------*/
-.debug-toolkit-master .unity-tab .unity-toggle {
+.debug-toolkit-master .unity-toggle {
     margin-top: var(--debug-toolkit-px-space-small);
     margin-bottom: var(--debug-toolkit-px-space-small);
 }
 
-.debug-toolkit-master .unity-tab .unity-toggle__checkmark {
+.debug-toolkit-master .unity-toggle__checkmark {
     background-color: var(--debug-toolkit-color-highlight);
     border-color: var(--debug-toolkit-color-lowlight);
     border-width: 0;
@@ -111,31 +109,36 @@
 }
 
 /*--- フォールドアウト -----------------------------------------------*/
-.debug-toolkit-master .unity-tab .unity-foldout__checkmark {
+.debug-toolkit-master .unity-foldout__checkmark {
     background-color: var(--debug-toolkit-color-background);
     border-width: 0;
 }
 
-.debug-toolkit-master .unity-tab .unity-foldout{
+.debug-toolkit-master .unity-foldout .unity-foldout{
     padding-right: var(--debug-toolkit-px-space-small);
     padding-left: var(--debug-toolkit-px-space-small);
     margin-top: var(--debug-toolkit-px-space-small);
     margin-bottom: var(--debug-toolkit-px-space-small);
 }
 
-.debug-toolkit-master .unity-tab .unity-foldout__toggle{
+.debug-toolkit-master .unity-foldout .unity-foldout .unity-foldout__toggle{
     border-bottom-width: 2px;
     border-bottom-color: var(--debug-toolkit-color-lowlight);
-    border-radius: var(--debug-toolkit-px-radius-small);
 }
 
-/*--- テキストフィールド -----------------------------------------------*/
-.debug-toolkit-master .unity-tab .unity-text-field {
+.debug-toolkit-master .unity-foldout .unity-foldout .unity-foldout__content{
+    margin-left : var(--debug-toolkit-px-space-small);
+    border-left-width: 2px;
+    border-left-color: var(--debug-toolkit-color-lowlight);
+}
+
+    /*--- テキストフィールド -----------------------------------------------*/
+.debug-toolkit-master .unity-text-field {
     margin-top: var(--debug-toolkit-px-space-small);
     margin-bottom: var(--debug-toolkit-px-space-small);
     margin-right: var(--debug-toolkit-px-space-medium);
 }
-.debug-toolkit-master .unity-tab .unity-text-field__input {
+.debug-toolkit-master .unity-text-field__input {
     background-color: var(--debug-toolkit-color-highlight);
     border-color: var(--debug-toolkit-color-lowlight);
     border-width: 0;
@@ -146,12 +149,12 @@
     color: var(--debug-toolkit-color-background);
 }
 
-.debug-toolkit-master .unity-tab .unity-text-field__input > .unity-text-element{
+.debug-toolkit-master .unity-text-field__input > .unity-text-element{
     padding-left: var(--debug-toolkit-px-space-small);
 }
 
 /*--- ボタン -----------------------------------------------*/
-.debug-toolkit-master .unity-tab .unity-button {
+.debug-toolkit-master .unity-button {
     background-color: var(--debug-toolkit-color-highlight);
     border-width: 0;
     margin: var(--debug-toolkit-px-space-medium);
@@ -165,7 +168,7 @@
     -unity-font-style: bold;
 }
 
-.debug-toolkit-master .unity-tab .unity-button:hover {
+.debug-toolkit-master .unity-button:hover {
     background-color : var(--debug-toolkit-color-lowlight);
 }
 
