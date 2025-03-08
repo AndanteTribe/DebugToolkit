@@ -52,11 +52,8 @@ namespace DebugToolkit
             var root = uiDocument.rootVisualElement;
             var safeAreaContainer = new SafeAreaContainer();
             root.Add(safeAreaContainer);
-
-            var styleSheet = Resources.Load<StyleSheet>("DebugToolkitUss");
                 
             var window = new VisualElement();
-            window.styleSheets.Add(styleSheet);
             window.AddToClassList("debug-toolkit-master");
             safeAreaContainer.Add(window);
                 
