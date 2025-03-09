@@ -14,10 +14,10 @@ namespace DebugToolkit
     /// </summary>
 #if UNITY_2023_2_OR_NEWER
     [UxmlElement]
-    public partial class SafeAreaContainer : VisualElement
+    internal sealed partial class SafeAreaContainer : VisualElement
     {
 #else
-    public class SafeAreaContainer : VisualElement
+    internal sealed class SafeAreaContainer : VisualElement
     {
         /// <summary>
         /// UIBuilderのLibraryに登録するためのUXML要素のファクトリクラス.
