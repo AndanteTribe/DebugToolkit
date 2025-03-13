@@ -35,7 +35,7 @@
     color: var(--debug-toolkit-color-text);
 }
 
-.debug-toolkit-master .unity-tab .unity-label {
+.debug-toolkit-master .unity-label {
     padding-left: var(--debug-toolkit-px-space-small);
     padding-right: var(--debug-toolkit-px-space-medium);
     margin: var(--debug-toolkit-px-space-small);
@@ -72,6 +72,7 @@
 .debug-toolkit-master .unity-foldout__content {
     flex-wrap: nowrap;
     align-items: stretch;
+    margin: 0px;
 }
 
 .debug-toolkit-master > .unity-foldout {
@@ -186,7 +187,7 @@
     flex-grow: 1;
 }
 
-.debug-toolkit-master .unity-scroller__low-button {
+.debug-toolkit-master .unity-scroller > .unity-scroller__low-button {
     background-color: var(--debug-toolkit-color-lowlight);
     border-width: 0;
     -unity-background-image-tint-color: var(--debug-toolkit-color-highlight);
@@ -194,17 +195,12 @@
     border-top-right-radius: var(--debug-toolkit-px-radius-small);
 }
 
-.debug-toolkit-master .unity-scroller__high-button {
+.debug-toolkit-master .unity-scroller > .unity-scroller__high-button {
     background-color: var(--debug-toolkit-color-lowlight);
     border-width: 0;
     -unity-background-image-tint-color: var(--debug-toolkit-color-highlight);
     border-bottom-left-radius: var(--debug-toolkit-px-radius-small);
     border-bottom-right-radius: var(--debug-toolkit-px-radius-small);
-}
-
-.debug-toolkit-master .unity-scroller > .unity-slider {
-    padding-top: 22px;
-    padding-bottom: 22px;
 }
 
 .debug-toolkit-master .unity-scroller--vertical .unity-base-slider__dragger {
@@ -380,4 +376,12 @@
 .debug-toolkit-master .unity-base-field__label{
     min-width: 80px;
     margin-right: var(--debug-toolkit-px-space-small);
+}
+
+.debug-toolkit-master .unity-foldout__drag-area {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    left: 45px;
 }
