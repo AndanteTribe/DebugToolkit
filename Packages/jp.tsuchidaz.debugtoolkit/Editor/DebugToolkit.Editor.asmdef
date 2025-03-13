@@ -12,7 +12,9 @@
     "overrideReferences": true,
     "precompiledReferences": [],
     "autoReferenced": false,
-    "defineConstraints": [],
+    "defineConstraints": [
+        "ENABLE_DEBUGTOOLKIT"
+    ],
     "versionDefines": [],
     "noEngineReferences": false
 }

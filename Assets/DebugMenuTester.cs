@@ -1,6 +1,6 @@
+#if ENABLE_DEBUGTOOLKIT
 using UnityEngine;
-using UnityEngine.UIElements;
-using DebugToolkit;
+
 public class DebugMenuTester : MonoBehaviour
 {
     void Start()
@@ -9,3 +9,4 @@ public class DebugMenuTester : MonoBehaviour
         debugViewTest.Start();
     }
 }
+#endif
