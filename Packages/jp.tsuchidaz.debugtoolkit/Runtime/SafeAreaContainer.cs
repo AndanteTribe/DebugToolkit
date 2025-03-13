@@ -12,7 +12,12 @@ namespace DebugToolkit
     /// <summary>
     /// セーフエリアを考慮した<see cref="VisualElement"/>.
     /// </summary>
-    public class SafeAreaContainer : VisualElement
+#if UNITY_2023_2_OR_NEWER
+    [UxmlElement]
+    internal sealed partial class SafeAreaContainer : VisualElement
+    {
+#else
+    internal sealed class SafeAreaContainer : VisualElement
     {
         /// <summary>
         /// UIBuilderのLibraryに登録するためのUXML要素のファクトリクラス.
@@ -20,6 +25,7 @@ namespace DebugToolkit
         public class SafeAreaContainerFactory : UxmlFactory<SafeAreaContainer, UxmlTraits>
         {
         }
+#endif
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SafeAreaContainer"/> class.
@@ -29,9 +35,10 @@ namespace DebugToolkit
             style.flexGrow = 1;
             style.flexShrink = 1;
 
-            RegisterCallback<GeometryChangedEvent, SafeAreaContainer>(static (_, self) =>
+            RegisterCallback<GeometryChangedEvent>(static evt =>
             {
-                if (self.panel.GetType().Name == "EditorPanel") return;
+                var self = evt.target as SafeAreaContainer;
+                if (self == null || self.panel.GetType().Name == "EditorPanel") return;
                 var safeArea = Screen.safeArea;
                 var leftTop = RuntimePanelUtils.ScreenToPanel(self.panel, new(safeArea.xMin, Screen.height - safeArea.yMax));
                 var rightBottom = RuntimePanelUtils.ScreenToPanel(self.panel, new(Screen.width - safeArea.xMax, safeArea.yMin));
@@ -40,7 +47,7 @@ namespace DebugToolkit
                 self.style.marginTop = leftTop.y;
                 self.style.marginRight = rightBottom.x;
                 self.style.marginBottom = rightBottom.y;
-            }, this);
+            });
         }
     }
 }
