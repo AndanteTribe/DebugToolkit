@@ -1,18 +1,20 @@
-﻿using UnityEngine;
+﻿#nullable enable
+
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace DebugToolkit
 {
     public class DragManipulator : MouseManipulator
     {
-        readonly VisualElement moveTarget;
-        Vector2 targetStartPosition;
-        Vector3 pointerStartPosition;
-        bool enabled;
+        private readonly VisualElement _moveTarget;
+        private Vector2 _targetStartPosition;
+        private Vector3 _pointerStartPosition;
+        private bool _enabled;
         
         public DragManipulator(VisualElement moveTarget)
         {
-            this.moveTarget = moveTarget;
+            this._moveTarget = moveTarget;
         }
 
         protected override void RegisterCallbacksOnTarget()
@@ -31,34 +33,34 @@ namespace DebugToolkit
             target.UnregisterCallback<PointerCaptureOutEvent>(PointerCaptureOutHandler, TrickleDown.TrickleDown);
         }
 
-        void PointerDownHandler(PointerDownEvent e)
+        private void PointerDownHandler(PointerDownEvent e)
         {
-            targetStartPosition = moveTarget.transform.position;
-            pointerStartPosition = e.position;
+            _targetStartPosition = _moveTarget.transform.position;
+            _pointerStartPosition = e.position;
             target.CapturePointer(e.pointerId);
-            enabled = true;
+            _enabled = true;
         }
 
-        void PointerMoveHandler(PointerMoveEvent e)
+        private  void PointerMoveHandler(PointerMoveEvent e)
         {
-            if (enabled && target.HasPointerCapture(e.pointerId))
+            if (_enabled && target.HasPointerCapture(e.pointerId))
             {
-                var pointerDelta = e.position - pointerStartPosition;
-                moveTarget.transform.position = new Vector2(targetStartPosition.x + pointerDelta.x, targetStartPosition.y + pointerDelta.y);
+                var pointerDelta = e.position - _pointerStartPosition;
+                _moveTarget.transform.position = new Vector2(_targetStartPosition.x + pointerDelta.x, _targetStartPosition.y + pointerDelta.y);
             }
         }
 
-        void PointerUpHandler(PointerUpEvent e)
+        private void PointerUpHandler(PointerUpEvent e)
         {
-            if (enabled && target.HasPointerCapture(e.pointerId))
+            if (_enabled && target.HasPointerCapture(e.pointerId))
             {
                 target.ReleasePointer(e.pointerId);
             }
         }
 
-        void PointerCaptureOutHandler(PointerCaptureOutEvent e)
+        private void PointerCaptureOutHandler(PointerCaptureOutEvent e)
         {
-            enabled = false;
+            _enabled = false;
         }
     }
 }
