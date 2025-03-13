@@ -9,6 +9,7 @@
 /[Bb]uilds/
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
+/[Uu]I[Ee]lements[Ss]chema/
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
@@ -25,6 +26,9 @@
 
 # Visual Studio cache directory
 .vs/
+
+# JetBrains cache directory
+.idea/
 
 # Gradle cache directory
 .gradle/

@@ -1,0 +1,387 @@
+:root {
+    --debug-toolkit-color-background: #FFFAEA;
+    --debug-toolkit-color-lowlight: #40280F;
+    --debug-toolkit-color-text: #0F0328;
+    --debug-toolkit-color-highlight: #F6891E;
+    --debug-toolkit-color-content: rgb(0, 173, 181);
+    --debug-toolkit-px-border: 4px;
+    --debug-toolkit-px-space-small: 4px;
+    --debug-toolkit-px-space-medium: 8px;
+    --debug-toolkit-px-space-large: 12px;
+    --debug-toolkit-px-radius-small: 4px;
+    --debug-toolkit-px-radius-medium: 8px;
+}
+
+.debug-toolkit-master {
+    flex-grow: 1;
+    font-size: 12px;
+    position: absolute;
+    border-radius: var(--debug-toolkit-px-radius-medium);
+    width: 400px;
+    height: auto;
+    max-height: 600px;
+    transition-property: position;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-in;
+}
+
+.debug-toolkit-master * {
+    margin: 0;
+    padding: 0;
+}
+
+/*--- ラベル　----------------------------------------------------------------*/
+.debug-toolkit-master .unity-label {
+    color: var(--debug-toolkit-color-text);
+}
+
+.debug-toolkit-master .unity-label {
+    padding-left: var(--debug-toolkit-px-space-small);
+    padding-right: var(--debug-toolkit-px-space-medium);
+    margin: var(--debug-toolkit-px-space-small);
+}
+
+/*--- デバックウィンドウ -----------------------------------------------*/
+.debug-toolkit-master .unity-tab-view__header-container{
+    border-bottom-width: 2px;
+    border-bottom-color: var(--debug-toolkit-color-lowlight);
+    min-height: 34px;
+}
+
+.debug-toolkit-master .unity-tab-view{
+    padding-left: var(--debug-toolkit-px-space-medium);
+    padding-right: var(--debug-toolkit-px-space-medium);
+}
+
+.debug-toolkit-master .unity-tab__header {
+    background-color: var(--debug-toolkit-color-background);
+    border-width: 0;
+    padding: var(--debug-toolkit-px-space-small);
+    margin: var(--debug-toolkit-px-space-small);
+    margin-bottom: 0;
+}
+
+.debug-toolkit-master .unity-tab__header:checked .unity-tab__header-underline {
+    background-color: var(--debug-toolkit-color-lowlight);
+}
+
+.debug-toolkit-master .unity-tab__header:checked .unity-tab__header-label{
+    -unity-font-style: bold;
+}
+
+.debug-toolkit-master .unity-foldout__content {
+    flex-wrap: nowrap;
+    align-items: stretch;
+    margin: 0px;
+}
+
+.debug-toolkit-master > .unity-foldout {
+    border-radius: var(--debug-toolkit-px-radius-medium);
+}
+
+.debug-toolkit-master .unity-foldout__toggle{    
+    border-bottom-width: 0;
+    padding: var(--debug-toolkit-px-space-small);
+}
+
+.debug-toolkit-master .unity-foldout:checked .unity-foldout__toggle{
+    border-bottom-width: var(--debug-toolkit-px-border);
+    border-bottom-color: var(--debug-toolkit-color-lowlight);
+    padding: var(--debug-toolkit-px-space-small);
+    border-radius: 0;
+}
+
+.debug-toolkit-master .unity-foldout--depth-0 {
+    background-color: var(--debug-toolkit-color-background);
+}
+
+/*--- トグル -----------------------------------------------*/
+.debug-toolkit-master .unity-toggle {
+    margin-top: var(--debug-toolkit-px-space-small);
+    margin-bottom: var(--debug-toolkit-px-space-small);
+}
+
+.debug-toolkit-master .unity-toggle__checkmark {
+    background-color: var(--debug-toolkit-color-highlight);
+    border-color: var(--debug-toolkit-color-lowlight);
+    border-width: 0;
+    border-radius: var(--debug-toolkit-px-radius-small);
+    -unity-background-image-tint-color: var(--debug-toolkit-color-lowlight);
+}
+
+/*--- フォールドアウト -----------------------------------------------*/
+.debug-toolkit-master .unity-foldout__checkmark {
+    background-color: var(--debug-toolkit-color-background);
+    border-width: 0;
+}
+
+.debug-toolkit-master .unity-foldout .unity-foldout{
+    padding-right: var(--debug-toolkit-px-space-small);
+    padding-left: var(--debug-toolkit-px-space-small);
+    margin-top: var(--debug-toolkit-px-space-small);
+    margin-bottom: var(--debug-toolkit-px-space-small);
+}
+
+.debug-toolkit-master .unity-foldout .unity-foldout .unity-foldout__toggle{
+    border-bottom-width: 2px;
+    border-bottom-color: var(--debug-toolkit-color-lowlight);
+}
+
+.debug-toolkit-master .unity-foldout .unity-foldout .unity-foldout__content{
+    margin-left : var(--debug-toolkit-px-space-small);
+    border-left-width: 2px;
+    border-left-color: var(--debug-toolkit-color-lowlight);
+}
+
+    /*--- テキストフィールド -----------------------------------------------*/
+.debug-toolkit-master .unity-text-field {
+    margin-top: var(--debug-toolkit-px-space-small);
+    margin-bottom: var(--debug-toolkit-px-space-small);
+    margin-right: var(--debug-toolkit-px-space-medium);
+}
+.debug-toolkit-master .unity-text-field__input {
+    background-color: var(--debug-toolkit-color-highlight);
+    border-color: var(--debug-toolkit-color-lowlight);
+    border-width: 0;
+    border-radius: var(--debug-toolkit-px-radius-small);
+    padding: var(--debug-toolkit-px-space-small);
+    padding-top: 6px;
+    padding-bottom: 6px;
+    color: var(--debug-toolkit-color-background);
+}
+
+.debug-toolkit-master .unity-text-field__input > .unity-text-element{
+    padding-left: var(--debug-toolkit-px-space-small);
+}
+
+/*--- ボタン -----------------------------------------------*/
+.debug-toolkit-master .unity-button {
+    background-color: var(--debug-toolkit-color-highlight);
+    border-width: 0;
+    margin: var(--debug-toolkit-px-space-medium);
+    margin-top: var(--debug-toolkit-px-space-small);
+    margin-bottom: var(--debug-toolkit-px-space-small);
+    padding: var(--debug-toolkit-px-space-small);
+    padding-top: var(--debug-toolkit-px-space-medium);
+    padding-bottom: var(--debug-toolkit-px-space-medium);
+    border-radius: var(--debug-toolkit-px-radius-small);
+    color : var(--debug-toolkit-color-background);
+    -unity-font-style: bold;
+}
+
+.debug-toolkit-master .unity-button:hover {
+    background-color : var(--debug-toolkit-color-lowlight);
+}
+
+/*--- トグルボタングループ -----------------------------------------------*/
+/*--- UIBuilderで確認できないため、ランタイム上で確認し編集予定... ----*/
+
+/*--- スクロールビュー -----------------------------------------------*/
+.debug-toolkit-master .unity-scroller--vertical {
+    background-color: var(--debug-toolkit-color-background);
+    margin-top: var(--debug-toolkit-px-space-small);
+    margin-bottom: var(--debug-toolkit-px-space-small);
+}
+
+.debug-toolkit-master .unity-scroll-view{
+    flex-grow: 1;
+}
+
+.debug-toolkit-master .unity-scroller > .unity-scroller__low-button {
+    background-color: var(--debug-toolkit-color-lowlight);
+    border-width: 0;
+    -unity-background-image-tint-color: var(--debug-toolkit-color-highlight);
+    border-top-left-radius: var(--debug-toolkit-px-radius-small);
+    border-top-right-radius: var(--debug-toolkit-px-radius-small);
+}
+
+.debug-toolkit-master .unity-scroller > .unity-scroller__high-button {
+    background-color: var(--debug-toolkit-color-lowlight);
+    border-width: 0;
+    -unity-background-image-tint-color: var(--debug-toolkit-color-highlight);
+    border-bottom-left-radius: var(--debug-toolkit-px-radius-small);
+    border-bottom-right-radius: var(--debug-toolkit-px-radius-small);
+}
+
+.debug-toolkit-master .unity-scroller--vertical .unity-base-slider__dragger {
+    background-color: var(--debug-toolkit-color-highlight);
+    border-radius: var(--debug-toolkit-px-radius-small);
+}
+
+.debug-toolkit-master .unity-scroller--vertical .unity-base-slider__tracker {
+    background-color: var(--debug-toolkit-color-lowlight);
+    border-left-width: 0;
+    border-right-width: 0;
+}
+
+.debug-toolkit-master .unity-scroll-view__content-viewport > .unity-scroll-view__content-container {
+    margin-right: 5px;
+}
+
+/*--- スライダー -----------------------------------------------*/
+.debug-toolkit-master .unity-base-slider--horizontal .unity-base-slider__dragger {
+    margin-top: -12px;
+    height: 24px;
+    background-color: var(--debug-toolkit-color-highlight);
+    border-width: 0;
+    border-radius: var(--debug-toolkit-px-radius-small);
+}
+
+.debug-toolkit-master .unity-base-slider--horizontal .unity-base-slider__tracker {
+    margin-top: -2px;
+    height: 4px;
+    background-color: var(--debug-toolkit-color-lowlight);
+    border-width: 0;
+    border-radius: var(--debug-toolkit-px-radius-small);
+}
+
+.debug-toolkit-master .unity-base-slider--horizontal {
+    margin-top: var(--debug-toolkit-px-space-small);
+    margin-bottom: var(--debug-toolkit-px-space-small);
+}
+
+.debug-toolkit-master .unity-base-slider--horizontal .unity-text-field {
+    padding: 0;
+    margin: 5px;
+}
+
+.debug-toolkit-master.unity-base-slider--horizontal .unity-text-field #unity-text-input {
+    padding: 5px;
+    margin: 0;
+}
+
+/*--- ミニマックススライダー -----------------------------------------------*/
+.debug-toolkit-master .unity-min-max-slider__tracker {
+    margin-top: -2px;
+    height: 4px;
+    background-color: var(--debug-toolkit-color-lowlight);
+    border-width: 0;
+    border-radius: var(--debug-toolkit-px-radius-small);
+}
+
+.debug-toolkit-master .unity-min-max-slider__dragger {
+    margin-top: -2px;
+    height: 4px;
+    background-color: var(--debug-toolkit-color-highlight);
+    border-width: 0;
+}
+
+.debug-toolkit-master .unity-min-max-slider__dragger > * {
+    margin-top: -10px;
+    height: 24px;
+    background-color: var(--debug-toolkit-color-highlight);
+    border-width: 0;
+    border-radius: var(--debug-toolkit-px-radius-small);
+}
+.debug-toolkit-master .unity-min-max-slider{
+    margin-top: var(--debug-toolkit-px-space-small);
+    margin-bottom: var(--debug-toolkit-px-space-small);
+}
+
+/*--- プログレスバー -----------------------------------------------*/
+.debug-toolkit-master .unity-progress-bar{
+    margin: var(--debug-toolkit-px-space-medium);
+    margin-top: var(--debug-toolkit-px-space-small);
+    margin-bottom: var(--debug-toolkit-px-space-small);
+}
+
+.debug-toolkit-master .unity-progress-bar__background {
+    background-color: var(--debug-toolkit-color-lowlight);
+    border-radius: var(--debug-toolkit-px-radius-small);
+    border-width: 0;
+}
+
+.debug-toolkit-master .unity-progress-bar__progress {
+    background-color: var(--debug-toolkit-color-highlight);
+    border-radius: var(--debug-toolkit-px-radius-small);
+}
+
+.debug-toolkit-master .unity-progress-bar__title {
+    color: var(--debug-toolkit-color-background);
+}
+
+/*--- ドロップダウン -----------------------------------------------*/
+.debug-toolkit-master .unity-popup-field{
+    margin-top: var(--debug-toolkit-px-space-small);
+    margin-bottom: var(--debug-toolkit-px-space-small);
+}
+
+.debug-toolkit-master .unity-popup-field__input {
+    background-color: var(--debug-toolkit-color-highlight);
+    border-radius: var(--debug-toolkit-px-radius-small);
+    border-width: 0;
+}
+
+.debug-toolkit-master .unity-popup-field .unity-base-popup-field__text {
+    color: var(--debug-toolkit-color-background);
+    padding-left: var(--debug-toolkit-px-space-medium);
+    padding-right: var(--debug-toolkit-px-space-medium);
+}
+
+.debug-toolkit-master .unity-popup-field .unity-base-popup-field__arrow {
+    -unity-background-image-tint-color: var(--debug-toolkit-color-lowlight);
+    margin-right: var(--debug-toolkit-px-space-medium);
+}
+/*--- Enum -------------------------------------------------------*/
+.debug-toolkit-master .unity-enum-field{
+    margin-top: var(--debug-toolkit-px-space-small);
+    margin-bottom: var(--debug-toolkit-px-space-small);
+}
+
+.debug-toolkit-master .unity-enum-field__input {
+    background-color: var(--debug-toolkit-color-highlight);
+    border-radius: var(--debug-toolkit-px-radius-small);
+    border-width: 0;
+}
+
+.debug-toolkit-master .unity-enum-field .unity-enum-field__text {
+    color: var(--debug-toolkit-color-background);
+    padding-left: var(--debug-toolkit-px-space-medium);
+    padding-right: var(--debug-toolkit-px-space-medium);
+}
+
+.debug-toolkit-master .unity-enum-field .unity-enum-field__arrow {
+    -unity-background-image-tint-color: var(--debug-toolkit-color-lowlight);
+    margin-right: var(--debug-toolkit-px-space-medium);
+}
+
+/*--- ラジオボタン -----------------------------------------------*/
+.debug-toolkit-master .unity-radio-button__checkmark-background {
+    background-color: var(--debug-toolkit-color-highlight);
+    padding-top: 5px;
+    width: 24px;
+    height: 24px;
+    border-radius: 12px;
+    border-width: 0;
+}
+
+.debug-toolkit-master .unity-radio-button {
+    margin-top: var(--debug-toolkit-px-space-small);
+    margin-bottom: var(--debug-toolkit-px-space-small);
+}
+
+.debug-toolkit-master .unity-radio-button__checkmark {
+    background-color: var(--debug-toolkit-color-lowlight);
+    margin-top: 1px;
+    width: 12px;
+    height: 12px;
+}
+
+.debug-toolkit-master .unity-radio-button__text {
+    margin-left: var(--debug-toolkit-px-space-small);
+}
+ /*--- ラジオボタングループ -----------------------------------------------*/
+
+/*--- 一般設定 -----------------------------------------------*/
+.debug-toolkit-master .unity-base-field__label{
+    min-width: 80px;
+    margin-right: var(--debug-toolkit-px-space-small);
+}
+
+.debug-toolkit-master .unity-foldout__drag-area {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    left: 45px;
+}
