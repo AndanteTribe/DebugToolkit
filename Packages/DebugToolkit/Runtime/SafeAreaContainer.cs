@@ -12,7 +12,12 @@ namespace DebugToolkit
     /// <summary>
     /// セーフエリアを考慮した<see cref="VisualElement"/>.
     /// </summary>
-    public class SafeAreaContainer : VisualElement
+#if UNITY_2023_2_OR_NEWER
+    [UxmlElement]
+    internal sealed partial class SafeAreaContainer : VisualElement
+    {
+#else
+    internal sealed class SafeAreaContainer : VisualElement
     {
         /// <summary>
         /// UIBuilderのLibraryに登録するためのUXML要素のファクトリクラス.
@@ -20,6 +25,7 @@ namespace DebugToolkit
         public class SafeAreaContainerFactory : UxmlFactory<SafeAreaContainer, UxmlTraits>
         {
         }
+#endif
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SafeAreaContainer"/> class.
