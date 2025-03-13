@@ -33,19 +33,20 @@ namespace DebugToolkit
         /// <returns>ルート要素.</returns>
         protected virtual VisualElement Setup()
         {
-            var obj = new GameObject("DebugToolkit");
+            var obj = new GameObject(nameof(DebugToolkit));
             Object.DontDestroyOnLoad(obj);
             var uiDocument = obj.AddComponent<UIDocument>();
             if (panelSettings == null)
             {
-                panelSettings = ScriptableObject.CreateInstance<PanelSettings>();
+                panelSettings = ExternalResources.LoadPanelSettings();
+            }
+            if (panelSettings.themeStyleSheet == null)
+            {
                 if (themeStyleSheet == null)
                 {
                     themeStyleSheet = ExternalResources.LoadThemeStyleSheet();
                 }
                 panelSettings.themeStyleSheet = themeStyleSheet;
-                panelSettings.scaleMode = PanelScaleMode.ScaleWithScreenSize;
-                panelSettings.screenMatchMode = PanelScreenMatchMode.Expand;
             }
             uiDocument.panelSettings = panelSettings;
 

@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: ExternalResourcesManager
   m_EditorClassIdentifier: 
   _themeStyleSheet: {fileID: -4733365628477956816, guid: e48b9b8e31339a946835eede3edf66c3, type: 3}
+  _panelSettings: {fileID: 11400000, guid: 3e5d617612bbc5544a38162cc45280c5, type: 2}
