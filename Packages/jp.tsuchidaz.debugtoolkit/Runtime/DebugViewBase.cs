@@ -33,42 +33,43 @@ namespace DebugToolkit
         /// <returns>ルート要素.</returns>
         protected virtual VisualElement Setup()
         {
-            var obj = new GameObject("DebugToolkit");
+            var obj = new GameObject(nameof(DebugToolkit));
             Object.DontDestroyOnLoad(obj);
             var uiDocument = obj.AddComponent<UIDocument>();
             if (panelSettings == null)
             {
-                panelSettings = ScriptableObject.CreateInstance<PanelSettings>();
+                panelSettings = ExternalResources.LoadPanelSettings();
+            }
+            if (panelSettings.themeStyleSheet == null)
+            {
                 if (themeStyleSheet == null)
                 {
-                    themeStyleSheet = Resources.Load<ThemeStyleSheet>("DefaultRuntimeTheme");
+                    themeStyleSheet = ExternalResources.LoadThemeStyleSheet();
                 }
                 panelSettings.themeStyleSheet = themeStyleSheet;
-                panelSettings.scaleMode = PanelScaleMode.ScaleWithScreenSize;
-                panelSettings.screenMatchMode = PanelScreenMatchMode.Expand;
             }
             uiDocument.panelSettings = panelSettings;
 
             var root = uiDocument.rootVisualElement;
             var safeAreaContainer = new SafeAreaContainer();
             root.Add(safeAreaContainer);
-            
+
             var window = new VisualElement();
             window.AddToClassList("debug-toolkit-master");
             safeAreaContainer.Add(window);
-            
+
             var manipulator = new DragManipulator(window);
             var dragArea = new VisualElement(){ name = "drag-area" };
             dragArea.AddToClassList("unity-foldout__drag-area");
             dragArea.AddManipulator(manipulator);
-                
-            var foldout = new Foldout { text = "DebugMenu", value = true, name = "DebugMenuHandler"};
+
+            var foldout = new Foldout { text = "DebugMenu", value = true, name = "DebugMenuHandler" };
             foldout.Q<Toggle>().Add(dragArea);
             window.Add(foldout);
-                
+
             _tabView = new TabView();
             foldout.Add(_tabView);
-                
+
             return _tabView;
         }
 
