@@ -8,7 +8,9 @@
     "overrideReferences": true,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": [],
+    "defineConstraints": [
+        "ENABLE_DEBUGTOOLKIT"
+    ],
     "versionDefines": [],
     "noEngineReferences": false
 }
