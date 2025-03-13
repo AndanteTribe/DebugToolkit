@@ -41,7 +41,7 @@ namespace DebugToolkit
             _enabled = true;
         }
 
-        private  void PointerMoveHandler(PointerMoveEvent e)
+        private void PointerMoveHandler(PointerMoveEvent e)
         {
             if (_enabled && target.HasPointerCapture(e.pointerId))
             {
