@@ -52,12 +52,18 @@ namespace DebugToolkit
             var root = uiDocument.rootVisualElement;
             var safeAreaContainer = new SafeAreaContainer();
             root.Add(safeAreaContainer);
-                
+            
             var window = new VisualElement();
             window.AddToClassList("debug-toolkit-master");
             safeAreaContainer.Add(window);
+            
+            var manipulator = new DragManipulator(window);
+            var dragArea = new VisualElement(){ name = "drag-area" };
+            dragArea.AddToClassList("unity-foldout__drag-area");
+            dragArea.AddManipulator(manipulator);
                 
             var foldout = new Foldout { text = "DebugMenu", value = true, name = "DebugMenuHandler"};
+            foldout.Q<Toggle>().Add(dragArea);
             window.Add(foldout);
                 
             _tabView = new TabView();
