@@ -33,12 +33,7 @@ namespace DebugToolkit
             _written += written;
         }
 
-        public void AppendLine()
-        {
-            var line = Environment.NewLine.AsSpan();
-            line.CopyTo(_buffer.Slice(_written));
-            _written += line.Length;
-        }
+        public void AppendLine() => Append(Environment.NewLine);
 
         public override string ToString() => new string(_buffer.Slice(0, _written));
     }
