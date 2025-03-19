@@ -25,21 +25,21 @@ namespace DebugToolkit
 
                 var latest = ProfileUtils.GetLatestFrameTiming();
                 sb.Append(stackalloc char[]{ 'C', 'P', 'U', ':', ' ' });
-                sb.Append(1000 / latest.cpuFrameTime, "F0");
+                sb.Append(1000 / latest.cpuFrameTime, stackalloc char[]{ 'F', '0' });
                 sb.Append(stackalloc char[]{ 'f', 'p', 's', ' ', '(', ' ' });
-                sb.Append(latest.cpuFrameTime, "F1");
+                sb.Append(latest.cpuFrameTime, stackalloc char[]{ 'F', '1' });
                 sb.Append(stackalloc char[]{ 'm', 's', ')' });
                 sb.AppendLine();
                 sb.Append(stackalloc char[]{ 'G', 'P', 'U', ':', ' ' });
-                sb.Append(1000 / latest.gpuFrameTime, "F0");
+                sb.Append(1000 / latest.gpuFrameTime, stackalloc char[]{ 'F', '0' });
                 sb.Append(stackalloc char[]{ 'f', 'p', 's', ' ', '(', ' ' });
-                sb.Append(latest.gpuFrameTime, "F1");
+                sb.Append(latest.gpuFrameTime, stackalloc char[]{ 'F', '1' });
                 sb.Append(stackalloc char[]{ 'm', 's', ')' });
                 sb.AppendLine();
 
                 var memory = ProfileUtils.GetTotalMemoryGB();
                 sb.Append(stackalloc char[]{ 'M', 'e', 'm', 'o', 'r', 'y', ':', ' ' });
-                sb.Append(memory, "F2");
+                sb.Append(memory, stackalloc char[]{ 'F', '2' });
                 sb.Append(stackalloc char[]{ 'G', 'B' });
                 sb.AppendLine();
 
