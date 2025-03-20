@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 namespace DebugToolkit
 {
-    public class DragManipulator : MouseManipulator
+    internal sealed class DragManipulator : MouseManipulator
     {
         private readonly VisualElement _moveTarget;
         private Vector2 _targetStartPosition;
