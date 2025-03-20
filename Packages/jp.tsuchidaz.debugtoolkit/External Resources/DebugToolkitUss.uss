@@ -77,6 +77,7 @@
 
 .debug-toolkit-master > .unity-foldout {
     border-radius: var(--debug-toolkit-px-radius-medium);
+    padding-bottom: var(--debug-toolkit-px-space-medium);
 }
 
 .debug-toolkit-master .unity-foldout__toggle{    

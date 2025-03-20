@@ -1,6 +1,7 @@
 ﻿#nullable enable
 
 using System.Runtime.CompilerServices;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
 
 namespace DebugToolkit
@@ -46,5 +47,47 @@ namespace DebugToolkit
                 label.text = sb.ToString();
             }).Every(500);
         }
+
+#if UNITY_2023_2_OR_NEWER
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static TabView AddTabView(this VisualElement visualElement)
+        {
+            var tabView = new TabView();
+            visualElement.Add(tabView);
+            return tabView;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Tab AddTab(this TabView tabView)
+        {
+            var tab = new Tab();
+            tabView.Add(tab);
+            return tab;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Tab AddTab(this TabView tabView, string label)
+        {
+            var tab = new Tab(label);
+            tabView.Add(tab);
+            return tab;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Tab AddTab(this TabView tabView, Background iconImage)
+        {
+            var tab = new Tab(iconImage);
+            tabView.Add(tab);
+            return tab;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Tab AddTab(this TabView tabView, string label, Background iconImage)
+        {
+            var tab = new Tab(label, iconImage);
+            tabView.Add(tab);
+            return tab;
+        }
+#endif
     }
 }
