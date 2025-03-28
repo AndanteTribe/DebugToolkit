@@ -20,11 +20,6 @@ namespace DebugToolkit
         /// </summary>
         public ThemeStyleSheet? themeStyleSheet { get; set; }
 
-        /// <summary>
-        /// タブが追加される親要素.
-        /// </summary>
-        private VisualElement _tabView;
-
         public void Start() => Setup();
 
         /// <summary>
@@ -67,30 +62,7 @@ namespace DebugToolkit
             foldout.Q<Toggle>().Add(dragArea);
             window.Add(foldout);
 
-            _tabView = new TabView();
-            foldout.Add(_tabView);
-
-            return _tabView;
-        }
-
-        /// <summary>
-        /// デバックメニューにタブを追加するメソッド.
-        /// </summary>
-        /// <param name="label">
-        /// タブのラベル.
-        /// </param>
-        /// <returns>
-        /// ユーザが要素を追加するルート要素.
-        /// </returns>
-        protected VisualElement AddTab(string label)
-        {
-            var tab = new Tab { label = label };
-            _tabView.Add(tab);
-                
-            var scrollView = new ScrollView();
-            tab.Add(scrollView);
-
-            return scrollView;
+            return foldout;
         }
     }
 }

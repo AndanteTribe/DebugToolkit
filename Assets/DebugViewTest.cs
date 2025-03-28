@@ -1,5 +1,4 @@
 ﻿#if ENABLE_DEBUGTOOLKIT
-using UnityEngine;
 using UnityEngine.UIElements;
 using DebugToolkit;
 
@@ -8,15 +7,14 @@ public class DebugViewTest : DebugViewerBase
     protected override VisualElement Setup()
     {
         var root = base.Setup();
-        var tab1 = AddTab("Tab1");
-        tab1.Add(new Label(){text = "Hello, World!"});
+        var (tabRoot, tab1) = root.AddTab();
+        var tab2 = tabRoot.AddTab("Tab2");
+        
         for (int i = 0; i < 5; i++)
         {
             tab1.Add(new Button(){text = $"Button{i + 1}"});
         }
-        
-        var tab2 = AddTab("Tab2");
-        tab2.Add(new Label(){text = "This is New Tab!!"});
+        tab2.AddProfileInfoLabel();
         return root;
     }
 }

@@ -1,15 +1,20 @@
 :root {
     --debug-toolkit-color-background: #FFFAEA;
     --debug-toolkit-color-lowlight: #40280F;
-    --debug-toolkit-color-text: #0F0328;
+    --debug-toolkit-color-black: #0F0328;
     --debug-toolkit-color-highlight: #F6891E;
     --debug-toolkit-color-content: rgb(0, 173, 181);
     --debug-toolkit-px-border: 4px;
+    --debug-toolkit-px-space-xsmall: 2px;
     --debug-toolkit-px-space-small: 4px;
     --debug-toolkit-px-space-medium: 8px;
     --debug-toolkit-px-space-large: 12px;
     --debug-toolkit-px-radius-small: 4px;
     --debug-toolkit-px-radius-medium: 8px;
+    --debug-toolkit-tab-height: 30px;
+    --debug-toolkit-tab-min-width: 60px;
+    --debug-toolkit-panel-width: 400px;
+    --debug-toolkit-panel-max-height: 600px;
 }
 
 .debug-toolkit-master {
@@ -17,9 +22,9 @@
     font-size: 12px;
     position: absolute;
     border-radius: var(--debug-toolkit-px-radius-medium);
-    width: 400px;
+    width: var(--debug-toolkit-panel-width);
     height: auto;
-    max-height: 600px;
+    max-height: var(--debug-toolkit-panel-max-height);
     transition-property: position;
     transition-duration: 0.5s;
     transition-timing-function: ease-in;
@@ -32,20 +37,18 @@
 
 /*--- ラベル　----------------------------------------------------------------*/
 .debug-toolkit-master .unity-label {
-    color: var(--debug-toolkit-color-text);
-}
-
-.debug-toolkit-master .unity-label {
+    color: var(--debug-toolkit-color-black);
     padding-left: var(--debug-toolkit-px-space-small);
     padding-right: var(--debug-toolkit-px-space-medium);
     margin: var(--debug-toolkit-px-space-small);
 }
 
-/*--- デバックウィンドウ -----------------------------------------------*/
+/*--- タブ -----------------------------------------------*/
 .debug-toolkit-master .unity-tab-view__header-container{
-    border-bottom-width: 2px;
+    border-bottom-width: var(--debug-toolkit-px-space-xsmall);
     border-bottom-color: var(--debug-toolkit-color-lowlight);
     min-height: 34px;
+    align-items: flex-end;
 }
 
 .debug-toolkit-master .unity-tab-view{
@@ -55,20 +58,36 @@
 
 .debug-toolkit-master .unity-tab__header {
     background-color: var(--debug-toolkit-color-background);
-    border-width: 0;
+    border-width: var(--debug-toolkit-px-space-xsmall);
+    border-bottom-width: 0;
+    border-color: var(--debug-toolkit-color-lowlight);
+    border-top-right-radius: var(--debug-toolkit-px-radius-medium);
+    border-top-left-radius: var(--debug-toolkit-px-radius-medium);
     padding: var(--debug-toolkit-px-space-small);
-    margin: var(--debug-toolkit-px-space-small);
-    margin-bottom: 0;
+    padding-right: var(--debug-toolkit-px-space-medium);
+    padding-left: var(--debug-toolkit-px-space-medium);
+    margin: 0;
+    align-self: flex-end;
+    height: var(--debug-toolkit-tab-height);
+    min-width: var(--debug-toolkit-tab-min-width);
+    margin-left: var(--debug-toolkit-px-space-xsmall);
+    margin-right: var(--debug-toolkit-px-space-xsmall);
 }
 
-.debug-toolkit-master .unity-tab__header:checked .unity-tab__header-underline {
-    background-color: var(--debug-toolkit-color-lowlight);
+.debug-toolkit-master .unity-tab__header:checked {
+    background-color: var(--debug-toolkit-color-highlight);
 }
 
-.debug-toolkit-master .unity-tab__header:checked .unity-tab__header-label{
+.debug-toolkit-master .unity-tab__header:checked  .unity-tab__header-underline {
+    border-width: 0;
+    background-color: initial;
+}
+
+.debug-toolkit-master .unity-tab__header:checked  .unity-tab__header-label{
     -unity-font-style: bold;
 }
 
+/*--- デバックウィンドウ -----------------------------------------------*/
 .debug-toolkit-master .unity-foldout__content {
     flex-wrap: nowrap;
     align-items: stretch;
@@ -77,6 +96,7 @@
 
 .debug-toolkit-master > .unity-foldout {
     border-radius: var(--debug-toolkit-px-radius-medium);
+    padding-bottom: var(--debug-toolkit-px-space-medium);
 }
 
 .debug-toolkit-master .unity-foldout__toggle{    
@@ -123,13 +143,13 @@
 }
 
 .debug-toolkit-master .unity-foldout .unity-foldout .unity-foldout__toggle{
-    border-bottom-width: 2px;
+    border-bottom-width: var(--debug-toolkit-px-space-xsmall);
     border-bottom-color: var(--debug-toolkit-color-lowlight);
 }
 
 .debug-toolkit-master .unity-foldout .unity-foldout .unity-foldout__content{
-    margin-left : var(--debug-toolkit-px-space-small);
-    border-left-width: 2px;
+    margin-left: var(--debug-toolkit-px-space-small);
+    border-left-width: var(--debug-toolkit-px-space-xsmall);
     border-left-color: var(--debug-toolkit-color-lowlight);
 }
 
@@ -215,7 +235,7 @@
 }
 
 .debug-toolkit-master .unity-scroll-view__content-viewport > .unity-scroll-view__content-container {
-    margin-right: 5px;
+    margin-right: var(--debug-toolkit-px-space-small);
 }
 
 /*--- スライダー -----------------------------------------------*/
