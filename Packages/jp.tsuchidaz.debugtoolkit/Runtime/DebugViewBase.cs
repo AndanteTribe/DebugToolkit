@@ -23,13 +23,13 @@ namespace DebugToolkit
         /// <summary>
         /// EntryPoint.
         /// </summary>
-        public void Start() => CreateInspectorGUI();
+        public void Start() => CreateViewGUI();
 
         /// <summary>
         /// Implement this method to make a custom UIElements viewer.
         /// </summary>
         /// <returns>Root <see cref="VisualElement"/>.</returns>
-        protected virtual VisualElement CreateInspectorGUI()
+        protected virtual VisualElement CreateViewGUI()
         {
             var obj = new GameObject(nameof(DebugToolkit));
             Object.DontDestroyOnLoad(obj);
