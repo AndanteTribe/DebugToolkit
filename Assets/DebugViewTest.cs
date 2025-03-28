@@ -4,9 +4,9 @@ using DebugToolkit;
 
 public class DebugViewTest : DebugViewerBase
 {
-    protected override VisualElement Setup()
+    protected override VisualElement CreateInspectorGUI()
     {
-        var root = base.Setup();
+        var root = base.CreateInspectorGUI();
         var (tabRoot, tab1) = root.AddTab();
         var tab2 = tabRoot.AddTab("Tab2");
         
