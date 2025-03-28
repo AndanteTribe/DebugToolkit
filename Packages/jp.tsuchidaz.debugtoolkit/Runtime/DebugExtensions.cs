@@ -49,43 +49,21 @@ namespace DebugToolkit
 
 #if UNITY_2023_2_OR_NEWER
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static TabView AddTabView(this VisualElement visualElement)
+        public static ScrollView AddTab(this TabView tabView, string label = "")
         {
-            var tabView = new TabView();
-            visualElement.Add(tabView);
-            return tabView;
+            var tab = string.IsNullOrEmpty(label) ? new Tab() : new Tab(label);
+            tabView.Add(tab);
+            var scrollView = new ScrollView();
+            tab.Add(scrollView);
+            return scrollView;
         }
         
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tab AddTab(this TabView tabView)
+        public static (TabView,  ScrollView) AddTab(this VisualElement root, string label = "")
         {
-            var tab = new Tab();
-            tabView.Add(tab);
-            return tab;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tab AddTab(this TabView tabView, string label)
-        {
-            var tab = new Tab(label);
-            tabView.Add(tab);
-            return tab;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tab AddTab(this TabView tabView, Background iconImage)
-        {
-            var tab = new Tab(iconImage);
-            tabView.Add(tab);
-            return tab;
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Tab AddTab(this TabView tabView, string label, Background iconImage)
-        {
-            var tab = new Tab(label, iconImage);
-            tabView.Add(tab);
-            return tab;
+            var tabView = new TabView();
+            root.Add(tabView);
+            return (tabView, tabView.AddTab(label));
         }
 #endif
     }
