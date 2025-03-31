@@ -16,7 +16,7 @@ namespace DebugToolkit.Editor
             var prevAssets = PlayerSettings.GetPreloadedAssets();
             var assets = new UnityEngine.Object[prevAssets.Length + 1];
             prevAssets.AsSpan().CopyTo(assets);
-            assets[^1] = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(ExternalResources.rootPath + "/ExternalResourcesManager.asset");
+            assets[^1] = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(ExternalResources.RootPath + "/ExternalResourcesManager.asset");
             PlayerSettings.SetPreloadedAssets(assets);
         }
 

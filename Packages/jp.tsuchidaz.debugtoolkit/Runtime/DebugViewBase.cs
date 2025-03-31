@@ -6,27 +6,30 @@ using UnityEngine.UIElements;
 namespace DebugToolkit
 {
     /// <summary>
-    /// 実機デバッグメニューの実装をするための基底クラス.
+    /// Base class for the implementation of the debugging menu on the real machine.
     /// </summary>
     public abstract class DebugViewerBase
     {
         /// <summary>
-        /// パネル設定.
+        /// Custom <see cref="PanelSettings"/>.
         /// </summary>
         public PanelSettings? panelSettings { get; set; }
 
         /// <summary>
-        /// tss.
+        /// Custom <see cref="ThemeStyleSheet"/>.
         /// </summary>
         public ThemeStyleSheet? themeStyleSheet { get; set; }
 
-        public void Start() => Setup();
+        /// <summary>
+        /// EntryPoint.
+        /// </summary>
+        public void Start() => CreateViewGUI();
 
         /// <summary>
-        /// エントリーポイント.
+        /// Implement this method to make a custom UIElements viewer.
         /// </summary>
-        /// <returns>ルート要素.</returns>
-        protected virtual VisualElement Setup()
+        /// <returns>Root <see cref="VisualElement"/>.</returns>
+        protected virtual VisualElement CreateViewGUI()
         {
             var obj = new GameObject(nameof(DebugToolkit));
             Object.DontDestroyOnLoad(obj);

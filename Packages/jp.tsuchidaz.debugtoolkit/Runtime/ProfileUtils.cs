@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using System.Buffers;
 using System.Runtime.CompilerServices;
 using UnityEngine;
@@ -19,7 +21,7 @@ namespace DebugToolkit
             {
                 UnityEditor.PlayerSettings.enableFrameTimingStats = true;
                 UnityEditor.EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
-                
+
                 static void OnPlayModeStateChanged(UnityEditor.PlayModeStateChange state)
                 {
                     if (state == UnityEditor.PlayModeStateChange.EnteredEditMode)

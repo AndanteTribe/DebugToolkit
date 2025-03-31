@@ -5,10 +5,10 @@ using UnityEngine.UIElements;
 
 namespace DebugToolkit
 {
-    public static partial class DebugExtensions
+    public static class DebugExtensions
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void AddProfileInfoLabel(this VisualElement visualElement) 
+        public static void AddProfileInfoLabel(this VisualElement visualElement)
         {
             var label = new Label{ enableRichText = true };
             visualElement.Add(label);
@@ -57,7 +57,7 @@ namespace DebugToolkit
             tab.Add(scrollView);
             return scrollView;
         }
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static (TabView,  ScrollView) AddTab(this VisualElement root, string label = "")
         {
