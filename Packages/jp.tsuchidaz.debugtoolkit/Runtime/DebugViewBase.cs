@@ -6,44 +6,47 @@ using UnityEngine.UIElements;
 namespace DebugToolkit
 {
     /// <summary>
-    /// 実機デバッグメニューの実装をするための基底クラス.
+    /// Base class for the implementation of the debugging menu on the real machine.
     /// </summary>
     public abstract class DebugViewerBase
     {
         /// <summary>
-        /// パネル設定.
+        /// Custom <see cref="UnityEngine.UIElements.PanelSettings"/>.
         /// </summary>
-        public PanelSettings? panelSettings { get; set; }
+        public PanelSettings? PanelSettings { get; set; }
 
         /// <summary>
-        /// tss.
+        /// Custom <see cref="UnityEngine.UIElements.ThemeStyleSheet"/>.
         /// </summary>
-        public ThemeStyleSheet? themeStyleSheet { get; set; }
-
-        public void Start() => Setup();
+        public ThemeStyleSheet? ThemeStyleSheet { get; set; }
 
         /// <summary>
-        /// エントリーポイント.
+        /// EntryPoint.
         /// </summary>
-        /// <returns>ルート要素.</returns>
-        protected virtual VisualElement Setup()
+        public void Start() => CreateViewGUI();
+
+        /// <summary>
+        /// Implement this method to make a custom UIElements viewer.
+        /// </summary>
+        /// <returns>Root <see cref="VisualElement"/>.</returns>
+        protected virtual VisualElement CreateViewGUI()
         {
             var obj = new GameObject(nameof(DebugToolkit));
             Object.DontDestroyOnLoad(obj);
             var uiDocument = obj.AddComponent<UIDocument>();
-            if (panelSettings == null)
+            if (PanelSettings == null)
             {
-                panelSettings = ExternalResources.LoadPanelSettings();
+                PanelSettings = ExternalResources.LoadPanelSettings();
             }
-            if (panelSettings.themeStyleSheet == null)
+            if (PanelSettings.themeStyleSheet == null)
             {
-                if (themeStyleSheet == null)
+                if (ThemeStyleSheet == null)
                 {
-                    themeStyleSheet = ExternalResources.LoadThemeStyleSheet();
+                    ThemeStyleSheet = ExternalResources.LoadThemeStyleSheet();
                 }
-                panelSettings.themeStyleSheet = themeStyleSheet;
+                PanelSettings.themeStyleSheet = ThemeStyleSheet;
             }
-            uiDocument.panelSettings = panelSettings;
+            uiDocument.panelSettings = PanelSettings;
 
             var root = uiDocument.rootVisualElement;
             var safeAreaContainer = new SafeAreaContainer();

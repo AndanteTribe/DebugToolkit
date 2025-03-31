@@ -10,7 +10,7 @@ using Screen = UnityEngine.Screen;
 namespace DebugToolkit
 {
     /// <summary>
-    /// セーフエリアを考慮した<see cref="VisualElement"/>.
+    /// <see cref="VisualElement"/> considering safe area region
     /// </summary>
 #if UNITY_2023_2_OR_NEWER
     [UxmlElement]
@@ -37,8 +37,11 @@ namespace DebugToolkit
 
             RegisterCallback<GeometryChangedEvent>(static evt =>
             {
-                var self = evt.target as SafeAreaContainer;
-                if (self == null || self.panel.GetType().Name == "EditorPanel") return;
+                if (evt.target is not SafeAreaContainer self || self.panel.GetType().Name == "EditorPanel")
+                {
+                    return;
+                }
+
                 var safeArea = Screen.safeArea;
                 var leftTop = RuntimePanelUtils.ScreenToPanel(self.panel, new(safeArea.xMin, Screen.height - safeArea.yMax));
                 var rightBottom = RuntimePanelUtils.ScreenToPanel(self.panel, new(Screen.width - safeArea.xMax, safeArea.yMin));

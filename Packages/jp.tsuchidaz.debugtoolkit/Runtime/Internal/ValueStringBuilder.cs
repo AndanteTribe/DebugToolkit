@@ -17,24 +17,24 @@ namespace DebugToolkit
 
         public void Append(in ReadOnlySpan<char> value)
         {
-            value.CopyTo(_buffer.Slice(_written));
+            value.CopyTo(_buffer[_written..]);
             _written += value.Length;
         }
 
         public void Append(in double value, in ReadOnlySpan<char> format)
         {
-            value.TryFormat(_buffer.Slice(_written), out var written, format);
+            value.TryFormat(_buffer[_written..], out var written, format);
             _written += written;
         }
 
         public void Append(in float value, in ReadOnlySpan<char> format)
         {
-            value.TryFormat(_buffer.Slice(_written), out var written, format);
+            value.TryFormat(_buffer[_written..], out var written, format);
             _written += written;
         }
 
         public void AppendLine() => Append(Environment.NewLine);
 
-        public override string ToString() => new string(_buffer.Slice(0, _written));
+        public override string ToString() => new string(_buffer[.._written]);
     }
 }

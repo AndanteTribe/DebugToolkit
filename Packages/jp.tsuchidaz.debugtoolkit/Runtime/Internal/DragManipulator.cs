@@ -11,11 +11,8 @@ namespace DebugToolkit
         private Vector2 _targetStartPosition;
         private Vector3 _pointerStartPosition;
         private bool _enabled;
-        
-        public DragManipulator(VisualElement moveTarget)
-        {
-            this._moveTarget = moveTarget;
-        }
+
+        public DragManipulator(VisualElement moveTarget) => _moveTarget = moveTarget;
 
         protected override void RegisterCallbacksOnTarget()
         {
@@ -58,9 +55,6 @@ namespace DebugToolkit
             }
         }
 
-        private void PointerCaptureOutHandler(PointerCaptureOutEvent e)
-        {
-            _enabled = false;
-        }
+        private void PointerCaptureOutHandler(PointerCaptureOutEvent _) => _enabled = false;
     }
 }

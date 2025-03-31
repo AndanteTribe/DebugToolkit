@@ -12,7 +12,7 @@ namespace DebugToolkit
         [SerializeField]
         private PanelSettings? _panelSettings;
 
-        public const string rootPath = "Packages/jp.tsuchidaz.debugtoolkit/External Resources";
+        public const string RootPath = "Packages/jp.tsuchidaz.debugtoolkit/External Resources";
 
 #if !UNITY_EDITOR
         private static ExternalResources s_instance;
@@ -26,8 +26,8 @@ namespace DebugToolkit
         public static ThemeStyleSheet LoadThemeStyleSheet()
         {
 #if UNITY_EDITOR
-            
-            return UnityEditor.AssetDatabase.LoadAssetAtPath<ThemeStyleSheet>(rootPath + "/DefaultRuntimeTheme.tss");
+
+            return UnityEditor.AssetDatabase.LoadAssetAtPath<ThemeStyleSheet>(RootPath + "/DefaultRuntimeTheme.tss");
 #else
             return s_instance._themeStyleSheet;
 #endif
@@ -36,7 +36,7 @@ namespace DebugToolkit
         public static PanelSettings LoadPanelSettings()
         {
 #if UNITY_EDITOR
-            return UnityEditor.AssetDatabase.LoadAssetAtPath<PanelSettings>(rootPath + "/PanelSettings.asset");
+            return UnityEditor.AssetDatabase.LoadAssetAtPath<PanelSettings>(RootPath + "/PanelSettings.asset");
 #else
             return s_instance._panelSettings;
 #endif
