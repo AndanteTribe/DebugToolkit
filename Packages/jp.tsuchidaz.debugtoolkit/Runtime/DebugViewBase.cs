@@ -11,14 +11,14 @@ namespace DebugToolkit
     public abstract class DebugViewerBase
     {
         /// <summary>
-        /// Custom <see cref="PanelSettings"/>.
+        /// Custom <see cref="UnityEngine.UIElements.PanelSettings"/>.
         /// </summary>
-        public PanelSettings? panelSettings { get; set; }
+        public PanelSettings? PanelSettings { get; set; }
 
         /// <summary>
-        /// Custom <see cref="ThemeStyleSheet"/>.
+        /// Custom <see cref="UnityEngine.UIElements.ThemeStyleSheet"/>.
         /// </summary>
-        public ThemeStyleSheet? themeStyleSheet { get; set; }
+        public ThemeStyleSheet? ThemeStyleSheet { get; set; }
 
         /// <summary>
         /// EntryPoint.
@@ -34,19 +34,19 @@ namespace DebugToolkit
             var obj = new GameObject(nameof(DebugToolkit));
             Object.DontDestroyOnLoad(obj);
             var uiDocument = obj.AddComponent<UIDocument>();
-            if (panelSettings == null)
+            if (PanelSettings == null)
             {
-                panelSettings = ExternalResources.LoadPanelSettings();
+                PanelSettings = ExternalResources.LoadPanelSettings();
             }
-            if (panelSettings.themeStyleSheet == null)
+            if (PanelSettings.themeStyleSheet == null)
             {
-                if (themeStyleSheet == null)
+                if (ThemeStyleSheet == null)
                 {
-                    themeStyleSheet = ExternalResources.LoadThemeStyleSheet();
+                    ThemeStyleSheet = ExternalResources.LoadThemeStyleSheet();
                 }
-                panelSettings.themeStyleSheet = themeStyleSheet;
+                PanelSettings.themeStyleSheet = ThemeStyleSheet;
             }
-            uiDocument.panelSettings = panelSettings;
+            uiDocument.panelSettings = PanelSettings;
 
             var root = uiDocument.rootVisualElement;
             var safeAreaContainer = new SafeAreaContainer();
