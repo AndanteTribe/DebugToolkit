@@ -1,0 +1,305 @@
+# The Editorconfig commonly used by AndanteTribe.
+# See: https://github.com/AndanteTribe/cs-editorconfig
+
+# 最上位のEditorConfigファイル.
+root = true
+
+# C# files
+[*.cs]
+
+#### Core EditorConfig Options ####
+# インデントに使用する文字. tab または space.
+indent_style = space
+# インデントのサイズ.
+indent_size = 4
+# タブのサイズ. indent_sizeに同じ
+tab_width = 4
+# 改行文字. lf or cr or crlf.
+end_of_line = crlf
+# 文字コード. utf-8, utf-16, utf-8-bom, utf-16-be, utf-16-le. EditorConfig公式によると、utf-8-bomは非推奨.
+charset = utf-8
+# スペルチェックの言語. 残念ながら1つだけ指定.
+spelling_language = en-US
+# 改行文字の前にある空白文字をすべて削除するか否か.
+trim_trailing_whitespace =true
+# ファイルの最後に改行を追加するか否か. 絶対いらん.
+insert_final_newline = false
+
+#### C# 命名規則 ####
+# name all constant fields using PascalCase
+dotnet_naming_rule.constant_fields_should_be_pascal_case.severity = error
+dotnet_naming_rule.constant_fields_should_be_pascal_case.symbols  = constant_fields
+dotnet_naming_rule.constant_fields_should_be_pascal_case.style    = pascal_case_style
+dotnet_naming_symbols.constant_fields.applicable_kinds   = field
+dotnet_naming_symbols.constant_fields.required_modifiers = const
+dotnet_naming_style.pascal_case_style.capitalization = pascal_case
+
+# static fields should have s_ prefix
+dotnet_naming_rule.static_fields_should_have_prefix.severity = error
+dotnet_naming_rule.static_fields_should_have_prefix.symbols  = static_fields
+dotnet_naming_rule.static_fields_should_have_prefix.style    = static_prefix_style
+dotnet_naming_symbols.static_fields.applicable_kinds   = field
+dotnet_naming_symbols.static_fields.required_modifiers = static
+dotnet_naming_symbols.static_fields.applicable_accessibilities = private, internal, private_protected
+dotnet_naming_style.static_prefix_style.required_prefix = s_
+dotnet_naming_style.static_prefix_style.capitalization = camel_case
+
+# internal and private fields should be _camelCase
+dotnet_naming_rule.camel_case_for_private_internal_fields.severity = error
+dotnet_naming_rule.camel_case_for_private_internal_fields.symbols  = private_internal_fields
+dotnet_naming_rule.camel_case_for_private_internal_fields.style    = camel_case_underscore_style
+dotnet_naming_symbols.private_internal_fields.applicable_kinds = field
+dotnet_naming_symbols.private_internal_fields.applicable_accessibilities = private, internal
+dotnet_naming_style.camel_case_underscore_style.required_prefix = _
+dotnet_naming_style.camel_case_underscore_style.capitalization = camel_case
+
+#### .NET Coding Conventions ####
+# IDE0003: this または Me の修飾を削除する.
+dotnet_style_qualification_for_field = false:suggestion
+dotnet_style_qualification_for_property = false:suggestion
+dotnet_style_qualification_for_method = false:suggestion
+dotnet_style_qualification_for_event = false:suggestion
+
+# IDE0007: 明示的な型の代わりに var を使用する.
+csharp_style_var_for_built_in_types = true:suggestion
+csharp_style_var_when_type_is_apparent = true:none
+csharp_style_var_elsewhere = true:suggestion
+
+# IDE0011: 中かっこを追加する(コードが1行であっても).
+csharp_prefer_braces = true:suggestion
+
+# IDE0016: throw 式を使用する.
+csharp_style_throw_expression = true:suggestion
+
+# IDE0017: オブジェクト初期化子を使用する.
+dotnet_style_object_initializer = true:suggestion
+
+# IDE0018: インライン変数宣言.
+csharp_style_inlined_variable_declaration = true:suggestion
+
+# IDE0019: パターンマッチングを使用して as の後に null チェックが発生しないようにする.
+csharp_style_pattern_matching_over_as_with_null_check = true:suggestion
+
+# IDE0020: パターンマッチングを使用して、is チェックの後にキャスト (変数を含む) が発生しないようにする.
+csharp_style_pattern_matching_over_is_with_cast_check = true:suggestion
+
+# IDE0021: 	コンストラクターに式本体を使用する.
+csharp_style_expression_bodied_constructors = true:suggestion
+
+# IDE0022: メソッドに式本体を使用する.
+csharp_style_expression_bodied_methods = true:suggestion
+
+# IDE0023 or 24: 変換演算子・演算子に式本体を使用する.
+csharp_style_expression_bodied_operators =true:suggestion
+
+# IDE0025: プロパティに式本体を使用する.
+csharp_style_expression_bodied_properties = true:suggestion
+
+# IDE0026: インデクサーに式本体を使用する.
+csharp_style_expression_bodied_indexers = true:suggestion
+
+# IDE0027: アクセサーに式本体を使用する.
+csharp_style_expression_bodied_accessors = true:suggestion
+
+# IDE0028: コレクション初期化子を使用する.
+dotnet_style_collection_initializer = true:suggestion
+dotnet_style_prefer_collection_expression = true:suggestion
+
+# IDE0029 or 30: Null チェックを簡略化. ※Unityのnullチェックに引っ掛かったら変更.
+dotnet_style_coalesce_expression =true:suggestion
+
+# IDE0031: null 値の反映を使用する.
+dotnet_style_null_propagation = true:suggestion
+
+# IDE0032: 自動プロパティを使用する.
+dotnet_style_prefer_auto_properties = true:suggestion
+
+# IDE0033: 明示的に提供されたタプル名を使用する.
+dotnet_style_explicit_tuple_names = true:suggestion
+
+# IDE0034: default 式を簡略化する.
+csharp_prefer_simple_default_expression = true:suggestion
+
+# IDE0036: 修飾子を順序付けする.
+csharp_preferred_modifier_order = public, private, protected, internal, file, static, extern, new, virtual, abstract, sealed, override, readonly, unsafe, required, volatile, async
+
+# IDE0037: 推定メンバーの名前を使用する.
+dotnet_style_prefer_inferred_tuple_names = true:suggestion
+dotnet_style_prefer_inferred_anonymous_type_member_names = true:suggestion
+
+# IDE0039: ラムダの代わりにローカル関数を使用する.
+csharp_style_prefer_local_over_anonymous_function = true:suggestion
+
+# IDE0040: アクセシビリティ修飾子の追加. パブリックインターフェイスメンバーを除き、アクセシビリティ修飾子を優先で.
+dotnet_style_require_accessibility_modifiers = for_non_interface_members
+
+# IDE0041: is null チェックを使用する.
+dotnet_style_prefer_is_null_check_over_reference_equality_method = false:suggestion
+
+# IDE0042: 変数宣言を分解する.
+csharp_style_deconstructed_variable_declaration = true:suggestion
+
+# IDE0044: 読み取り専用修飾子を追加する.
+dotnet_style_readonly_field = true:suggestion
+
+# IDE0045: 代入に条件式を使用する. 三項演算子は使えるなら使おう.
+dotnet_style_prefer_conditional_expression_over_assignment = true:suggestion
+
+# IDE0046: 戻り値に条件式を使用する. 三項演算子は使えるなら使おう.
+dotnet_style_prefer_conditional_expression_over_return = true:suggestion
+
+# IDE0047: 不要なかっこを削除する.
+dotnet_style_parentheses_in_arithmetic_binary_operators = never_if_unnecessary:suggestion
+dotnet_style_parentheses_in_relational_binary_operators = always_for_clarity:suggestion
+dotnet_style_parentheses_in_other_binary_operators = always_for_clarity:suggestion
+dotnet_style_parentheses_in_other_operators = never_if_unnecessary:suggestion
+
+# IDE0049: 型参照のためのフレームワーク型名の代わりに言語キーワードを使用する.
+dotnet_style_predefined_type_for_locals_parameters_members = true:suggestion
+dotnet_style_predefined_type_for_member_access = true:suggestion
+
+# IDE0053: ラムダに式本体を使用する.
+csharp_style_expression_bodied_lambdas = true:suggestion
+
+# IDE0054: 複合代入を使用する.
+dotnet_style_prefer_compound_assignment = true:suggestion
+
+# IDE0055: 書式設定を修正する.
+csharp_new_line_before_open_brace = all
+csharp_new_line_before_else = true
+csharp_new_line_before_catch = true
+csharp_new_line_before_finally = true
+csharp_new_line_before_members_in_object_initializers = false
+csharp_new_line_before_members_in_anonymous_types = false
+csharp_new_line_between_query_expression_clauses = true
+csharp_indent_case_contents = true
+csharp_indent_switch_labels = true
+csharp_indent_labels = one_less_than_current
+csharp_indent_block_contents = true
+csharp_indent_braces = false
+csharp_indent_case_contents_when_block = false
+csharp_space_after_cast = false
+csharp_space_after_keywords_in_control_flow_statements = true
+csharp_space_between_parentheses = false
+csharp_space_before_colon_in_inheritance_clause = true
+csharp_space_after_colon_in_inheritance_clause = true
+csharp_space_around_binary_operators = before_and_after
+csharp_space_between_method_declaration_parameter_list_parentheses = false
+csharp_space_between_method_declaration_empty_parameter_list_parentheses = false
+csharp_space_between_method_declaration_name_and_open_parenthesis = false
+csharp_space_between_method_call_parameter_list_parentheses = false
+csharp_space_between_method_call_empty_parameter_list_parentheses = false
+csharp_space_between_method_call_name_and_opening_parenthesis = false
+csharp_space_after_comma = true
+csharp_space_before_comma = false
+csharp_space_after_dot = false
+csharp_space_before_dot = false
+csharp_space_after_semicolon_in_for_statement = true
+csharp_space_before_semicolon_in_for_statement = false
+csharp_space_around_declaration_statements = false
+csharp_space_before_open_square_brackets = false
+csharp_space_between_empty_square_brackets = false
+csharp_space_between_square_brackets = false
+csharp_preserve_single_line_statements = false
+csharp_preserve_single_line_blocks = true
+dotnet_sort_system_directives_first = true
+dotnet_separate_import_directive_groups = false
+
+# IDE0056: インデックス演算子を使用する.
+csharp_style_prefer_index_operator = true:suggestion
+
+# IDE0057: 範囲演算子を使用する.
+csharp_style_prefer_range_operator = true:suggestion
+
+# IDE0058: 使用されていない式の値を削除する.
+csharp_style_unused_value_expression_statement_preference = discard_variable:suggestion
+
+# IDE0059: 不要な値の代入を削除する.
+csharp_style_unused_value_assignment_preference = discard_variable:suggestion
+
+# IDE0060: 使用されていないパラメーターを削除する.
+dotnet_code_quality_unused_parameters = all:suggestion
+
+# IDE0061: ローカル関数に式本体を使用する.
+csharp_style_expression_bodied_local_functions = true:suggestion
+
+# IDE0062: ローカル関数を作成する static.
+csharp_prefer_static_local_function = true:suggestion
+
+# IDE0063: 単純な using ステートメントを使用する.
+csharp_prefer_simple_using_statement = true:suggestion
+
+# IDE0065: using ディレクティブの配置.
+csharp_using_directive_placement = outside_namespace:suggestion
+
+# IDE0066: switch 式を使用する.
+csharp_style_prefer_switch_expression = true:suggestion
+
+# IDE0071: 補間を簡略化する.
+dotnet_style_prefer_simplified_interpolation =true:suggestion
+
+# IDE0073: ファイル ヘッダーを使用する.
+file_header_template = unset
+
+# IDE0075: 条件式を簡略化する.
+dotnet_style_prefer_simplified_boolean_expressions = true:suggestion
+
+# IDE0078: パターン マッチングの使用.
+csharp_style_prefer_pattern_matching =true:suggestion
+
+# IDE0079: 不要な抑制を削除する.
+dotnet_remove_unnecessary_suppression_exclusions = none:suggestion
+
+# IDE0083: パターン マッチングを使用する (not 演算子).
+csharp_style_prefer_not_pattern = true:suggestion
+
+# IDE0090: new 式を簡略化する.
+csharp_style_implicit_object_creation_when_type_is_apparent = true:suggestion
+
+# IDE0130: 名前空間がフォルダー構造と一致しない.
+dotnet_style_namespace_match_folder = false:suggestion
+
+# IDE0150: 型チェックより null チェックを優先します.
+csharp_style_prefer_null_check_over_type_check = false:suggestion
+
+# IDE0160: ブロック スコープの名前空間を使用する.
+csharp_style_namespace_declarations = file_scoped:suggestion
+
+# IDE0170: プロパティ パターンを簡略化する.
+csharp_style_prefer_extended_property_pattern = true:suggestion
+
+# IDE0180: タプルを使用して値を入れ替える.
+csharp_style_prefer_tuple_swap = true:suggestion
+
+# IDE0200: 不要なラムダ式を削除する.
+csharp_style_prefer_method_group_conversion = true:suggestion
+
+# IDE0210: 最上位レベルのステートメントに変換する.
+csharp_style_prefer_top_level_statements = true:suggestion
+
+# IDE0220: foreach ループに明示的なキャストを追加する.
+dotnet_style_prefer_foreach_explicit_cast_in_source = when_strongly_typed:suggestion
+
+# IDE0230: UTF-8 文字列リテラルを使用する.
+csharp_style_prefer_utf8_string_literals = true:suggestion
+
+# IDE0250: '読み取り専用' にできる構造体
+csharp_style_prefer_readonly_struct = true:suggestion
+
+# IDE0251: '読み取り専用' にできるメンバー.
+csharp_style_prefer_readonly_struct_member = true:suggestion
+
+# IDE0290: プライマリ コンストラクターを使用する.
+csharp_style_prefer_primary_constructors = true:suggestion
+
+# IDE0320: 匿名関数を作成する static.
+csharp_prefer_static_anonymous_function = true:suggestion
+
+# IDE0330: 'System.Threading.Lock' を優先する.
+csharp_prefer_system_threading_lock = true:suggestion
+
+# IDE1005: 条件付き代理呼び出しを使用する.
+csharp_style_conditional_delegate_call = true:suggestion
+
+[*.{csproj,vbproj,proj,nativeproj,locproj}]
+charset = utf-8
