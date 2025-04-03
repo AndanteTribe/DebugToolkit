@@ -1,5 +1,6 @@
 ﻿#nullable enable
 
+using System;
 using System.Runtime.CompilerServices;
 using UnityEngine.UIElements;
 
@@ -11,6 +12,10 @@ namespace DebugToolkit
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void AddProfileInfoLabel(this VisualElement visualElement)
+            => AddProfileInfoLabel(visualElement, TimeSpan.FromMilliseconds(500));
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void AddProfileInfoLabel(this VisualElement visualElement, in TimeSpan interval)
         {
             var label = new Label{ enableRichText = true };
             visualElement.Add(label);
@@ -46,7 +51,7 @@ namespace DebugToolkit
                 sb.AppendLine();
 
                 label.text = sb.ToString();
-            }).Every(500);
+            }).Every((int)interval.TotalMilliseconds);
         }
 
         /// <summary>
