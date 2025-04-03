@@ -432,13 +432,12 @@
     width: 20px;
     height: 20px;
     margin-left: auto;
-    -unity-background-image-tint-color: var(--debug-toolkit-color-lowlight);
+    color: var(--debug-toolkit-color-lowlight);
     background-size: 16px;
-    background-image: url("project://database/Packages/jp.tsuchidaz.debugtoolkit/External%20Resources/DefaultRuntimeTheme.tss?fileID=5923138177525885446&guid=e48b9b8e31339a946835eede3edf66c3&type=3#Remove@2x");
 }
 
 .debug-toolkit__master .debug-toolkit__delete-button:hover {
-    -unity-background-image-tint-color: var(--debug-toolkit-color-highlight);
+    color: var(--debug-toolkit-color-highlight);
 }
 
 .debug-toolkit__master .debug-toolkit__window-label {

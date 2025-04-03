@@ -139,7 +139,7 @@ namespace DebugToolkit
 
             if (removable)
             {
-                var deleteButton = new Button();
+                var deleteButton = new Button(){text = "✕"};
                 deleteButton.AddToClassList(DebugToolkitClassName + "__delete-button");
                 deleteButton.clicked += () =>
                 {
