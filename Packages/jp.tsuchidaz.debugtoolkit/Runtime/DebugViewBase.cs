@@ -79,9 +79,8 @@ namespace DebugToolkit
                 var windowList = new ScrollView();
                 windowList.AddToClassList(DebugExtensions.DebugToolkitClassName + "__window-list");
                 masterWindow.Add(windowList);
-                var lable = new Label("Debug Window List");
-                windowList.Add(lable);
-
+                var label = new Label("Debug Window List");
+                windowList.Add(label);
                 MasterWindow = masterWindow;
 
                 var toggleAllButton = new Button();
