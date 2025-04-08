@@ -1,6 +1,6 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Packages/jp.tsuchidaz.debugtoolkit/External%20Resources/DebugToolkitUss.uss?fileID=7433441132597879392&amp;guid=50ad021f9f063a94f99059fa74d9e285&amp;type=3#DebugToolkitUss" />
-    <engine:VisualElement focusable="false" class="debug-toolkit__master">
+    <Style src="project://database/Packages/jp.tsuchidaz.debugtoolkit/Runtime/Resources/DebugToolkitUss.uss?fileID=7433441132597879392&amp;guid=50ad021f9f063a94f99059fa74d9e285&amp;type=3#DebugToolkitUss" />
+    <engine:VisualElement focusable="false" class="debug-toolkit-master">
         <engine:Foldout text="TestWindow" name="Foldout" value="true">
             <engine:TabView tabindex="0">
                 <engine:Tab label="Tab1">
