@@ -1,8 +1,8 @@
 :root {
-    --debug-toolkit-color-background: rgb(255, 250, 234);
-    --debug-toolkit-color-lowlight: rgb(64, 40, 15);
-    --debug-toolkit-color-black: rgb(15, 3, 40);
-    --debug-toolkit-color-highlight: rgb(246, 137, 30);
+    --debug-toolkit-color-background: #FFFAEA;
+    --debug-toolkit-color-lowlight: #40280F;
+    --debug-toolkit-color-black: #0F0328;
+    --debug-toolkit-color-highlight: #F6891E;
     --debug-toolkit-color-content: rgb(0, 173, 181);
     --debug-toolkit-px-border: 4px;
     --debug-toolkit-px-space-xsmall: 2px;
@@ -17,7 +17,7 @@
     --debug-toolkit-panel-max-height: 600px;
 }
 
-.debug-toolkit__master {
+.debug-toolkit-master {
     flex-grow: 1;
     font-size: 12px;
     position: absolute;
@@ -25,42 +25,38 @@
     width: var(--debug-toolkit-panel-width);
     height: auto;
     max-height: var(--debug-toolkit-panel-max-height);
-    background-color: var(--debug-toolkit-color-background);
     transition-property: position;
     transition-duration: 0.5s;
     transition-timing-function: ease-in;
-    padding-left: var(--debug-toolkit-px-space-medium);
-    padding-right: var(--debug-toolkit-px-space-medium);
 }
 
-.debug-toolkit__master * {
+.debug-toolkit-master * {
     margin: 0;
     padding: 0;
 }
 
 /*--- ラベル　----------------------------------------------------------------*/
-.debug-toolkit__master .unity-label {
+.debug-toolkit-master .unity-label {
     color: var(--debug-toolkit-color-black);
-    padding: var(--debug-toolkit-px-space-small);
+    padding-left: var(--debug-toolkit-px-space-small);
+    padding-right: var(--debug-toolkit-px-space-medium);
     margin: var(--debug-toolkit-px-space-small);
 }
 
 /*--- タブ -----------------------------------------------*/
-.debug-toolkit__master .unity-tab-view__header-container{
+.debug-toolkit-master .unity-tab-view__header-container{
     border-bottom-width: var(--debug-toolkit-px-space-xsmall);
     border-bottom-color: var(--debug-toolkit-color-lowlight);
     min-height: 34px;
     align-items: flex-end;
-    padding-right: var(--debug-toolkit-px-space-medium);
+}
+
+.debug-toolkit-master .unity-tab-view{
     padding-left: var(--debug-toolkit-px-space-medium);
+    padding-right: var(--debug-toolkit-px-space-medium);
 }
 
-.debug-toolkit__master .unity-tab-view {
-    padding-left: var(--debug-toolkit-px-space-small);
-    padding-right: var(--debug-toolkit-px-space-small);
-}
-
-.debug-toolkit__master .unity-tab__header {
+.debug-toolkit-master .unity-tab__header {
     background-color: var(--debug-toolkit-color-background);
     border-width: var(--debug-toolkit-px-space-xsmall);
     border-bottom-width: 0;
@@ -78,58 +74,54 @@
     margin-right: var(--debug-toolkit-px-space-xsmall);
 }
 
-.debug-toolkit__master .unity-tab__header:checked {
+.debug-toolkit-master .unity-tab__header:checked {
     background-color: var(--debug-toolkit-color-highlight);
 }
 
-.debug-toolkit__master .unity-tab__header:checked .unity-tab__header-underline {
+.debug-toolkit-master .unity-tab__header:checked  .unity-tab__header-underline {
     border-width: 0;
-    background-color: transparent;
+    background-color: initial;
 }
 
-.debug-toolkit__master .unity-tab__header .unity-tab__header-label{
-    margin-bottom: 0;
-    padding-top: 0;
-}
-
-.debug-toolkit__master .unity-tab__header:checked .unity-tab__header-label {
+.debug-toolkit-master .unity-tab__header:checked  .unity-tab__header-label{
     -unity-font-style: bold;
 }
 
 /*--- デバックウィンドウ -----------------------------------------------*/
-.debug-toolkit__master .unity-foldout__content {
+.debug-toolkit-master .unity-foldout__content {
     flex-wrap: nowrap;
     align-items: stretch;
-    margin: 0;
+    margin: 0px;
 }
 
-.debug-toolkit__master > .unity-foldout {
+.debug-toolkit-master > .unity-foldout {
     border-radius: var(--debug-toolkit-px-radius-medium);
     padding-bottom: var(--debug-toolkit-px-space-medium);
 }
 
-.debug-toolkit__master .unity-foldout__toggle {
+.debug-toolkit-master .unity-foldout__toggle{    
     border-bottom-width: 0;
     padding: var(--debug-toolkit-px-space-small);
 }
 
-.debug-toolkit__master .unity-foldout:checked .unity-foldout__toggle {
+.debug-toolkit-master .unity-foldout:checked .unity-foldout__toggle{
     border-bottom-width: var(--debug-toolkit-px-border);
     border-bottom-color: var(--debug-toolkit-color-lowlight);
     padding: var(--debug-toolkit-px-space-small);
     border-radius: 0;
 }
 
-.debug-toolkit__master .unity-foldout--depth-0 {
+.debug-toolkit-master .unity-foldout--depth-0 {
     background-color: var(--debug-toolkit-color-background);
 }
 
 /*--- トグル -----------------------------------------------*/
-.debug-toolkit__master .unity-toggle {
-    margin: var(--debug-toolkit-px-space-small);
+.debug-toolkit-master .unity-toggle {
+    margin-top: var(--debug-toolkit-px-space-small);
+    margin-bottom: var(--debug-toolkit-px-space-small);
 }
 
-.debug-toolkit__master .unity-toggle__checkmark {
+.debug-toolkit-master .unity-toggle__checkmark {
     background-color: var(--debug-toolkit-color-highlight);
     border-color: var(--debug-toolkit-color-lowlight);
     border-width: 0;
@@ -138,37 +130,36 @@
 }
 
 /*--- フォールドアウト -----------------------------------------------*/
-.debug-toolkit__master .unity-foldout__checkmark {
+.debug-toolkit-master .unity-foldout__checkmark {
     background-color: var(--debug-toolkit-color-background);
     border-width: 0;
 }
 
-.debug-toolkit__master .unity-foldout .unity-foldout {
+.debug-toolkit-master .unity-foldout .unity-foldout{
     padding-right: var(--debug-toolkit-px-space-small);
     padding-left: var(--debug-toolkit-px-space-small);
     margin-top: var(--debug-toolkit-px-space-small);
     margin-bottom: var(--debug-toolkit-px-space-small);
 }
 
-.debug-toolkit__master .unity-foldout .unity-foldout .unity-foldout__toggle {
+.debug-toolkit-master .unity-foldout .unity-foldout .unity-foldout__toggle{
     border-bottom-width: var(--debug-toolkit-px-space-xsmall);
     border-bottom-color: var(--debug-toolkit-color-lowlight);
 }
 
-.debug-toolkit__master .unity-foldout .unity-foldout .unity-foldout__content {
+.debug-toolkit-master .unity-foldout .unity-foldout .unity-foldout__content{
     margin-left: var(--debug-toolkit-px-space-small);
     border-left-width: var(--debug-toolkit-px-space-xsmall);
     border-left-color: var(--debug-toolkit-color-lowlight);
 }
 
     /*--- テキストフィールド -----------------------------------------------*/
-.debug-toolkit__master .unity-text-field {
+.debug-toolkit-master .unity-text-field {
     margin-top: var(--debug-toolkit-px-space-small);
     margin-bottom: var(--debug-toolkit-px-space-small);
     margin-right: var(--debug-toolkit-px-space-medium);
 }
-
-.debug-toolkit__master .unity-text-field__input {
+.debug-toolkit-master .unity-text-field__input {
     background-color: var(--debug-toolkit-color-highlight);
     border-color: var(--debug-toolkit-color-lowlight);
     border-width: 0;
@@ -179,12 +170,12 @@
     color: var(--debug-toolkit-color-background);
 }
 
-.debug-toolkit__master .unity-text-field__input > .unity-text-element {
+.debug-toolkit-master .unity-text-field__input > .unity-text-element{
     padding-left: var(--debug-toolkit-px-space-small);
 }
 
 /*--- ボタン -----------------------------------------------*/
-.debug-toolkit__master .unity-button {
+.debug-toolkit-master .unity-button {
     background-color: var(--debug-toolkit-color-highlight);
     border-width: 0;
     margin: var(--debug-toolkit-px-space-medium);
@@ -194,33 +185,29 @@
     padding-top: var(--debug-toolkit-px-space-medium);
     padding-bottom: var(--debug-toolkit-px-space-medium);
     border-radius: var(--debug-toolkit-px-radius-small);
-    color: var(--debug-toolkit-color-background);
+    color : var(--debug-toolkit-color-background);
     -unity-font-style: bold;
 }
 
-.debug-toolkit__master .unity-button:hover {
-    background-color: var(--debug-toolkit-color-lowlight);
-}
-
-.debug-toolkit__master .unity-button:active{
-    background-color: var(--debug-toolkit-color-highlight);
+.debug-toolkit-master .unity-button:hover {
+    background-color : var(--debug-toolkit-color-lowlight);
 }
 
 /*--- トグルボタングループ -----------------------------------------------*/
 /*--- UIBuilderで確認できないため、ランタイム上で確認し編集予定... ----*/
 
 /*--- スクロールビュー -----------------------------------------------*/
-.debug-toolkit__master .unity-scroller--vertical {
+.debug-toolkit-master .unity-scroller--vertical {
     background-color: var(--debug-toolkit-color-background);
     margin-top: var(--debug-toolkit-px-space-small);
     margin-bottom: var(--debug-toolkit-px-space-small);
 }
 
-.debug-toolkit__master .unity-scroll-view {
+.debug-toolkit-master .unity-scroll-view{
     flex-grow: 1;
 }
 
-.debug-toolkit__master .unity-scroller > .unity-scroller__low-button {
+.debug-toolkit-master .unity-scroller > .unity-scroller__low-button {
     background-color: var(--debug-toolkit-color-lowlight);
     border-width: 0;
     -unity-background-image-tint-color: var(--debug-toolkit-color-highlight);
@@ -228,7 +215,7 @@
     border-top-right-radius: var(--debug-toolkit-px-radius-small);
 }
 
-.debug-toolkit__master .unity-scroller > .unity-scroller__high-button {
+.debug-toolkit-master .unity-scroller > .unity-scroller__high-button {
     background-color: var(--debug-toolkit-color-lowlight);
     border-width: 0;
     -unity-background-image-tint-color: var(--debug-toolkit-color-highlight);
@@ -236,23 +223,23 @@
     border-bottom-right-radius: var(--debug-toolkit-px-radius-small);
 }
 
-.debug-toolkit__master .unity-scroller--vertical .unity-base-slider__dragger {
+.debug-toolkit-master .unity-scroller--vertical .unity-base-slider__dragger {
     background-color: var(--debug-toolkit-color-highlight);
     border-radius: var(--debug-toolkit-px-radius-small);
 }
 
-.debug-toolkit__master .unity-scroller--vertical .unity-base-slider__tracker {
+.debug-toolkit-master .unity-scroller--vertical .unity-base-slider__tracker {
     background-color: var(--debug-toolkit-color-lowlight);
     border-left-width: 0;
     border-right-width: 0;
 }
 
-.debug-toolkit__master .unity-scroll-view__content-viewport > .unity-scroll-view__content-container {
+.debug-toolkit-master .unity-scroll-view__content-viewport > .unity-scroll-view__content-container {
     margin-right: var(--debug-toolkit-px-space-small);
 }
 
 /*--- スライダー -----------------------------------------------*/
-.debug-toolkit__master .unity-base-slider--horizontal .unity-base-slider__dragger {
+.debug-toolkit-master .unity-base-slider--horizontal .unity-base-slider__dragger {
     margin-top: -12px;
     height: 24px;
     background-color: var(--debug-toolkit-color-highlight);
@@ -260,7 +247,7 @@
     border-radius: var(--debug-toolkit-px-radius-small);
 }
 
-.debug-toolkit__master .unity-base-slider--horizontal .unity-base-slider__tracker {
+.debug-toolkit-master .unity-base-slider--horizontal .unity-base-slider__tracker {
     margin-top: -2px;
     height: 4px;
     background-color: var(--debug-toolkit-color-lowlight);
@@ -268,23 +255,23 @@
     border-radius: var(--debug-toolkit-px-radius-small);
 }
 
-.debug-toolkit__master .unity-base-slider--horizontal {
+.debug-toolkit-master .unity-base-slider--horizontal {
     margin-top: var(--debug-toolkit-px-space-small);
     margin-bottom: var(--debug-toolkit-px-space-small);
 }
 
-.debug-toolkit__master .unity-base-slider--horizontal .unity-text-field {
+.debug-toolkit-master .unity-base-slider--horizontal .unity-text-field {
     padding: 0;
     margin: 5px;
 }
 
-.debug-toolkit__master.unity-base-slider--horizontal .unity-text-field #unity-text-input {
+.debug-toolkit-master.unity-base-slider--horizontal .unity-text-field #unity-text-input {
     padding: 5px;
     margin: 0;
 }
 
 /*--- ミニマックススライダー -----------------------------------------------*/
-.debug-toolkit__master .unity-min-max-slider__tracker {
+.debug-toolkit-master .unity-min-max-slider__tracker {
     margin-top: -2px;
     height: 4px;
     background-color: var(--debug-toolkit-color-lowlight);
@@ -292,95 +279,94 @@
     border-radius: var(--debug-toolkit-px-radius-small);
 }
 
-.debug-toolkit__master .unity-min-max-slider__dragger {
+.debug-toolkit-master .unity-min-max-slider__dragger {
     margin-top: -2px;
     height: 4px;
     background-color: var(--debug-toolkit-color-highlight);
     border-width: 0;
 }
 
-.debug-toolkit__master .unity-min-max-slider__dragger > * {
+.debug-toolkit-master .unity-min-max-slider__dragger > * {
     margin-top: -10px;
     height: 24px;
     background-color: var(--debug-toolkit-color-highlight);
     border-width: 0;
     border-radius: var(--debug-toolkit-px-radius-small);
 }
-
-.debug-toolkit__master .unity-min-max-slider {
+.debug-toolkit-master .unity-min-max-slider{
     margin-top: var(--debug-toolkit-px-space-small);
     margin-bottom: var(--debug-toolkit-px-space-small);
 }
 
 /*--- プログレスバー -----------------------------------------------*/
-.debug-toolkit__master .unity-progress-bar{
+.debug-toolkit-master .unity-progress-bar{
     margin: var(--debug-toolkit-px-space-medium);
     margin-top: var(--debug-toolkit-px-space-small);
     margin-bottom: var(--debug-toolkit-px-space-small);
 }
 
-.debug-toolkit__master .unity-progress-bar__background {
+.debug-toolkit-master .unity-progress-bar__background {
     background-color: var(--debug-toolkit-color-lowlight);
     border-radius: var(--debug-toolkit-px-radius-small);
     border-width: 0;
 }
 
-.debug-toolkit__master .unity-progress-bar__progress {
+.debug-toolkit-master .unity-progress-bar__progress {
     background-color: var(--debug-toolkit-color-highlight);
     border-radius: var(--debug-toolkit-px-radius-small);
 }
 
-.debug-toolkit__master .unity-progress-bar__title {
+.debug-toolkit-master .unity-progress-bar__title {
     color: var(--debug-toolkit-color-background);
 }
 
 /*--- ドロップダウン -----------------------------------------------*/
-.debug-toolkit__master .unity-popup-field{
+.debug-toolkit-master .unity-popup-field{
     margin-top: var(--debug-toolkit-px-space-small);
     margin-bottom: var(--debug-toolkit-px-space-small);
 }
 
-.debug-toolkit__master .unity-popup-field__input {
+.debug-toolkit-master .unity-popup-field__input {
     background-color: var(--debug-toolkit-color-highlight);
     border-radius: var(--debug-toolkit-px-radius-small);
     border-width: 0;
 }
 
-.debug-toolkit__master .unity-popup-field .unity-base-popup-field__text {
+.debug-toolkit-master .unity-popup-field .unity-base-popup-field__text {
     color: var(--debug-toolkit-color-background);
     padding-left: var(--debug-toolkit-px-space-medium);
     padding-right: var(--debug-toolkit-px-space-medium);
 }
 
-.debug-toolkit__master .unity-popup-field .unity-base-popup-field__arrow {
+.debug-toolkit-master .unity-popup-field .unity-base-popup-field__arrow {
     -unity-background-image-tint-color: var(--debug-toolkit-color-lowlight);
     margin-right: var(--debug-toolkit-px-space-medium);
 }
 /*--- Enum -------------------------------------------------------*/
-.debug-toolkit__master .unity-enum-field{
+.debug-toolkit-master .unity-enum-field{
     margin-top: var(--debug-toolkit-px-space-small);
     margin-bottom: var(--debug-toolkit-px-space-small);
 }
 
-.debug-toolkit__master .unity-enum-field__input {
+.debug-toolkit-master .unity-enum-field__input {
     background-color: var(--debug-toolkit-color-highlight);
     border-radius: var(--debug-toolkit-px-radius-small);
     border-width: 0;
 }
 
-.debug-toolkit__master .unity-enum-field .unity-enum-field__text {
+.debug-toolkit-master .unity-enum-field .unity-enum-field__text {
     color: var(--debug-toolkit-color-background);
     padding-left: var(--debug-toolkit-px-space-medium);
     padding-right: var(--debug-toolkit-px-space-medium);
 }
 
-.debug-toolkit__master .unity-enum-field .unity-enum-field__arrow {
+.debug-toolkit-master .unity-enum-field .unity-enum-field__arrow {
     -unity-background-image-tint-color: var(--debug-toolkit-color-lowlight);
     margin-right: var(--debug-toolkit-px-space-medium);
 }
 
 /*--- ラジオボタン -----------------------------------------------*/
-.debug-toolkit__master .unity-radio-button__checkmark-background {
+.debug-toolkit-master .unity-radio-button__checkmark-background {
     background-color: var(--debug-toolkit-color-highlight);
     padding-top: 5px;
     width: 24px;
@@ -389,78 +375,33 @@
     border-width: 0;
 }
 
-.debug-toolkit__master .unity-radio-button {
+.debug-toolkit-master .unity-radio-button {
     margin-top: var(--debug-toolkit-px-space-small);
     margin-bottom: var(--debug-toolkit-px-space-small);
 }
 
-.debug-toolkit__master .unity-radio-button__checkmark {
+.debug-toolkit-master .unity-radio-button__checkmark {
     background-color: var(--debug-toolkit-color-lowlight);
     margin-top: 1px;
     width: 12px;
     height: 12px;
 }
 
-.debug-toolkit__master .unity-radio-button__text {
+.debug-toolkit-master .unity-radio-button__text {
     margin-left: var(--debug-toolkit-px-space-small);
 }
  /*--- ラジオボタングループ -----------------------------------------------*/
 
 /*--- 一般設定 -----------------------------------------------*/
-.debug-toolkit__master .unity-base-field__label{
+.debug-toolkit-master .unity-base-field__label{
     min-width: 80px;
     margin-right: var(--debug-toolkit-px-space-small);
 }
 
-.debug-toolkit__master .debug-toolkit__drag-area {
-    flex-grow: 1;
-}
-
-.debug-toolkit__master .debug-toolkit__window-header {
-    flex-direction: row;
-    border-bottom-width: 2px;
-    border-bottom-color: var(--debug-toolkit-color-black);
-    align-items: flex-end;
-}
-
-.debug-toolkit__master .debug-toolkit__window-content {
-    margin-top: var(--debug-toolkit-px-space-medium);
-    margin-bottom: var(--debug-toolkit-px-space-medium);
-}
-
-.debug-toolkit__master .debug-toolkit__delete-button {
-    width: 20px;
-    height: 20px;
-    margin-left: auto;
-    color: var(--debug-toolkit-color-lowlight);
-    background-size: 16px;
-}
-
-.debug-toolkit__master .debug-toolkit__delete-button:hover {
-    color: var(--debug-toolkit-color-highlight);
-}
-
-.debug-toolkit__master .debug-toolkit__window-label {
-}
-
-.debug-toolkit__toggle-all-button {
+.debug-toolkit-master .unity-foldout__drag-area {
     position: absolute;
-    top: 0;
     right: 0;
-    width: 30px;
-    height: 30px;
-    background-color: rgba(246, 137, 30, 0.7);
-    border-radius: var(--debug-toolkit-px-radius-small);
-    border-width: 0;
-    opacity: 0.8;
-    transition: opacity 0.2s ease-in-out;
-}
-
-.debug-toolkit__toggle-all-button:hover {
-    opacity: 1;
-    background-color: var(--debug-toolkit-color-highlight);
-}
-
-.debug-toolkit__toggle-all-button:active {
-    background-color: var(--debug-toolkit-color-lowlight);
+    bottom: 0;
+    top: 0;
+    left: 45px;
 }
