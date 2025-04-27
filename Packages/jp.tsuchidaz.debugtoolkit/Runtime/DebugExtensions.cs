@@ -76,7 +76,6 @@ namespace DebugToolkit
             s_nextWindowPosition += s_windowOffsetStep;
 
             window.AddToClassList(DebugConst.DebugToolkitClassName + "__master");
-            root.Add(window);
 
             var isMasterWindow= DebugViewerBase.MasterWindow == null;
             window.AddWindowHeader(windowName, isMasterWindow);

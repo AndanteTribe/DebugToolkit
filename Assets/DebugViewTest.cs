@@ -12,9 +12,8 @@ public class DebugViewTest : DebugViewerBase
         var tab2 = tabRoot.AddTab("Tab2");
 
         var testButton = new Button(){text = "TestButton"};
-        testButton.AddToClassList(BaseListView.footerRemoveButtonName);
         tab1.Add(testButton);
-        for (int i = 0; i < 5; i++)
+        for (var i = 0; i < 5; i++)
         {
             tab1.Add(new Button(){text = $"Button{i + 1}"});
         }
