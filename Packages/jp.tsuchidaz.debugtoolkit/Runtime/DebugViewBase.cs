@@ -86,7 +86,7 @@ namespace DebugToolkit
                 MasterWindow = masterWindow;
 
                 var toggleAllButton = new Button();
-                toggleAllButton.clicked += () => ToggleAllVisible();
+                toggleAllButton.clicked += ToggleAllVisible;
                 toggleAllButton.AddToClassList(DebugConst.DebugToolkitClassName + "__toggle-all-button");
                 safeAreaContainer.Add(toggleAllButton);
             }
