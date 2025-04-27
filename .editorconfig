@@ -29,7 +29,7 @@ insert_final_newline = false
 # name all constant fields using PascalCase
 dotnet_naming_rule.constant_fields_should_be_pascal_case.severity = error
 dotnet_naming_rule.constant_fields_should_be_pascal_case.symbols  = constant_fields
-dotnet_naming_rule.constant_fields_should_be_pascal_case.style    = pascal_case_style
+dotnet_naming_rule.constant_fields_should_be_pascal_case.style = pascal_case_style
 dotnet_naming_symbols.constant_fields.applicable_kinds   = field
 dotnet_naming_symbols.constant_fields.required_modifiers = const
 dotnet_naming_style.pascal_case_style.capitalization = pascal_case
@@ -37,7 +37,7 @@ dotnet_naming_style.pascal_case_style.capitalization = pascal_case
 # static fields should have s_ prefix
 dotnet_naming_rule.static_fields_should_have_prefix.severity = error
 dotnet_naming_rule.static_fields_should_have_prefix.symbols  = static_fields
-dotnet_naming_rule.static_fields_should_have_prefix.style    = static_prefix_style
+dotnet_naming_rule.static_fields_should_have_prefix.style = static_prefix_style
 dotnet_naming_symbols.static_fields.applicable_kinds   = field
 dotnet_naming_symbols.static_fields.required_modifiers = static
 dotnet_naming_symbols.static_fields.applicable_accessibilities = private, internal, private_protected
@@ -47,11 +47,19 @@ dotnet_naming_style.static_prefix_style.capitalization = camel_case
 # internal and private fields should be _camelCase
 dotnet_naming_rule.camel_case_for_private_internal_fields.severity = error
 dotnet_naming_rule.camel_case_for_private_internal_fields.symbols  = private_internal_fields
-dotnet_naming_rule.camel_case_for_private_internal_fields.style    = camel_case_underscore_style
+dotnet_naming_rule.camel_case_for_private_internal_fields.style = camel_case_underscore_style
 dotnet_naming_symbols.private_internal_fields.applicable_kinds = field
 dotnet_naming_symbols.private_internal_fields.applicable_accessibilities = private, internal
 dotnet_naming_style.camel_case_underscore_style.required_prefix = _
 dotnet_naming_style.camel_case_underscore_style.capitalization = camel_case
+
+# public fields, properties, methods should be PascalCase
+dotnet_naming_rule.public_members_should_be_pascal_case.severity = error
+dotnet_naming_rule.public_members_should_be_pascal_case.symbols  = public_members
+dotnet_naming_rule.public_members_should_be_pascal_case.style    = pascal_case_style
+dotnet_naming_symbols.public_members.applicable_kinds = field, property, method
+dotnet_naming_symbols.public_members.applicable_accessibilities = public
+dotnet_naming_style.pascal_case_underscore_style.capitalization = pascall_case
 
 #### .NET Coding Conventions ####
 # IDE0003: this または Me の修飾を削除する.
@@ -245,7 +253,7 @@ file_header_template = unset
 dotnet_style_prefer_simplified_boolean_expressions = true:suggestion
 
 # IDE0078: パターン マッチングの使用.
-csharp_style_prefer_pattern_matching =true:suggestion
+csharp_style_prefer_pattern_matching = true:suggestion
 
 # IDE0079: 不要な抑制を削除する.
 dotnet_remove_unnecessary_suppression_exclusions = none:suggestion
