@@ -19,6 +19,8 @@ public class DebugViewTest : DebugViewerBase
             tab1.Add(new Button(){text = $"Button{i + 1}"});
         }
         tab2.AddProfileInfoLabel();
+
+        var window2 = root.AddWindow("TestWindow2");
         return root;
     }
 }

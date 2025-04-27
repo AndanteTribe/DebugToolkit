@@ -440,13 +440,25 @@
     color: var(--debug-toolkit-color-highlight);
 }
 
+.debug-toolkit__master .debug-toolkit__minimize-button {
+    width: 20px;
+    height: 20px;
+    margin-left: auto;
+    color: var(--debug-toolkit-color-lowlight);
+    background-size: 16px;
+}
+
+.debug-toolkit__master .debug-toolkit__minimize-button:hover {
+    color: var(--debug-toolkit-color-highlight);
+}
+
 .debug-toolkit__master .debug-toolkit__window-label {
 }
 
 .debug-toolkit__toggle-all-button {
     position: absolute;
-    top: 0;
-    right: 0;
+    bottom: 0;
+    left: 0;
     width: 30px;
     height: 30px;
     background-color: rgba(246, 137, 30, 0.7);

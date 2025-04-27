@@ -39,6 +39,8 @@ namespace DebugToolkit
         /// </summary>
         private static bool s_allWindowsVisible = true;
 
+        private static readonly Dictionary<VisualElement, StyleEnum<DisplayStyle>> s_windowDisplayStates = new();
+
         /// <summary>
         /// EntryPoint.
         /// </summary>
@@ -74,10 +76,10 @@ namespace DebugToolkit
 
             if (MasterWindow == null)
             {
-                var masterWindow = safeAreaContainer.AddWindow("Debug Toolkit", false);
+                var masterWindow = safeAreaContainer.AddWindow("Debug Toolkit");
 
                 var windowList = new ScrollView();
-                windowList.AddToClassList(DebugExtensions.DebugToolkitClassName + "__window-list");
+                windowList.AddToClassList(DebugConst.DebugToolkitClassName + "__window-list");
                 masterWindow.Add(windowList);
                 var label = new Label("Debug Window List");
                 windowList.Add(label);
@@ -85,7 +87,7 @@ namespace DebugToolkit
 
                 var toggleAllButton = new Button();
                 toggleAllButton.clicked += () => ToggleAllVisible();
-                toggleAllButton.AddToClassList(DebugExtensions.DebugToolkitClassName + "__toggle-all-button");
+                toggleAllButton.AddToClassList(DebugConst.DebugToolkitClassName + "__toggle-all-button");
                 safeAreaContainer.Add(toggleAllButton);
             }
 
@@ -99,27 +101,40 @@ namespace DebugToolkit
         /// </summary>
         private static void ToggleAllVisible()
         {
-            s_allWindowsVisible = !s_allWindowsVisible;
-            foreach (var debugWindow in DebugWindowList)
+            if (s_allWindowsVisible)
             {
-                debugWindow.style.display = s_allWindowsVisible ? DisplayStyle.Flex : DisplayStyle.None;
-            }
-
-            if (MasterWindow != null)
-            {
-                var windowList = MasterWindow.Q<ScrollView>(className: DebugExtensions.DebugToolkitClassName + "__window-list");
-                if (windowList != null)
+                foreach (var window in DebugWindowList)
                 {
-                    foreach (var listItem in windowList.Children())
+                    if (window == MasterWindow)
                     {
-                        var toggle = listItem.Q<Toggle>();
-                        if (toggle != null)
-                        {
-                            toggle.SetValueWithoutNotify(s_allWindowsVisible);
-                        }
+                        continue;
+                    }
+
+                    s_windowDisplayStates[window] = window.style.display;
+                    window.style.display = DisplayStyle.None;
+                }
+            }
+            else
+            {
+                foreach (var window in DebugWindowList)
+                {
+                    if (window == MasterWindow)
+                    {
+                        continue;
+                    }
+
+                    if (s_windowDisplayStates.TryGetValue(window, out var savedStyle))
+                    {
+                        window.style.display = savedStyle;
+                    }
+                    else
+                    {
+                        window.style.display = DisplayStyle.Flex;
                     }
                 }
             }
+
+            s_allWindowsVisible = !s_allWindowsVisible;
         }
     }
 }

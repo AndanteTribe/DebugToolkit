@@ -3,12 +3,14 @@
 using System;
 using System.Runtime.CompilerServices;
 using UnityEngine.UIElements;
+using UnityEngine;
 
 namespace DebugToolkit
 {
     public static class DebugExtensions
     {
-        public const string DebugToolkitClassName = "debug-toolkit";
+        private static Vector2 s_nextWindowPosition = new Vector2(50f, 50f);
+        private static readonly Vector2 s_windowOffsetStep = new Vector2(50f, 50f);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void AddProfileInfoLabel(this VisualElement visualElement)
@@ -61,30 +63,36 @@ namespace DebugToolkit
         /// </summary>
         /// <param name="root">The root element to which the window will be added</param>
         /// <param name="windowName">The name/title of the window</param>
-        /// <param name="removable">Whether the window can be removed via a delete button</param>
         /// <returns>The content area of the created window</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static VisualElement AddWindow(this VisualElement root, string windowName = "",bool removable = true)
+        public static VisualElement AddWindow(this VisualElement root, string windowName = "")
         {
             var window = new VisualElement();
-            window.AddToClassList(DebugToolkitClassName + "__master");
+            window.style.position = Position.Absolute;
+            window.style.left = s_nextWindowPosition.x;
+            window.style.top = s_nextWindowPosition.y;
+
+            root.Add(window);
+            s_nextWindowPosition += s_windowOffsetStep;
+
+            window.AddToClassList(DebugConst.DebugToolkitClassName + "__master");
             root.Add(window);
 
-            window.AddWindowHeader(windowName, removable);
+            var isMasterWindow= DebugViewerBase.MasterWindow == null;
+            window.AddWindowHeader(windowName, isMasterWindow);
 
             var windowContent = new VisualElement();
-            windowContent.AddToClassList(DebugToolkitClassName + "__window-content");
+            windowContent.AddToClassList(DebugConst.DebugToolkitClassName + "__window-content");
             window.Add(windowContent);
 
             window.RegisterCallback<PointerDownEvent>(_ => window.BringToFront(), TrickleDown.TrickleDown);
 
             DebugViewerBase.DebugWindowList.Add(window);
 
-            if (DebugViewerBase.MasterWindow != null && window != DebugViewerBase.MasterWindow)
+            if (!isMasterWindow && window != DebugViewerBase.MasterWindow)
             {
                 AddWindowListItem(window, windowName);
             }
-
             return windowContent;
         }
 
@@ -98,25 +106,46 @@ namespace DebugToolkit
         {
             if (DebugViewerBase.MasterWindow == null) return;
 
-            var windowList = DebugViewerBase.MasterWindow.Q<ScrollView>(className: DebugToolkitClassName + "__window-list");
+            var windowList = DebugViewerBase.MasterWindow.Q<ScrollView>(className: DebugConst.DebugToolkitClassName + "__window-list");
             if (windowList == null) return;
 
             var listItem = new VisualElement();
             listItem.style.flexDirection = FlexDirection.Row;
             listItem.style.marginBottom = 5;
 
-            var toggle = new Toggle { value = true };
-            toggle.RegisterValueChangedCallback(evt =>
+            var button = new Button()
             {
-                window.style.display = evt.newValue ? DisplayStyle.Flex : DisplayStyle.None;
-            });
+                text = windowName,
+            };
 
-            var label = new Label(windowName);
-            label.style.flexGrow = 1;
 
-            listItem.Add(toggle);
-            listItem.Add(label);
+            button.clicked += () =>
+            {
+                window.style.display = (window.style.display == DisplayStyle.Flex) ? DisplayStyle.None : DisplayStyle.Flex;
+                UpdateWindowState(window, button);
+            };
+
+            window.style.display = DisplayStyle.Flex;
+            listItem.Add(button);
             windowList.Add(listItem);
+            UpdateWindowState(window, button);
+        }
+
+        /// <summary>
+        /// Updates the window state.
+        /// </summary>
+        /// <param name="window">The window element.</param>
+        /// <param name="button">The button element.</param>
+        private static void UpdateWindowState(VisualElement window, Button button)
+        {
+            if (window.style.display == DisplayStyle.Flex)
+            {
+                button.style.backgroundColor = new StyleColor(new Color(0.4f, 0.8f, 0.4f)); // highlight green color
+            }
+            else
+            {
+                button.style.backgroundColor = new StyleColor(new Color(0.6f, 0.2f, 0.2f)); // dark red color
+            }
         }
 
         /// <summary>
@@ -125,42 +154,64 @@ namespace DebugToolkit
         /// </summary>
         /// <param name="root">The parent element to which the header will be added</param>
         /// <param name="windowName">The name of the window</param>
-        /// <param name="removable">Whether to display a delete button</param>
+        ///  <param name="isMasterWindow">Indicates if this is the master window</param>
         /// <returns>The created header element</returns>
-        public static VisualElement AddWindowHeader(this VisualElement root, string windowName = "", bool removable = true)
+        public static VisualElement AddWindowHeader(this VisualElement root, string windowName = "", bool isMasterWindow = false)
         {
             var windowHeader = new VisualElement();
-            windowHeader.AddToClassList(DebugToolkitClassName +"__window-header");
+            windowHeader.AddToClassList(DebugConst.DebugToolkitClassName +"__window-header");
 
             var manipulator = new DragManipulator(root);
             var dragArea = new VisualElement(){ name = "drag-area" };
-            dragArea.AddToClassList(DebugToolkitClassName + "__drag-area");
+            dragArea.AddToClassList(DebugConst.DebugToolkitClassName + "__drag-area");
             dragArea.AddManipulator(manipulator);
             windowHeader.Add(dragArea);
 
             var windowLabel = new Label(){ text = windowName };
-            windowLabel.AddToClassList(DebugToolkitClassName + "__window-label");
+            windowLabel.AddToClassList(DebugConst.DebugToolkitClassName + "__window-label");
             dragArea.Add(windowLabel);
 
-            if (removable)
+            if (isMasterWindow)
             {
-                var deleteButton = new Button(){text = "✕"};
-                deleteButton.AddToClassList(DebugToolkitClassName + "__delete-button");
+                var minimizeButton = new Button() { text = "-" };
+                minimizeButton.AddToClassList(DebugConst.DebugToolkitClassName + "__minimize-button");
+
+                var isMinimized = false;
+
+                minimizeButton.clicked += () =>
+                {
+                    isMinimized = !isMinimized;
+                    var windowContent = root.Q<VisualElement>(className: DebugConst.DebugToolkitClassName + "__window-content");
+                    if (windowContent != null)
+                    {
+                        windowContent.style.display = isMinimized ? DisplayStyle.None : DisplayStyle.Flex;
+                    }
+                    minimizeButton.text = isMinimized ? "^" : "-";
+                };
+
+                windowHeader.Add(minimizeButton);
+            }
+            else
+            {
+                var deleteButton = new Button() { text = "X" };
+                deleteButton.AddToClassList(DebugConst.DebugToolkitClassName + "__delete-button");
                 deleteButton.clicked += () =>
                 {
                     root.style.display = DisplayStyle.None;
+
                     if (DebugViewerBase.MasterWindow != null)
                     {
-                        var windowList = DebugViewerBase.MasterWindow.Q<ScrollView>(className: DebugExtensions.DebugToolkitClassName + "__window-list");
+                        var windowList = DebugViewerBase.MasterWindow.Q<ScrollView>(
+                            className: DebugConst.DebugToolkitClassName + "__window-list");
+
                         if (windowList != null)
                         {
                             foreach (var windowItem in windowList.Children())
                             {
-                                var toggle = windowItem.Q<Toggle>();
-                                var label = windowItem.Q<Label>();
-                                if (toggle != null && label != null && label.text == windowName)
+                                var button = windowItem.Q<Button>();
+                                if (button != null && button.text == windowName)
                                 {
-                                    toggle.SetValueWithoutNotify(false);
+                                    UpdateWindowState(root, button);
                                 }
                             }
                         }
