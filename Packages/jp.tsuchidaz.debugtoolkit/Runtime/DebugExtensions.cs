@@ -9,7 +9,6 @@ namespace DebugToolkit
 {
     public static class DebugExtensions
     {
-        private static Vector2 s_nextWindowPosition = new Vector2(50f, 50f);
         private static readonly Vector2 s_windowOffsetStep = new Vector2(50f, 50f);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -68,16 +67,11 @@ namespace DebugToolkit
         public static VisualElement AddWindow(this VisualElement root, string windowName = "")
         {
             var window = new VisualElement();
-            window.style.position = Position.Absolute;
-            window.style.left = s_nextWindowPosition.x;
-            window.style.top = s_nextWindowPosition.y;
-
             root.Add(window);
-            s_nextWindowPosition += s_windowOffsetStep;
 
             window.AddToClassList(DebugConst.DebugToolkitClassName + "__master");
 
-            var isMasterWindow= DebugViewerBase.MasterWindow == null;
+            var isMasterWindow = DebugViewerBase.MasterWindow == null;
             window.AddWindowHeader(windowName, isMasterWindow);
 
             var windowContent = new VisualElement();
@@ -88,10 +82,17 @@ namespace DebugToolkit
 
             DebugViewerBase.DebugWindowList.Add(window);
 
-            if (!isMasterWindow && window != DebugViewerBase.MasterWindow)
+            var windowNum = 1;
+            if (!isMasterWindow)
             {
                 AddWindowListItem(window, windowName);
+                windowNum += DebugViewerBase.MasterWindow.Q<ScrollView>(className: DebugConst.DebugToolkitClassName + "__window-list").childCount;
             }
+
+            window.style.position = Position.Absolute;
+            window.style.left = s_windowOffsetStep.x * windowNum;
+            window.style.top = s_windowOffsetStep.y * windowNum;
+
             return windowContent;
         }
 
@@ -117,14 +118,14 @@ namespace DebugToolkit
                 text = windowName,
             };
 
-
             button.clicked += () =>
             {
                 window.style.display = (window.style.display == DisplayStyle.Flex) ? DisplayStyle.None : DisplayStyle.Flex;
                 UpdateWindowState(window, button);
+                window.BringToFront();
             };
 
-            window.style.display = DisplayStyle.Flex;
+            window.style.display = DisplayStyle.None;
             listItem.Add(button);
             windowList.Add(listItem);
             UpdateWindowState(window, button);
