@@ -76,13 +76,10 @@ namespace DebugToolkit
             windowContent.AddToClassList(DebugConst.DebugToolkitWindowContentClassName);
             window.Add(windowContent);
 
-            window.RegisterCallback<PointerDownEvent>(static evt =>
+            window.RegisterCallback<PointerDownEvent, VisualElement>(static (_, window) =>
             {
-                if (evt.target is VisualElement window)
-                {
-                    window.BringToFront();
-                }
-            }, TrickleDown.TrickleDown);
+                window.BringToFront();
+            }, window, TrickleDown.TrickleDown);
 
             DebugViewerBase.DebugWindowList.Add(window);
 
@@ -125,30 +122,29 @@ namespace DebugToolkit
             button.clicked += () =>
             {
                 window.style.display = (window.style.display == DisplayStyle.Flex) ? DisplayStyle.None : DisplayStyle.Flex;
-                UpdateWindowState(window, button);
+                button.style.backgroundColor = GetWindowStateColor(window);
                 window.BringToFront();
             };
 
             window.style.display = DisplayStyle.None;
             listItem.Add(button);
             windowList.Add(listItem);
-            UpdateWindowState(window, button);
+            button.style.backgroundColor = GetWindowStateColor(window);
         }
 
         /// <summary>
         /// Updates the window state.
         /// </summary>
         /// <param name="window">The window element.</param>
-        /// <param name="button">The button element.</param>
-        private static void UpdateWindowState(VisualElement window, Button button)
+        private static StyleColor GetWindowStateColor(VisualElement window)
         {
             if (window.style.display == DisplayStyle.Flex)
             {
-                button.style.backgroundColor = new StyleColor(new Color(0.4f, 0.8f, 0.4f)); // highlight green color
+                return new StyleColor(new Color(0.4f, 0.8f, 0.4f)); // highlight green color
             }
             else
             {
-                button.style.backgroundColor = new StyleColor(new Color(0.6f, 0.2f, 0.2f)); // dark red color
+                return new StyleColor(new Color(0.6f, 0.2f, 0.2f)); // dark red color
             }
         }
 
@@ -213,7 +209,7 @@ namespace DebugToolkit
                             var button = windowItem.Q<Button>();
                             if (button != null && button.text == windowName)
                             {
-                                UpdateWindowState(root, button);
+                                button.style.backgroundColor = GetWindowStateColor(root);
                             }
                         }
                     }
