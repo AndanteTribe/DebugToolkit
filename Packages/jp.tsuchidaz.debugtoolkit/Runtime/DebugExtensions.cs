@@ -106,8 +106,6 @@ namespace DebugToolkit
         /// <param name="windowName">The name of the window</param>
         private static void AddWindowListItem(VisualElement window, string windowName)
         {
-            if (DebugViewerBase.MasterWindow == null) return;
-
             var windowList = DebugViewerBase.MasterWindow.Q<ScrollView>(className: DebugConst.DebugToolkitClassName + "__window-list");
             if (windowList == null) return;
 
@@ -201,20 +199,17 @@ namespace DebugToolkit
                 {
                     root.style.display = DisplayStyle.None;
 
-                    if (DebugViewerBase.MasterWindow != null)
-                    {
-                        var windowList = DebugViewerBase.MasterWindow.Q<ScrollView>(
-                            className: DebugConst.DebugToolkitClassName + "__window-list");
+                    var windowList = DebugViewerBase.MasterWindow.Q<ScrollView>(
+                        className: DebugConst.DebugToolkitClassName + "__window-list");
 
-                        if (windowList != null)
+                    if (windowList != null)
+                    {
+                        foreach (var windowItem in windowList.Children())
                         {
-                            foreach (var windowItem in windowList.Children())
+                            var button = windowItem.Q<Button>();
+                            if (button != null && button.text == windowName)
                             {
-                                var button = windowItem.Q<Button>();
-                                if (button != null && button.text == windowName)
-                                {
-                                    UpdateWindowState(root, button);
-                                }
+                                UpdateWindowState(root, button);
                             }
                         }
                     }

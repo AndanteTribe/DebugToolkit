@@ -105,12 +105,9 @@ namespace DebugToolkit
             s_allWindowsVisible = !s_allWindowsVisible;
             foreach (var window in DebugWindowList)
             {
-                if (s_allWindowsVisible)
+                if (s_allWindowsVisible  && window.userData is StyleEnum<DisplayStyle> previous)
                 {
-                    if (window.userData is StyleEnum<DisplayStyle> previous)
-                    {
-                        window.style.display = previous;
-                    }
+                    window.style.display = previous;
                 }
                 else
                 {
