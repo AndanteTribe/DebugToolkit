@@ -75,10 +75,16 @@ namespace DebugToolkit
             window.AddWindowHeader(windowName, isMasterWindow);
 
             var windowContent = new VisualElement();
-            windowContent.AddToClassList(DebugConst.DebugToolkitClassName + "__window-content");
+            windowContent.AddToClassList(DebugConst.DebugToolkitWindowContentClassName);
             window.Add(windowContent);
 
-            window.RegisterCallback<PointerDownEvent>(_ => window.BringToFront(), TrickleDown.TrickleDown);
+            window.RegisterCallback<PointerDownEvent>(static evt =>
+            {
+                if (evt.target is VisualElement window)
+                {
+                    window.BringToFront();
+                }
+            }, TrickleDown.TrickleDown);
 
             DebugViewerBase.DebugWindowList.Add(window);
 
@@ -88,7 +94,7 @@ namespace DebugToolkit
             if (!isMasterWindow)
             {
                 AddWindowListItem(window, windowName);
-                windowNum += DebugViewerBase.MasterWindow.Q<ScrollView>(className: DebugConst.DebugToolkitClassName + "__window-list").childCount;
+                windowNum += DebugViewerBase.MasterWindow.Q<ScrollView>(className: DebugConst.DebugToolkitWindowListClassName).childCount;
             }
 
             window.style.position = Position.Absolute;
@@ -106,7 +112,7 @@ namespace DebugToolkit
         /// <param name="windowName">The name of the window</param>
         private static void AddWindowListItem(VisualElement window, string windowName)
         {
-            var windowList = DebugViewerBase.MasterWindow.Q<ScrollView>(className: DebugConst.DebugToolkitClassName + "__window-list");
+            var windowList = DebugViewerBase.MasterWindow.Q<ScrollView>(className: DebugConst.DebugToolkitWindowListClassName);
             if (windowList == null) return;
 
             var listItem = new VisualElement();
@@ -181,7 +187,7 @@ namespace DebugToolkit
                 minimizeButton.clicked += () =>
                 {
                     isMinimized = !isMinimized;
-                    var windowContent = root.Q<VisualElement>(className: DebugConst.DebugToolkitClassName + "__window-content");
+                    var windowContent = root.Q<VisualElement>(className: DebugConst.DebugToolkitWindowContentClassName);
                     if (windowContent != null)
                     {
                         windowContent.style.display = isMinimized ? DisplayStyle.None : DisplayStyle.Flex;
@@ -200,7 +206,7 @@ namespace DebugToolkit
                     root.style.display = DisplayStyle.None;
 
                     var windowList = DebugViewerBase.MasterWindow.Q<ScrollView>(
-                        className: DebugConst.DebugToolkitClassName + "__window-list");
+                        className: DebugConst.DebugToolkitWindowListClassName);
 
                     if (windowList != null)
                     {
