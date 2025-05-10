@@ -9,8 +9,6 @@ namespace DebugToolkit
 {
     public static class DebugExtensions
     {
-        private static readonly Vector2 s_windowOffsetStep = new Vector2(50f, 50f);
-
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void AddProfileInfoLabel(this VisualElement visualElement)
             => AddProfileInfoLabel(visualElement, TimeSpan.FromMilliseconds(500));
@@ -98,8 +96,8 @@ namespace DebugToolkit
             }
 
             window.style.position = Position.Absolute;
-            window.style.left = s_windowOffsetStep.x * windowNum;
-            window.style.top = s_windowOffsetStep.y * windowNum;
+            window.style.left = 50 * windowNum;
+            window.style.top = 50 * windowNum;
 
             return windowContent;
         }
