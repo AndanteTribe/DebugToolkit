@@ -7,14 +7,19 @@ public class DebugViewTest : DebugViewerBase
     protected override VisualElement CreateViewGUI()
     {
         var root = base.CreateViewGUI();
-        var (tabRoot, tab1) = root.AddTab();
+        var window = root.AddWindow("TestWindow");
+        var (tabRoot, tab1) = window.AddTab();
         var tab2 = tabRoot.AddTab("Tab2");
-        
-        for (int i = 0; i < 5; i++)
+
+        var testButton = new Button(){text = "TestButton"};
+        tab1.Add(testButton);
+        for (var i = 0; i < 5; i++)
         {
             tab1.Add(new Button(){text = $"Button{i + 1}"});
         }
         tab2.AddProfileInfoLabel();
+
+        var window2 = root.AddWindow("TestWindow2");
         return root;
     }
 }
