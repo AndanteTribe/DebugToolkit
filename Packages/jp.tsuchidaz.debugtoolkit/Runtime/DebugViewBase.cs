@@ -15,7 +15,7 @@ namespace DebugToolkit
         /// Static collection that maintains references to all debug windows in the application.
         /// Used for global operations such as toggling visibility of all windows at once.
         /// </summary>
-        protected internal static readonly List<VisualElement>  DebugWindowList = new();
+        protected internal static readonly List<VisualElement> DebugWindowList = new();
 
         /// <summary>
         /// Custom <see cref="UnityEngine.UIElements.PanelSettings"/>.
@@ -39,8 +39,6 @@ namespace DebugToolkit
         /// </summary>
         private static bool s_allWindowsVisible = true;
 
-        private static readonly Dictionary<VisualElement, StyleEnum<DisplayStyle>> s_windowDisplayStates = new();
-
         /// <summary>
         /// EntryPoint.
         /// </summary>
@@ -59,14 +57,17 @@ namespace DebugToolkit
             {
                 PanelSettings = ExternalResources.LoadPanelSettings();
             }
+
             if (PanelSettings.themeStyleSheet == null)
             {
                 if (ThemeStyleSheet == null)
                 {
                     ThemeStyleSheet = ExternalResources.LoadThemeStyleSheet();
                 }
+
                 PanelSettings.themeStyleSheet = ThemeStyleSheet;
             }
+
             uiDocument.panelSettings = PanelSettings;
 
             var root = uiDocument.rootVisualElement;
@@ -101,40 +102,22 @@ namespace DebugToolkit
         /// </summary>
         private static void ToggleAllVisible()
         {
-            if (s_allWindowsVisible)
+            s_allWindowsVisible = !s_allWindowsVisible;
+            foreach (var window in DebugWindowList)
             {
-                foreach (var window in DebugWindowList)
+                if (s_allWindowsVisible)
                 {
-                    if (window == MasterWindow)
+                    if (window.userData is StyleEnum<DisplayStyle> previous)
                     {
-                        continue;
+                        window.style.display = previous;
                     }
-
-                    s_windowDisplayStates[window] = window.style.display;
+                }
+                else
+                {
+                    window.userData = window.style.display;
                     window.style.display = DisplayStyle.None;
                 }
             }
-            else
-            {
-                foreach (var window in DebugWindowList)
-                {
-                    if (window == MasterWindow)
-                    {
-                        continue;
-                    }
-
-                    if (s_windowDisplayStates.TryGetValue(window, out var savedStyle))
-                    {
-                        window.style.display = savedStyle;
-                    }
-                    else
-                    {
-                        window.style.display = DisplayStyle.Flex;
-                    }
-                }
-            }
-
-            s_allWindowsVisible = !s_allWindowsVisible;
         }
     }
 }

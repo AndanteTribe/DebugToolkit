@@ -82,6 +82,8 @@ namespace DebugToolkit
 
             DebugViewerBase.DebugWindowList.Add(window);
 
+            window.style.display = DisplayStyle.Flex;
+
             var windowNum = 1;
             if (!isMasterWindow)
             {
