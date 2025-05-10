@@ -80,7 +80,7 @@ namespace DebugToolkit
                 var masterWindow = safeAreaContainer.AddWindow("Debug Toolkit");
 
                 var windowList = new ScrollView();
-                windowList.AddToClassList(DebugConst.DebugToolkitClassName + "__window-list");
+                windowList.AddToClassList(DebugConst.DebugToolkitWindowListClassName);
                 masterWindow.Add(windowList);
                 var label = new Label("Debug Window List");
                 windowList.Add(label);
