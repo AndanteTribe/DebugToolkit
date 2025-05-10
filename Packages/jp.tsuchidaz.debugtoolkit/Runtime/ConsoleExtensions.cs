@@ -73,7 +73,11 @@ public static class ConsoleExtensions
         clearBtn.clicked += () =>
         {
             s_logs.Clear();
-            s_listView?.Rebuild();
+            if (s_listView != null)
+            {
+                s_listView.itemsSource = s_logs;
+                s_listView.Rebuild();
+            }
         };
         container.Add(clearBtn);
 
