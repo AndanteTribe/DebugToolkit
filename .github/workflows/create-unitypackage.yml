@@ -15,7 +15,7 @@ jobs:
     - name: Generate target file list
       id: generate
       run: |
-        files=$(find Packages/jp.andantetribe.debugtoolkit -type f ! -name "*.meta" | paste -sd", " -)
+        files=$(find Packages/jp.andantetribe.debugtoolkit -type f ! -name "*.meta" -print0 | xargs -0 printf "%s\n" | sed 's/ /\\ /g' | paste -sd", " -)
         echo "FILES=${files}" >> $GITHUB_ENV
         mkdir a
     - run: echo "FILES=${{ env.FILES }}"
