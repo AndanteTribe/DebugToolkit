@@ -17,6 +17,7 @@ jobs:
       run: |
         FILES=$(find Packages/jp.andantetribe.debugtoolkit -type f | paste -sd, -)
         echo "files=${FILES}" >> $GITHUB_OUTPUT
+        echo "Generated files: ${FILES}"  # ログ確認用
     - name: Use Compress-UnityPackage
       uses: hanachiru/UnityPackageArchiver/Compress-UnityPackage@main
       with:
