@@ -12,18 +12,15 @@ jobs:
       run: |
         version=$(jq -r '.version' Packages/jp.andantetribe.debugtoolkit/package.json)
         echo "PACKAGE_VERSION=${version}" >> $GITHUB_ENV
-    - name: Generate target file list
-      id: generate
-      run: |
-        files=$(find Packages/jp.andantetribe.debugtoolkit -type f | paste -sd, -)
-        echo "FILES=${files}" >> $GITHUB_ENV
+    - run: |
+        echo -e "fileFormatVersion: 2\nguid: bc2e69da977b459b85eea7d1202e6303\nfolderAsset: yes\nDefaultImporter:\n  externalObjects: {}\n  userData: \n  assetBundleName: \n  assetBundleVariant: " > Packages/jp.andantetribe.debugtoolkit.meta
+        echo "Packages/jp.andantetribe.debugtoolkit.meta" > metaList
+        find Packages/jp.andantetribe.debugtoolkit/ -name \*.meta >> metaList
         mkdir a
-    - run: echo "FILES=${{ env.FILES }}"
-    - name: Use Compress-UnityPackage
-      uses: hanachiru/UnityPackageArchiver/Compress-UnityPackage@main
+    - uses: pCYSl5EDgo/create-unitypackage@master
       with:
-          output-file-path: "a/DebugToolkit.${{ env.PACKAGE_VERSION }}.unitypackage"
-          target-files: "Packages/jp.andantetribe.debugtoolkit/ExternalResources/DebugToolkitUss.uss.meta,Packages/jp.andantetribe.debugtoolkit/ExternalResources/DebugToolkitUss.uss,Packages/jp.andantetribe.debugtoolkit/ExternalResources/DefaultRuntimeTheme.tss.meta,Packages/jp.andantetribe.debugtoolkit/ExternalResources/DefaultRuntimeTheme.tss,Packages/jp.andantetribe.debugtoolkit/ExternalResources/ExternalResourcesManager.asset,Packages/jp.andantetribe.debugtoolkit/ExternalResources/ExternalResourcesManager.asset.meta,Packages/jp.andantetribe.debugtoolkit/ExternalResources/PanelSettings.asset,Packages/jp.andantetribe.debugtoolkit/ExternalResources/PanelSettings.asset.meta,Packages/jp.andantetribe.debugtoolkit/Runtime.meta,Packages/jp.andantetribe.debugtoolkit/package.json,Packages/jp.andantetribe.debugtoolkit/Editor.meta,Packages/jp.andantetribe.debugtoolkit/Runtime/AssemblyInfo.cs,Packages/jp.andantetribe.debugtoolkit/Runtime/DebugExtensions.ConsoleView.cs.meta,Packages/jp.andantetribe.debugtoolkit/Runtime/Internal/ValueStringBuilder.cs.meta,Packages/jp.andantetribe.debugtoolkit/Runtime/Internal/SafeAreaContainer.cs,Packages/jp.andantetribe.debugtoolkit/Runtime/Internal/DragManipulator.cs,Packages/jp.andantetribe.debugtoolkit/Runtime/Internal/SafeAreaContainer.cs.meta,Packages/jp.andantetribe.debugtoolkit/Runtime/Internal/ValueStringBuilder.cs,Packages/jp.andantetribe.debugtoolkit/Runtime/Internal/DragManipulator.cs.meta,Packages/jp.andantetribe.debugtoolkit/Runtime/Internal/ExternalResources.cs.meta,Packages/jp.andantetribe.debugtoolkit/Runtime/Internal/ExternalResources.cs,Packages/jp.andantetribe.debugtoolkit/Runtime/DebugExtensions.ConsoleView.cs,Packages/jp.andantetribe.debugtoolkit/Runtime/DebugToolkit.asmdef.meta,Packages/jp.andantetribe.debugtoolkit/Runtime/Internal.meta,Packages/jp.andantetribe.debugtoolkit/Runtime/DebugExtensions.cs.meta,Packages/jp.andantetribe.debugtoolkit/Runtime/AssemblyInfo.cs.meta,Packages/jp.andantetribe.debugtoolkit/Runtime/DebugToolkit.asmdef,Packages/jp.andantetribe.debugtoolkit/Runtime/ProfileUtils.cs.meta,Packages/jp.andantetribe.debugtoolkit/Runtime/DebugConst.cs,Packages/jp.andantetribe.debugtoolkit/Runtime/DebugConst.cs.meta,Packages/jp.andantetribe.debugtoolkit/Runtime/ProfileUtils.cs,Packages/jp.andantetribe.debugtoolkit/Runtime/DebugExtensions.cs,Packages/jp.andantetribe.debugtoolkit/Runtime/DebugViewBase.cs.meta,Packages/jp.andantetribe.debugtoolkit/Runtime/DebugViewBase.cs,Packages/jp.andantetribe.debugtoolkit/Editor/RegisterResourcesBuildProcessor.cs.meta,Packages/jp.andantetribe.debugtoolkit/Editor/DebugToolkit.Editor.asmdef,Packages/jp.andantetribe.debugtoolkit/Editor/RegisterResourcesBuildProcessor.cs,Packages/jp.andantetribe.debugtoolkit/Editor/DebugToolkit.Editor.asmdef.meta,Packages/jp.andantetribe.debugtoolkit/package.json.meta,Packages/jp.andantetribe.debugtoolkit/ExternalResources.meta"
+        package-path: "a/DebugToolkit.${{ env.PACKAGE_VERSION }}.unitypackage"
+        include-files: metaList
     - uses: actions/upload-artifact@master
       with:
         path: a
