@@ -15,9 +15,9 @@ jobs:
     - name: Generate target file list
       id: generate
       run: |
-        FILES=$(find Packages/jp.andantetribe.debugtoolkit -type f | paste -sd, -)
+        FILES=$(find Packages/jp.andantetribe.debugtoolkit -type f ! -name "*.meta" | paste -sd", " -)
         echo "files=${FILES}" >> $GITHUB_OUTPUT
-        echo "Generated files: ${FILES}"  # ログ確認用
+        mkdir a
     - name: Use Compress-UnityPackage
       uses: hanachiru/UnityPackageArchiver/Compress-UnityPackage@main
       with:
