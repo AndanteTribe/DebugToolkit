@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace DebugToolkit
 {
-    public static class DebugExtensions
+    public static partial class DebugExtensions
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void AddProfileInfoLabel(this VisualElement visualElement)

@@ -4,6 +4,8 @@
     --debug-toolkit-color-black: rgb(15, 3, 40);
     --debug-toolkit-color-highlight: rgb(246, 137, 30);
     --debug-toolkit-color-content: rgb(0, 173, 181);
+    --debug-toolkit-color-true: rgb(102, 204, 102);
+    --debug-toolkit-color-false: rgb(153, 51, 51);
     --debug-toolkit-px-border: 4px;
     --debug-toolkit-px-space-xsmall: 2px;
     --debug-toolkit-px-space-small: 4px;
@@ -127,6 +129,26 @@
 /*--- トグル -----------------------------------------------*/
 .debug-toolkit__master .unity-toggle {
     margin: var(--debug-toolkit-px-space-small);
+    background-color: var(--debug-toolkit-color-false);
+    border-radius: 4px;
+    padding: 4px 8px;
+    border-color: rgb(113, 31, 31);
+    border-bottom-width: 6px;
+}
+
+.debug-toolkit__master .unity-toggle:hover{
+    border-bottom-width: var(--debug-toolkit-px-space-small);
+    margin-top: 6px;
+}
+
+.debug-toolkit__master .unity-toggle:active {
+    border-bottom-width: var(--debug-toolkit-px-space-xsmall);
+    margin-top: 8px;
+}
+
+.debug-toolkit__master .unity-toggle:checked {
+    background-color: var(--debug-toolkit-color-true);
+    border-color: rgb(62, 154, 62);
 }
 
 .debug-toolkit__master .unity-toggle__checkmark {
@@ -135,6 +157,7 @@
     border-width: 0;
     border-radius: var(--debug-toolkit-px-radius-small);
     -unity-background-image-tint-color: var(--debug-toolkit-color-lowlight);
+    display: none;
 }
 
 /*--- フォールドアウト -----------------------------------------------*/
@@ -150,12 +173,13 @@
     margin-bottom: var(--debug-toolkit-px-space-small);
 }
 
-.debug-toolkit__master .unity-foldout .unity-foldout .unity-foldout__toggle {
+.debug-toolkit__master .unity-foldout .unity-foldout__toggle {
     border-bottom-width: var(--debug-toolkit-px-space-xsmall);
     border-bottom-color: var(--debug-toolkit-color-lowlight);
+    background-color: initial;
 }
 
-.debug-toolkit__master .unity-foldout .unity-foldout .unity-foldout__content {
+.debug-toolkit__master .unity-foldout .unity-foldout__content {
     margin-left: var(--debug-toolkit-px-space-small);
     border-left-width: var(--debug-toolkit-px-space-xsmall);
     border-left-color: var(--debug-toolkit-color-lowlight);
@@ -207,7 +231,10 @@
 }
 
 /*--- トグルボタングループ -----------------------------------------------*/
-/*--- UIBuilderで確認できないため、ランタイム上で確認し編集予定... ----*/
+.debug-toolkit__master .unity-toggle-button-group {
+    margin-top: var(--debug-toolkit-px-space-small);
+    margin-bottom: var(--debug-toolkit-px-space-small);
+}
 
 /*--- スクロールビュー -----------------------------------------------*/
 .debug-toolkit__master .unity-scroller--vertical {
@@ -455,7 +482,7 @@
 .debug-toolkit__master .debug-toolkit__window-label {
 }
 
-.debug-toolkit__toggle-all-button {
+.debug-toolkit__master .debug-toolkit__toggle-all-button {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -468,11 +495,26 @@
     transition: opacity 0.2s ease-in-out;
 }
 
-.debug-toolkit__toggle-all-button:hover {
+.debug-toolkit__master .debug-toolkit__toggle-all-button:hover {
     opacity: 1;
     background-color: var(--debug-toolkit-color-highlight);
 }
 
-.debug-toolkit__toggle-all-button:active {
+.debug-toolkit__master .debug-toolkit__toggle-all-button:active {
     background-color: var(--debug-toolkit-color-lowlight);
+}
+
+.debug-toolkit__master .debug-toolkit__console-view {
+    flex-grow: 1;
+    border-width: var(--debug-toolkit-px-space-xsmall);
+    border-color: gray;
+    margin : 5px;
+}
+
+.debug-toolkit__master .debug-toolkit__log-label {
+    
+}
+
+.debug-toolkit__master .debug-toolkit__console-toggle-log-show {
+    
 }
