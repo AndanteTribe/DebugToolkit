@@ -16,9 +16,8 @@ jobs:
       id: generate
       run: |
         files=$(find Packages/jp.andantetribe.debugtoolkit -type f ! -name "*.meta" | paste -sd", " -)
-        echo "FILES=${files}" >> $GITHUB_OUTPUT
+        echo "FILES=${files}" >> $GITHUB_ENV
         mkdir a
-    - run: echo "FILES=${{ env.FILES }}"
     - name: Use Compress-UnityPackage
       uses: hanachiru/UnityPackageArchiver/Compress-UnityPackage@main
       with:
