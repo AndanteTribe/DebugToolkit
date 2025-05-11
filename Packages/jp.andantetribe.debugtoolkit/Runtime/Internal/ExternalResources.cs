@@ -12,7 +12,7 @@ namespace DebugToolkit
         [SerializeField]
         private PanelSettings? _panelSettings;
 
-        public const string RootPath = "Packages/jp.andantetribe.debugtoolkit/External Resources";
+        public const string RootPath = "Packages/jp.andantetribe.debugtoolkit/ExternalResources";
 
 #if !UNITY_EDITOR
         private static ExternalResources s_instance;

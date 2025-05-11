@@ -482,7 +482,7 @@
 .debug-toolkit__master .debug-toolkit__window-label {
 }
 
-.debug-toolkit__master .debug-toolkit__toggle-all-button {
+.debug-toolkit__toggle-all-button {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -495,7 +495,7 @@
     transition: opacity 0.2s ease-in-out;
 }
 
-.debug-toolkit__master .debug-toolkit__toggle-all-button:hover {
+debug-toolkit__toggle-all-button:hover {
     opacity: 1;
     background-color: var(--debug-toolkit-color-highlight);
 }
