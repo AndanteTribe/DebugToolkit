@@ -12,18 +12,25 @@ namespace DebugToolkit
         public static VisualElement AddConsoleView(this VisualElement root)
         {
             bool showLog = true, showWarning = true, showError = true, showStackTrace = false;
-            var searchQuery = String.Empty;
+            var searchQuery = "";
             var listView = new ListView();
             List<(string message, string stackTrace, LogType type)> logs = new();
 
-            Application.logMessageReceived += (msg, st, t) =>
+            Application.LogCallback logCallback = (msg, st, t) =>
             {
                 logs.Add((msg, st, t));
                 RefreshList();
             };
 
+            Application.logMessageReceived += logCallback;
+
             var consoleView = new VisualElement();
             consoleView.AddToClassList(DebugConst.DebugToolkitClassName + "__console-view");
+
+            consoleView.RegisterCallback<DetachFromPanelEvent>(evt =>
+            {
+                Application.logMessageReceived -= logCallback;
+            });
 
             var toggleContainer = new VisualElement { style = { flexDirection = FlexDirection.Row } };
             var logToggle = new Toggle("Log") { value = showLog };
