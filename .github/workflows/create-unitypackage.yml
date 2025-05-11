@@ -1,0 +1,29 @@
+name: Create Unity Package
+
+on:
+  workflow_dispatch:
+
+jobs:
+  echo:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Extract version from package.json
+      run: |
+        version=$(jq -r '.version' Packages/jp.andantetribe.debugtoolkit/package.json)
+        echo "PACKAGE_VERSION=${version}" >> $GITHUB_ENV
+    - name: Generate target file list
+      id: generate
+      run: |
+        FILES=$(find Packages/jp.andantetribe.debugtoolkit -type f | paste -sd, -)
+        echo "files=${FILES}" >> $GITHUB_OUTPUT
+    - name: Use Compress-UnityPackage
+      uses: hanachiru/UnityPackageArchiver/Compress-UnityPackage@main
+      with:
+          output-file-path: "a/DebugToolkit.${{ env.PACKAGE_VERSION }}.unitypackage"
+          target-files: "${{ steps.generate.outputs.files }}"
+    - uses: actions/upload-artifact@master
+      with:
+        path: a
+        name: package
+        retention-days: 2
