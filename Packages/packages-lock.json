@@ -16,8 +16,8 @@
       },
       "url": "https://packages.unity.com"
     },
-    "jp.tsuchidaz.debugtoolkit": {
-      "version": "file:jp.tsuchidaz.debugtoolkit",
+    "jp.andantetribe.debugtoolkit": {
+      "version": "file:jp.andantetribe.debugtoolkit",
       "depth": 0,
       "source": "embedded",
       "dependencies": {
