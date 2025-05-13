@@ -31,6 +31,11 @@ namespace DebugToolkit.Tests
         {
             _input.TearDown();
             InputSystem.settings.backgroundBehavior = InputSettings.BackgroundBehavior.ResetAndDisableNonBackgroundDevices;
+            var mainScene = SceneManager.GetSceneByName("Main");
+            if (mainScene.isLoaded)
+            {
+                SceneManager.UnloadSceneAsync(mainScene);
+            }
         }
 
         [Test]
@@ -51,8 +56,8 @@ namespace DebugToolkit.Tests
             var master = DebugViewerBase.MasterWindow;
             var contents = master.Q<VisualElement>("unity-content-container", "unity-scroll-view__content-container");
             var btns = contents.Query<Button>().ToList();
-            var clicled = false;
-            btns[btnIndex].clicked += () => clicled = true;
+            var clicked = false;
+            btns[btnIndex].clicked += () => clicked = true;
 
             // Wait for UI drawing reflection
             await Awaitable.NextFrameAsync();
@@ -64,10 +69,7 @@ namespace DebugToolkit.Tests
             // Wait for UI drawing reflection
             await Awaitable.NextFrameAsync();
 
-            Assert.That(clicled, Is.True);
-
-            await SceneManager.UnloadSceneAsync("Main");
-            Assert.That(true, Is.True);
+            Assert.That(clicked, Is.True);
         }
 
         private static Vector2 CastMousePosition(float fullHdX, float fullHdY)
