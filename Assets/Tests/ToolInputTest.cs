@@ -64,6 +64,7 @@ namespace DebugToolkit.Tests
 
             var mouse = InputSystem.AddDevice<Mouse>();
             _input.Set(mouse.position, CastMousePosition(fullHdX, fullHdY));
+            await Awaitable.NextFrameAsync();
             _input.Click(mouse.leftButton);
 
             // Wait for UI drawing reflection
