@@ -1,0 +1,49 @@
+name: Run the Unity Test
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+  push:
+    branches:
+    - main
+  workflow_dispatch: {}
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+      name: Run the Unity Test
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v4
+        - name: Set outputs
+          id: vars
+          run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+        - uses: actions/cache@v4
+          with:
+            path: Library
+            key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+            restore-keys: |
+              Library-
+        - name: Free disk space
+          run:  |
+            chmod +x ./.github/workflows/scripts/free_disk_space.sh
+            .github/workflows/scripts/free_disk_space.sh
+            git checkout -- ./.github/workflows/scripts/free_disk_space.sh
+        - uses: game-ci/unity-test-runner@v4
+          env:
+            UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+            UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+            UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          with:
+            githubToken: ${{ secrets.GITHUB_TOKEN }}
+            unityVersion: auto
+            testMode: playmode
+        - uses: actions/upload-artifact@v4
+          if: always()
+          with:
+            name: Test results
+            path: artifacts
+            retention-days: 2
