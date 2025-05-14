@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.IO;
+using System.Threading.Tasks;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
@@ -77,12 +78,26 @@ namespace DebugToolkit.Tests
 
             // Wait for UI drawing reflection
             await Awaitable.NextFrameAsync();
-            await Awaitable.WaitForSecondsAsync(3);
 
             Assert.That(clicked, Is.True);
+
+            var capturePath = await CaptureScreenAsync(nameof(OnClickTest) + btnIndex);
         }
 
         private static EditorWindow GetGameView()
             => EditorWindow.GetWindow(System.Type.GetType("UnityEditor.GameView,UnityEditor"));
+
+        private static async Awaitable<string> CaptureScreenAsync(string fineName)
+        {
+            var directoryPath = Path.Combine(Application.dataPath, "..", "artifacts");
+            if (!Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+            await Awaitable.EndOfFrameAsync();
+            var result = Path.Combine(directoryPath, fineName + ".png");
+            ScreenCapture.CaptureScreenshot(result);
+            return result;
+        }
     }
 }
