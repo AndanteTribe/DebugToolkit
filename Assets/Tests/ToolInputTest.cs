@@ -89,7 +89,7 @@ namespace DebugToolkit.Tests
 
         private static async Awaitable<string> CaptureScreenAsync(string fineName)
         {
-            var directoryPath = Path.Combine(Application.dataPath, "..", "artifacts");
+            var directoryPath = Path.Combine(Application.dataPath, "..", "artifacts-screenshot");
             if (!Directory.Exists(directoryPath))
             {
                 Directory.CreateDirectory(directoryPath);
