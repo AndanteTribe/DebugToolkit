@@ -66,7 +66,7 @@ jobs:
                 link=$(echo "$response" | jq -r '.data.link')
                 success=$(echo "$response" | jq -r '.success')
                 if [ "$success" = "true" ]; then
-                  markdown_lines="${markdown_lines}![](${link})"$'\n'
+                  markdown_lines="${markdown_lines}![](${link})"
                 fi
               fi
             done
