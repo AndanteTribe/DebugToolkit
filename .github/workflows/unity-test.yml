@@ -51,7 +51,7 @@ jobs:
           if: always()
           with:
             name: Coverage results
-            path: ${{ steps.myTestStep.outputs.coveragePath }}
+            path: CodeCoverage
             retension-days: 2
         - name: Upload images via curl
           env:
