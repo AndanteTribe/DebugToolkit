@@ -71,10 +71,10 @@ jobs:
               fi
             done
 
-            echo "markdown_output=$markdown_lines" >> $GITHUB_OUTPUT
+            echo "MARKDOWN_OUTPUT=$markdown_lines" >> $GITHUB_ENV
         - name: Comment PR
-          uses: thollander/actions-comment-pull-request@v2
+          uses: thollander/actions-comment-pull-request@v3
           with:
             message: |
               Test Result
-              ${{ steps.upload_step.outputs.markdown_output }}
+              ${{ env.MARKDOWN_OUTPUT }}
