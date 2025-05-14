@@ -47,6 +47,12 @@ jobs:
             name: Test results
             path: artifacts
             retention-days: 2
+        - uses: actions/upload-artifact@v3
+          if: always()
+          with:
+            name: Coverage results
+            path: ${{ steps.myTestStep.outputs.coveragePath }}
+            retension-days: 2
         - name: Upload images via curl
           env:
             IMGUR_CLIENT_ID: ${{ secrets.IMGUR_CLIENT_ID }}
@@ -68,6 +74,7 @@ jobs:
             echo "markdown_output<<EOF" >> $GITHUB_OUTPUT
             echo "$markdown_lines" >> $GITHUB_OUTPUT
             echo "EOF" >> $GITHUB_OUTPUT
+            echo "$markdown_lines"
         - name: Comment PR
           uses: thollander/actions-comment-pull-request@v2
           with:
