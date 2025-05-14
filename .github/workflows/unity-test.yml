@@ -79,4 +79,4 @@ jobs:
           with:
             message: |
               Test Result
-              ${{ MARKDOWN_OUTPUT }}
+              ${{ env.MARKDOWN_OUTPUT }}
