@@ -47,3 +47,16 @@ jobs:
             name: Test results
             path: artifacts
             retention-days: 2
+        - uses: actions/upload-artifact@v4
+          if: always()
+          id: artifacts-screenshot
+          with:
+            name: Screen Caputures
+            path: artifacts-screenshot
+            retention-days: 5
+        - name: Comment PR
+          uses: thollander/actions-comment-pull-request@v2
+          with:
+            message: |
+              Hello world ! :wave:
+              [スクリーンショットをダウンロードする](${{ steps.artifacts-screenshot.outputs.artifact-url }}) 👀✨
