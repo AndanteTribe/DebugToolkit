@@ -53,7 +53,7 @@ jobs:
           run: |
             markdown_lines=""
 
-            for file in images/*; do
+            for file in artifacts-screenshot/*; do
               if file --mime-type "$file" | grep -q image/; then
                 echo "Uploading $file..."
                 response=$(curl -s -H "Authorization: Client-ID $IMGUR_CLIENT_ID" \
