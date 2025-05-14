@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using NUnit.Framework;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -10,6 +11,14 @@ namespace DebugToolkit.Tests
     public class ToolInputTest
     {
         private readonly InputTestFixture _input = new();
+
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            var gameView = GetGameView();
+            gameView.minSize = new Vector2(1920, 1080);
+            gameView.position = new Rect(0, 0, 1920, 1080);
+        }
 
         [SetUp]
         public void SetUp()
@@ -45,9 +54,9 @@ namespace DebugToolkit.Tests
         }
 
         [Test]
-        [TestCase(0, 100, 950)]
-        [TestCase(1, 100, 895)]
-        public async Task OnClickTest(int btnIndex, float fullHdX, float fullHdY)
+        [TestCase(0, 100, 920)]
+        [TestCase(1, 100, 880)]
+        public async Task OnClickTest(int btnIndex, float screenPosX, float screenPosY)
         {
             await SceneManager.LoadSceneAsync("Main", LoadSceneMode.Additive);
             // Wait for UI drawing reflection
@@ -63,20 +72,17 @@ namespace DebugToolkit.Tests
             await Awaitable.NextFrameAsync();
 
             var mouse = InputSystem.AddDevice<Mouse>();
-            _input.Set(mouse.position, CastMousePosition(fullHdX, fullHdY));
-            await Awaitable.NextFrameAsync();
+            _input.Set(mouse.position, new Vector2(screenPosX, screenPosY));
             _input.Click(mouse.leftButton);
 
             // Wait for UI drawing reflection
             await Awaitable.NextFrameAsync();
+            await Awaitable.WaitForSecondsAsync(3);
 
             Assert.That(clicked, Is.True);
         }
 
-        private static Vector2 CastMousePosition(float fullHdX, float fullHdY)
-        {
-            // 1920:1080 = Screen.width:Screen.height
-            return new Vector2(fullHdX * Screen.width / 1920, fullHdY * Screen.height / 1080);
-        }
+        private static EditorWindow GetGameView()
+            => EditorWindow.GetWindow(System.Type.GetType("UnityEditor.GameView,UnityEditor"));
     }
 }
