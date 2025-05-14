@@ -47,16 +47,36 @@ jobs:
             name: Test results
             path: artifacts
             retention-days: 2
-        - uses: actions/upload-artifact@v4
-          if: always()
-          id: artifacts-screenshot
-          with:
-            name: Screen Caputures
-            path: artifacts-screenshot
-            retention-days: 5
+        - name: Upload images via curl
+          env:
+            IMGUR_CLIENT_ID: ${{ secrets.IMGUR_CLIENT_ID }}
+          run: |
+            markdown_lines=""
+
+            for file in images/*; do
+              if file --mime-type "$file" | grep -q image/; then
+                echo "Uploading $file..."
+                response=$(curl -s -H "Authorization: Client-ID $IMGUR_CLIENT_ID" \
+                                 -F "image=@$file" https://api.imgur.com/3/image)
+                link=$(echo "$response" | jq -r '.data.link')
+                success=$(echo "$response" | jq -r '.success')
+                if [ "$success" = "true" ]; then
+                  markdown_lines="${markdown_lines}![](${link})"$'\n'
+                else
+                  echo "Upload failed for $file"
+                fi
+              fi
+            done
+
+            markdown_lines="${markdown_lines//'%'/'%25'}"
+            markdown_lines="${markdown_lines//$'\n'/'%0A'}"
+            markdown_lines="${markdown_lines//$'\r'/'%0D'}"
+  
+            echo "MARKDOWN_OUTPUT=$markdown_lines" >> $GITHUB_ENV
+            echo markdown_lines
         - name: Comment PR
           uses: thollander/actions-comment-pull-request@v2
           with:
             message: |
-              Hello world ! :wave:
-              [スクリーンショットをダウンロードする](${{ steps.artifacts-screenshot.outputs.artifact-url }}) 👀✨
+              Test Result
+              ${{ MARKDOWN_OUTPUT }}
