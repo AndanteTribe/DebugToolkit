@@ -52,7 +52,7 @@ jobs:
         - uses: actions/upload-artifact@v4
           if: always()
           with:
-            name: Coverage results
+            name: Coverage Results
             path: ${{ steps.tests.outputs.artifactsPath }}
             retension-days: 2
         - name: Upload images via curl
@@ -92,6 +92,6 @@ jobs:
           path: coverage
       - uses: actions/upload-artifact@v4
         with:
-          name: Coverage results
+          name: Coverage Results
           path: coverage
           retension-days: 2
