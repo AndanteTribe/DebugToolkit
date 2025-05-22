@@ -56,7 +56,12 @@ jobs:
             path: CodeCoverage
             retention-days: 2
         - name: Upload Coverage Report
-          run: echo "$(CodeCoverage/**/Summary.md)" >> $GITHUB_STEP_SUMMARY
+          run: |
+            for file in CodeCoverage/**/Summary.md; do
+              if [ -f "$file" ]; then
+                cat "$file" >> $GITHUB_STEP_SUMMARY
+              fi
+            done
         - name: Upload images via curl
           env:
             IMGUR_CLIENT_ID: ${{ secrets.IMGUR_CLIENT_ID }}
@@ -75,4 +80,4 @@ jobs:
               fi
             done
 
-            echo "MARKDOWN_OUTPUT=$markdown_lines" >>  $GITHUB_STEP_SUMMARY
+            echo "$markdown_lines" >>  $GITHUB_STEP_SUMMARY
