@@ -53,10 +53,11 @@ jobs:
           if: always()
           with:
             name: Coverage Results
-            path: ${{ steps.tests.outputs.artifactsPath }}
+            path: CodeCoverage
             retention-days: 2
+        - name: Upload Coverage Report
+          run: echo "$(CodeCoverage/**/Summary.md)" >> $GITHUB_STEP_SUMMARY
         - name: Upload images via curl
-          if: github.event_name == 'pull_request'
           env:
             IMGUR_CLIENT_ID: ${{ secrets.IMGUR_CLIENT_ID }}
           run: |
@@ -74,24 +75,4 @@ jobs:
               fi
             done
 
-            echo "MARKDOWN_OUTPUT=$markdown_lines" >> $GITHUB_ENV
-        - name: Add Coverage PR Comment
-          uses: marocchino/sticky-pull-request-comment@v2
-          if: github.event_name == 'pull_request' && hashFiles('CodeCoverage/**/Summary.md') != ''
-          with:
-            recreate: true
-            path: CodeCoverage/**/Summary.md
-  coverage-report:
-      name: Upload Code Coverage Report
-      runs-on: ubuntu-latest
-      needs: build
-      steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: Coverage Results
-          path: coverage
-      - uses: actions/upload-artifact@v4
-        with:
-          name: Coverage Reports
-          path: coverage
-          retention-days: 2
+            echo "MARKDOWN_OUTPUT=$markdown_lines" >>  $GITHUB_STEP_SUMMARY
