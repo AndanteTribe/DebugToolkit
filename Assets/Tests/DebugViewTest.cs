@@ -27,6 +27,11 @@ namespace DebugToolkit.Tests
             errorButton.clicked += () => Debug.LogError("Error test message");
             tab1.Add(errorButton);
 
+            for (int i = 0; i < 10; i++)
+            {
+                tab1.Add(new Button(){text = "hogehoge"});
+            }
+
             tab2.AddProfileInfoLabel();
 
             var window2 = root.AddWindow("TestWindow2");
