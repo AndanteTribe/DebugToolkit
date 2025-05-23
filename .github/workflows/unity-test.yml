@@ -33,6 +33,7 @@ jobs:
             .github/workflows/scripts/free_disk_space.sh
             git checkout -- ./.github/workflows/scripts/free_disk_space.sh
         - uses: game-ci/unity-test-runner@v4
+          id: tests
           env:
             UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
             UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
@@ -41,6 +42,7 @@ jobs:
             githubToken: ${{ secrets.GITHUB_TOKEN }}
             unityVersion: auto
             testMode: playmode
+            coverageOptions: 'generateHtmlReport;generateAdditionalReports'
         - uses: actions/upload-artifact@v4
           if: always()
           with:
@@ -50,11 +52,17 @@ jobs:
         - uses: actions/upload-artifact@v4
           if: always()
           with:
-            name: Coverage results
+            name: Coverage Results
             path: CodeCoverage
-            retension-days: 2
+            retention-days: 2
+        - name: Upload Coverage Report
+          run: |
+            for file in CodeCoverage/**/Summary.md; do
+              if [ -f "$file" ]; then
+                cat "$file" >> $GITHUB_STEP_SUMMARY
+              fi
+            done
         - name: Upload images via curl
-          if: github.event_name == 'pull_request'
           env:
             IMGUR_CLIENT_ID: ${{ secrets.IMGUR_CLIENT_ID }}
           run: |
@@ -72,11 +80,4 @@ jobs:
               fi
             done
 
-            echo "MARKDOWN_OUTPUT=$markdown_lines" >> $GITHUB_ENV
-        - name: Comment PR
-          if: github.event_name == 'pull_request'
-          uses: thollander/actions-comment-pull-request@v3
-          with:
-            message: |
-              Test Result
-              ${{ env.MARKDOWN_OUTPUT }}
+            echo "$markdown_lines" >>  $GITHUB_STEP_SUMMARY
