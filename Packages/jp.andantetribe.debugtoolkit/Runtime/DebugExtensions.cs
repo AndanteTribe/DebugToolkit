@@ -64,12 +64,20 @@ namespace DebugToolkit
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static VisualElement AddWindow(this VisualElement root, string windowName = "")
         {
-            var window = new VisualElement();
+            var window = new VisualElement(){name = windowName};
             root.Add(window);
 
             window.AddToClassList(DebugConst.ClassName + "__master");
 
             var isMasterWindow = DebugViewerBase.MasterWindow == null;
+            if (isMasterWindow)
+            {
+                window.AddToClassList(DebugConst.ClassName + "__master-window");
+            }
+            else
+            {
+                window.AddToClassList(DebugConst.ClassName + "__normal-window");
+            }
             window.AddWindowHeader(windowName, isMasterWindow);
 
             var windowContent = new VisualElement();

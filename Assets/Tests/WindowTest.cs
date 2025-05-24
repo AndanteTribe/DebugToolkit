@@ -2,12 +2,11 @@
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.UIElements;
-using System.IO;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
-using System.Collections.Generic;
-using UnityEditor.VersionControl;
 using Task = System.Threading.Tasks.Task;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace DebugToolkit.Tests
 {
@@ -64,12 +63,60 @@ namespace DebugToolkit.Tests
             Assert.That(_input, Is.Not.Null);
         }
 
+        // マスターウィンドウが正しく生成されるかテスト
         //  いずれマスターウィンドウをstaticじゃなくするときは変更する
         [Test]
         public void MasterWindow_IsCorrectlyGenerated()
         {
             Assert.That(DebugViewerBase.MasterWindow, Is.Not.Null, "MasterWindow should be generated.");
-            Assert.That(DebugViewerBase.MasterWindow.parent.Q<Label>(className: DebugConst.DebugToolkitWindowLabelClassName).text, Is.EqualTo("Debug Toolkit"), "MasterWindow title is incorrect.");
+            Assert.That(DebugViewerBase.MasterWindow.parent.Q<Label>(
+                name: "window-label",
+                className: DebugConst.WindowLabelClassName)
+                .text, Is.EqualTo("Debug Toolkit"), "MasterWindow title is incorrect.");
+        }
+
+        // マスターウィンドウに他のウィンドウを表示するボタンが生成されているかテスト
+        [Test]
+        public void MasterWindow_ContainsWindowListButtonsForOtherWindows()
+        {
+            var windowListScrollView = DebugViewerBase.MasterWindow.Q<ScrollView>(className: DebugConst.WindowListClassName);
+            Assert.That(windowListScrollView, Is.Not.Null, "WindowList ScrollView not found in MasterWindow.");
+
+            var toggles = windowListScrollView.Query<Toggle>(className: DebugConst.ToggleWindowDisplayClassName).ToList();
+            Assert.That(toggles.Count, Is.EqualTo(2), "Incorrect number of window display toggles in MasterWindow.");
+            Assert.That(toggles.Any(t => t.text == "TestWindow1"), Is.True, "Toggle for TestWindow1 not found.");
+            Assert.That(toggles.Any(t => t.text == "TestWindow2"), Is.True, "Toggle for TestWindow2 not found.");
+        }
+
+        // マスターウィンドウのウィンドウ表示ボタンが正しく動作するかテスト
+        [Test]
+        [TestCase("TestWindow1",110, 930)]
+        [TestCase("TestWindow2",110, 877)]
+        public async Task MasterWindow_WindowListButton_TogglesWindowVisibility(string windowName, float screenPosX, float screenPosY)
+        {
+            var toggle = DebugViewerBase.MasterWindow.Q<ScrollView>(className: DebugConst.WindowListClassName)
+                .Query<Toggle>(className: DebugConst.ToggleWindowDisplayClassName)
+                .Where(t => t.text == windowName).First();
+
+            var testWindow = _debugViewWindowTest.Root.Q<VisualElement>(name: windowName);
+
+            Assert.That(testWindow.style.display.value, Is.EqualTo(DisplayStyle.None), "Window should be visible first time.");
+
+            var mouse = InputSystem.AddDevice<Mouse>();
+            _input.Set(mouse.position, new Vector2(screenPosX, screenPosY));
+            _input.Click(mouse.leftButton);
+            await Awaitable.NextFrameAsync();
+            await Awaitable.NextFrameAsync();
+
+            Assert.That(testWindow.style.display.value, Is.EqualTo(DisplayStyle.Flex), "Window should be visible after toggle.");
+
+            _input.Set(mouse.position, new Vector2(screenPosX, screenPosY));
+            _input.Click(mouse.leftButton);
+            await Awaitable.NextFrameAsync();
+            await Awaitable.NextFrameAsync();
+
+
+            Assert.That(testWindow.style.display.value, Is.EqualTo(DisplayStyle.None), "Window should be hidden after toggle.");
         }
 
         private static EditorWindow GetGameView()
