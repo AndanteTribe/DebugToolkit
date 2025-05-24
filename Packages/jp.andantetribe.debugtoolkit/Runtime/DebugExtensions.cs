@@ -160,8 +160,8 @@ namespace DebugToolkit
         /// <returns>The created header element</returns>
         public static VisualElement AddWindowHeader(this VisualElement root, string windowName = "", bool isMasterWindow = false)
         {
-            var windowHeader = new VisualElement();
-            windowHeader.AddToClassList(DebugConst.DebugToolkitClassName +"__window-header");
+            var windowHeader = new VisualElement(){name = "window-header"};
+            windowHeader.AddToClassList(DebugConst.DebugToolkitWindowHeaderClassName);
 
             var manipulator = new DragManipulator(root);
             var dragArea = new VisualElement(){ name = "drag-area" };
@@ -169,8 +169,8 @@ namespace DebugToolkit
             dragArea.AddManipulator(manipulator);
             windowHeader.Add(dragArea);
 
-            var windowLabel = new Label(){ text = windowName };
-            windowLabel.AddToClassList(DebugConst.DebugToolkitClassName + "__window-label");
+            var windowLabel = new Label(){ name = "window-label",text = windowName };
+            windowLabel.AddToClassList(DebugConst.DebugToolkitWindowLabelClassName);
             dragArea.Add(windowLabel);
 
             if (isMasterWindow)

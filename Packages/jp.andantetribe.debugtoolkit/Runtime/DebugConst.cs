@@ -5,5 +5,7 @@
         public const string DebugToolkitClassName = "debug-toolkit";
         public const string DebugToolkitWindowListClassName = DebugToolkitClassName + "__window-list";
         public const string DebugToolkitWindowContentClassName = DebugToolkitClassName + "__window-content";
+        public const string DebugToolkitWindowLabelClassName = DebugToolkitClassName + "__window-label";
+        public const string DebugToolkitWindowHeaderClassName = DebugToolkitClassName + "__window-header";
     }
 }
