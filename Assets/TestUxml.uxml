@@ -1,5 +1,5 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Packages/jp.tsuchidaz.debugtoolkit/External%20Resources/DebugToolkitUss.uss?fileID=7433441132597879392&amp;guid=50ad021f9f063a94f99059fa74d9e285&amp;type=3#DebugToolkitUss" />
+    <Style src="project://database/Packages/jp.andantetribe.debugtoolkit/ExternalResources/DebugToolkitUss.uss?fileID=7433441132597879392&amp;guid=50ad021f9f063a94f99059fa74d9e285&amp;type=3#DebugToolkitUss" />
     <engine:VisualElement focusable="false" class="debug-toolkit__master">
         <engine:Foldout text="TestWindow" name="Foldout" value="true">
             <engine:TabView tabindex="0">
@@ -8,7 +8,7 @@
                         <engine:Label text="Label" />
                         <engine:Button text="Button" />
                         <engine:TextField label="Text Field" placeholder-text="filler text" />
-                        <engine:Toggle label="Toggle" />
+                        <engine:Toggle label="Toggle" enabled="true" toggle-on-label-click="true" value="false" />
                         <engine:ToggleButtonGroup label="Toggle Button Group" />
                         <engine:Foldout text="Foldout">
                             <engine:Button text="Button" />

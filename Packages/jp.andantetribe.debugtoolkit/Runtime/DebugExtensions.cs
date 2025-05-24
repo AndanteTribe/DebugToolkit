@@ -114,22 +114,24 @@ namespace DebugToolkit
             listItem.style.flexDirection = FlexDirection.Row;
             listItem.style.marginBottom = 5;
 
-            var button = new Button()
+            var toggle = new Toggle()
             {
                 text = windowName,
             };
 
-            button.clicked += () =>
+            toggle.RegisterCallback<ChangeEvent<bool>, (VisualElement window, Toggle toggle)>(static (evt,args) =>
             {
-                window.style.display = (window.style.display == DisplayStyle.Flex) ? DisplayStyle.None : DisplayStyle.Flex;
-                button.style.backgroundColor = GetWindowStateColor(window);
-                window.BringToFront();
-            };
+                args.window.style.display = evt.newValue
+                    ? DisplayStyle.Flex
+                    : DisplayStyle.None;
+                args.toggle.style.backgroundColor = GetWindowStateColor(args.window);
+                args.window.BringToFront();
+            }, (window, toggle));
 
             window.style.display = DisplayStyle.None;
-            listItem.Add(button);
+            listItem.Add(toggle);
             windowList.Add(listItem);
-            button.style.backgroundColor = GetWindowStateColor(window);
+            toggle.style.backgroundColor = GetWindowStateColor(window);
         }
 
         /// <summary>

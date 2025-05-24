@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace DebugToolkit.Tests
 {
@@ -8,6 +9,11 @@ namespace DebugToolkit.Tests
         {
             DebugViewTest debugViewTest = new DebugViewTest();
             debugViewTest.Start();
+        }
+
+        private void Update()
+        {
+            Debug.Log(Pointer.current.position.ReadValue());
         }
     }
 }
