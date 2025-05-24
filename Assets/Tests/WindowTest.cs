@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 using Task = System.Threading.Tasks.Task;
 using System.Linq;
-using System.Collections.Generic;
 
 namespace DebugToolkit.Tests
 {
@@ -91,7 +90,7 @@ namespace DebugToolkit.Tests
         // マスターウィンドウのウィンドウ表示ボタンが正しく動作するかテスト
         [Test]
         [TestCase("TestWindow1",110, 930)]
-        [TestCase("TestWindow2",110, 877)]
+        [TestCase("TestWindow2",112, 872)]
         public async Task MasterWindow_WindowListButton_TogglesWindowVisibility(string windowName, float screenPosX, float screenPosY)
         {
             var toggle = DebugViewerBase.MasterWindow.Q<ScrollView>(className: DebugConst.WindowListClassName)
@@ -101,6 +100,8 @@ namespace DebugToolkit.Tests
             var testWindow = _debugViewWindowTest.Root.Q<VisualElement>(name: windowName);
 
             Assert.That(testWindow.style.display.value, Is.EqualTo(DisplayStyle.None), "Window should be visible first time.");
+            Assert.That(toggle.style.backgroundColor.value, Is.EqualTo(new Color(0.6f, 0.2f, 0.2f)), "Toggle color for hidden window is incorrect.");
+
 
             var mouse = InputSystem.AddDevice<Mouse>();
             _input.Set(mouse.position, new Vector2(screenPosX, screenPosY));
@@ -109,6 +110,7 @@ namespace DebugToolkit.Tests
             await Awaitable.NextFrameAsync();
 
             Assert.That(testWindow.style.display.value, Is.EqualTo(DisplayStyle.Flex), "Window should be visible after toggle.");
+            Assert.That(toggle.style.backgroundColor.value, Is.EqualTo(new Color(0.4f, 0.8f, 0.4f)), "Toggle color for visible window is incorrect.");
 
             _input.Set(mouse.position, new Vector2(screenPosX, screenPosY));
             _input.Click(mouse.leftButton);
@@ -117,6 +119,7 @@ namespace DebugToolkit.Tests
 
 
             Assert.That(testWindow.style.display.value, Is.EqualTo(DisplayStyle.None), "Window should be hidden after toggle.");
+            Assert.That(toggle.style.backgroundColor.value, Is.EqualTo(new Color(0.6f, 0.2f, 0.2f)), "Toggle color for hidden window is incorrect.");
         }
 
         private static EditorWindow GetGameView()
