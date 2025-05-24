@@ -67,13 +67,13 @@ namespace DebugToolkit
             var window = new VisualElement();
             root.Add(window);
 
-            window.AddToClassList(DebugConst.DebugToolkitClassName + "__master");
+            window.AddToClassList(DebugConst.ClassName + "__master");
 
             var isMasterWindow = DebugViewerBase.MasterWindow == null;
             window.AddWindowHeader(windowName, isMasterWindow);
 
             var windowContent = new VisualElement();
-            windowContent.AddToClassList(DebugConst.DebugToolkitWindowContentClassName);
+            windowContent.AddToClassList(DebugConst.WindowContentClassName);
             window.Add(windowContent);
 
             window.RegisterCallback<PointerDownEvent, VisualElement>(static (_, window) =>
@@ -89,7 +89,7 @@ namespace DebugToolkit
             if (!isMasterWindow)
             {
                 AddWindowListItem(window, windowName);
-                windowNum += DebugViewerBase.MasterWindow.Q<ScrollView>(className: DebugConst.DebugToolkitWindowListClassName).childCount;
+                windowNum += DebugViewerBase.MasterWindow.Q<ScrollView>(className: DebugConst.WindowListClassName).childCount;
             }
 
             window.style.position = Position.Absolute;
@@ -107,7 +107,7 @@ namespace DebugToolkit
         /// <param name="windowName">The name of the window</param>
         private static void AddWindowListItem(VisualElement window, string windowName)
         {
-            var windowList = DebugViewerBase.MasterWindow.Q<ScrollView>(className: DebugConst.DebugToolkitWindowListClassName);
+            var windowList = DebugViewerBase.MasterWindow.Q<ScrollView>(className: DebugConst.WindowListClassName);
             if (windowList == null) return;
 
             var listItem = new VisualElement();
@@ -118,6 +118,8 @@ namespace DebugToolkit
             {
                 text = windowName,
             };
+
+            toggle.AddToClassList(DebugConst.ToggleWindowDisplayClassName);
 
             toggle.RegisterCallback<ChangeEvent<bool>, (VisualElement window, Toggle toggle)>(static (evt,args) =>
             {
@@ -161,29 +163,29 @@ namespace DebugToolkit
         public static VisualElement AddWindowHeader(this VisualElement root, string windowName = "", bool isMasterWindow = false)
         {
             var windowHeader = new VisualElement(){name = "window-header"};
-            windowHeader.AddToClassList(DebugConst.DebugToolkitWindowHeaderClassName);
+            windowHeader.AddToClassList(DebugConst.WindowHeaderClassName);
 
             var manipulator = new DragManipulator(root);
             var dragArea = new VisualElement(){ name = "drag-area" };
-            dragArea.AddToClassList(DebugConst.DebugToolkitClassName + "__drag-area");
+            dragArea.AddToClassList(DebugConst.ClassName + "__drag-area");
             dragArea.AddManipulator(manipulator);
             windowHeader.Add(dragArea);
 
             var windowLabel = new Label(){ name = "window-label",text = windowName };
-            windowLabel.AddToClassList(DebugConst.DebugToolkitWindowLabelClassName);
+            windowLabel.AddToClassList(DebugConst.WindowLabelClassName);
             dragArea.Add(windowLabel);
 
             if (isMasterWindow)
             {
                 var minimizeButton = new Button() { text = "-" };
-                minimizeButton.AddToClassList(DebugConst.DebugToolkitClassName + "__minimize-button");
+                minimizeButton.AddToClassList(DebugConst.ClassName + "__minimize-button");
 
                 var isMinimized = false;
 
                 minimizeButton.clicked += () =>
                 {
                     isMinimized = !isMinimized;
-                    var windowContent = root.Q<VisualElement>(className: DebugConst.DebugToolkitWindowContentClassName);
+                    var windowContent = root.Q<VisualElement>(className: DebugConst.WindowContentClassName);
                     if (windowContent != null)
                     {
                         windowContent.style.display = isMinimized ? DisplayStyle.None : DisplayStyle.Flex;
@@ -196,13 +198,13 @@ namespace DebugToolkit
             else
             {
                 var deleteButton = new Button() { text = "X" };
-                deleteButton.AddToClassList(DebugConst.DebugToolkitClassName + "__delete-button");
+                deleteButton.AddToClassList(DebugConst.ClassName + "__delete-button");
                 deleteButton.clicked += () =>
                 {
                     root.style.display = DisplayStyle.None;
 
                     var windowList = DebugViewerBase.MasterWindow.Q<ScrollView>(
-                        className: DebugConst.DebugToolkitWindowListClassName);
+                        className: DebugConst.WindowListClassName);
 
                     if (windowList != null)
                     {

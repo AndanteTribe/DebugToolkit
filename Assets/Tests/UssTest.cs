@@ -86,7 +86,7 @@ namespace DebugToolkit.Tests
 
             await CaptureScreenAsync(nameof(UssWindow_AllElementsTest) + "_scroll-after");
 
-            Assert.That(window.Q(className: DebugConst.DebugToolkitWindowContentClassName).childCount, Is.GreaterThan(0));
+            Assert.That(window.Q(className: DebugConst.WindowContentClassName).childCount, Is.GreaterThan(0));
         }
 
         [Test]
