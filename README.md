@@ -1,3 +1,5 @@
+[![Run the Unity Test](https://github.com/AndanteTribe/DebugToolkit/actions/workflows/unity-test.yml/badge.svg)](https://github.com/AndanteTribe/DebugToolkit/actions/workflows/unity-test.yml)
+
 # DebugToolkit
 A toolkit for debugging and profiling Unity applications.
 
