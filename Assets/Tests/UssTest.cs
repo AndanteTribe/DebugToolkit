@@ -18,6 +18,9 @@ namespace DebugToolkit.Tests
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
+            var directoryPath = Path.Combine(Application.dataPath, "..", "artifacts-screenshot");
+            Directory.CreateDirectory(directoryPath);
+
             var gameView = GetGameView();
             gameView.minSize = new Vector2(1920, 1080);
             gameView.position = new Rect(0, 0, 1920, 1080);
@@ -86,7 +89,7 @@ namespace DebugToolkit.Tests
 
             await CaptureScreenAsync(nameof(UssWindow_AllElementsTest) + "_scroll-after");
 
-            Assert.That(window.Q(className: DebugConst.DebugToolkitWindowContentClassName).childCount, Is.GreaterThan(0));
+            Assert.That(window.Q(className: DebugConst.WindowContentClassName).childCount, Is.GreaterThan(0));
         }
 
         [Test]
@@ -123,10 +126,6 @@ namespace DebugToolkit.Tests
         private static async Awaitable<string> CaptureScreenAsync(string fineName)
         {
             var directoryPath = Path.Combine(Application.dataPath, "..", "artifacts-screenshot");
-            if (!Directory.Exists(directoryPath))
-            {
-                Directory.CreateDirectory(directoryPath);
-            }
 
             await Awaitable.EndOfFrameAsync();
             await Awaitable.NextFrameAsync();
@@ -226,9 +225,10 @@ namespace DebugToolkit.Tests
             radioButtonGroup.Add(rb1);
             radioButtonGroup.Add(rb2);
             radioButtonGroup.Add(rb3);
-            radioButtonGroup.RegisterValueChangedCallback(evt =>
-                Debug.Log($"RadioButtonGroup Value Changed: {evt.newValue}"));
             container.Add(radioButtonGroup);
         }
     }
 }
+
+
+

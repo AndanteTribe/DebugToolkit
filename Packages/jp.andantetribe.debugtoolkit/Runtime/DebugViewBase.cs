@@ -80,7 +80,7 @@ namespace DebugToolkit
                 var masterWindow = safeAreaContainer.AddWindow("Debug Toolkit");
 
                 var windowList = new ScrollView();
-                windowList.AddToClassList(DebugConst.DebugToolkitWindowListClassName);
+                windowList.AddToClassList(DebugConst.WindowListClassName);
                 masterWindow.Add(windowList);
                 var label = new Label("Debug Window List");
                 windowList.Add(label);
@@ -88,7 +88,7 @@ namespace DebugToolkit
 
                 var toggleAllButton = new Button();
                 toggleAllButton.clicked += ToggleAllVisible;
-                toggleAllButton.AddToClassList(DebugConst.DebugToolkitClassName + "__toggle-all-button");
+                toggleAllButton.AddToClassList(DebugConst.ClassName + "__toggle-all-button");
                 safeAreaContainer.Add(toggleAllButton);
             }
 

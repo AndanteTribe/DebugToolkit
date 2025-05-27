@@ -2,8 +2,11 @@
 {
     public class DebugConst
     {
-        public const string DebugToolkitClassName = "debug-toolkit";
-        public const string DebugToolkitWindowListClassName = DebugToolkitClassName + "__window-list";
-        public const string DebugToolkitWindowContentClassName = DebugToolkitClassName + "__window-content";
+        public const string ClassName = "debug-toolkit";
+        public const string WindowListClassName = ClassName + "__window-list";
+        public const string WindowContentClassName = ClassName + "__window-content";
+        public const string WindowLabelClassName = ClassName + "__window-label";
+        public const string WindowHeaderClassName = ClassName + "__window-header";
+        public const string ToggleWindowDisplayClassName = ClassName + "__toggle-window-display";
     }
 }

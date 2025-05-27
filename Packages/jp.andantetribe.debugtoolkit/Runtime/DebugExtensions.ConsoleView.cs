@@ -25,7 +25,7 @@ namespace DebugToolkit
             Application.logMessageReceived += logCallback;
 
             var consoleView = new VisualElement();
-            consoleView.AddToClassList(DebugConst.DebugToolkitClassName + "__console-view");
+            consoleView.AddToClassList(DebugConst.ClassName + "__console-view");
 
             consoleView.RegisterCallback<DetachFromPanelEvent>(evt =>
             {

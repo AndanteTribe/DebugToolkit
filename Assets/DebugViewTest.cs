@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace DebugToolkit.Tests
+namespace DebugToolkit
 {
     public class DebugViewTest : DebugViewerBase
     {
