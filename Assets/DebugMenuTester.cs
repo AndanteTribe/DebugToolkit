@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace DebugToolkit.Tests
+namespace DebugToolkit
 {
     public class DebugMenuTester : MonoBehaviour
     {
