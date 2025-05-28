@@ -70,7 +70,7 @@ namespace DebugToolkit.Tests
         public void ScrollView_IsCorrectlyAddedAtTab()
         {
             var tab = _debugViewTabTest.Root.Q<Tab>();
-            Assert.That(tab.Q<ScrollView>(),Is.Not.Null);
+            Assert.That(tab.Q<ScrollView>(),Is.Not.Null, "ScrollView should be added to Tab.");
         }
 
         // タブビューがないときにAddTabしたらTabViewが生えるかテスト
@@ -79,7 +79,7 @@ namespace DebugToolkit.Tests
         {
             var anotherWindow = _debugViewTabTest.Root.AddWindow("AnotherWindow");
             var (tabRoot, tab) = anotherWindow.AddTab();
-            Assert.That(anotherWindow.Q<TabView>(),Is.Not.Null);
+            Assert.That(anotherWindow.Q<TabView>(),Is.Not.Null, "TabView should be added to Window when AddTab.");
         }
 
         // タブの名前のラベルが正しく適応されているかテスト
@@ -89,7 +89,7 @@ namespace DebugToolkit.Tests
             var anotherWindow = _debugViewTabTest.Root.AddWindow("AnotherWindow");
             var (tabRoot, tab) = anotherWindow.AddTab("NewTab");
             Assert.That(anotherWindow.Q<Tab>(),Is.Not.Null);
-            Assert.That(anotherWindow.Q<Tab>().label, Is.EqualTo("NewTab"));
+            Assert.That(anotherWindow.Q<Tab>().label, Is.EqualTo("NewTab"), "Tab label should be set correctly.");
         }
 
         private static EditorWindow GetGameView()

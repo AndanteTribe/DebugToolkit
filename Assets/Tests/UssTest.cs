@@ -12,7 +12,7 @@ namespace DebugToolkit.Tests
 {
     public class UssTest
     {
-        private DebugViewUssTest _debugViewUssTest;
+        private DebugViewTestBase _debugViewUssTest;
         private readonly InputTestFixture _input = new();
 
         [OneTimeSetUp]
@@ -39,7 +39,7 @@ namespace DebugToolkit.Tests
             _input.Setup();
             InputSystem.settings.backgroundBehavior = InputSettings.BackgroundBehavior.IgnoreFocus;
             await SceneManager.LoadSceneAsync("DefaultTests", LoadSceneMode.Additive);
-            _debugViewUssTest = new DebugViewUssTest();
+            _debugViewUssTest = new DebugViewTestBase();
         }
 
         [TearDown]
