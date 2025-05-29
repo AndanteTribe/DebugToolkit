@@ -1,66 +1,40 @@
 ﻿using NUnit.Framework;
 using UnityEngine;
-using UnityEditor;
 using UnityEngine.UIElements;
 using System.IO;
-using UnityEngine.SceneManagement;
 using System.Threading.Tasks;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
 
 namespace DebugToolkit.Tests
 {
-    public class UssTest
+    public class UssTest : TestBase
     {
         private DebugViewTestBase _debugViewUssTest;
-        private readonly InputTestFixture _input = new();
 
         [OneTimeSetUp]
-        public void OneTimeSetUp()
+        public override void OneTimeSetUp()
         {
             var directoryPath = Path.Combine(Application.dataPath, "..", "artifacts-screenshot");
             Directory.CreateDirectory(directoryPath);
 
-            var gameView = GetGameView();
-            gameView.minSize = new Vector2(1920, 1080);
-            gameView.position = new Rect(0, 0, 1920, 1080);
+            base.OneTimeSetUp();
         }
 
         [SetUp]
-        public async Task SetUp()
+        public override async Task SetUp()
         {
-            var document = Object.FindAnyObjectByType<UIDocument>();
-            if (document != null)
-            {
-                Object.DestroyImmediate(document.gameObject);
-            }
-
-            DebugViewerBase.MasterWindow = null;
-            _input.Setup();
-            InputSystem.settings.backgroundBehavior = InputSettings.BackgroundBehavior.IgnoreFocus;
-            await SceneManager.LoadSceneAsync("DefaultTests", LoadSceneMode.Additive);
+            await base.SetUp();
             _debugViewUssTest = new DebugViewTestBase();
         }
 
         [TearDown]
-        public async Task TearDown()
+        public override async Task TearDown()
         {
-            _input.TearDown();
-            InputSystem.settings.backgroundBehavior = InputSettings.BackgroundBehavior.ResetAndDisableNonBackgroundDevices;
-            var testScene = SceneManager.GetSceneByName("DefaultTests");
-            if (testScene.isLoaded)
-            {
-                await SceneManager.UnloadSceneAsync(testScene);
-            }
+            await base.TearDown();
 
             //  インスタンスの破棄、場合によってはやめた方がいいかも？
             _debugViewUssTest = null;
-        }
-
-        [Test]
-        public void NullTest()
-        {
-            Assert.That(_input, Is.Not.Null);
         }
 
         [Test]
@@ -75,15 +49,15 @@ namespace DebugToolkit.Tests
             await Awaitable.NextFrameAsync();
 
             var mouse = InputSystem.AddDevice<Mouse>();
-            _input.Set(mouse.position, new Vector2(110, 930));
-            _input.Click(mouse.leftButton);
+            Input.Set(mouse.position, new Vector2(110, 930));
+            Input.Click(mouse.leftButton);
 
             await Awaitable.NextFrameAsync();
 
             await CaptureScreenAsync(nameof(UssWindow_AllElementsTest) + "_scroll-before");
 
-            _input.Set(mouse.position, new Vector2(280, 430));
-            _input.Set(mouse.scroll, new Vector2(0, -100));
+            Input.Set(mouse.position, new Vector2(280, 430));
+            Input.Set(mouse.scroll, new Vector2(0, -100));
 
             await Awaitable.NextFrameAsync();
 
@@ -103,15 +77,15 @@ namespace DebugToolkit.Tests
             await Awaitable.NextFrameAsync();
 
             var mouse = InputSystem.AddDevice<Mouse>();
-            _input.Set(mouse.position, new Vector2(110, 930));
-            _input.Click(mouse.leftButton);
+            Input.Set(mouse.position, new Vector2(110, 930));
+            Input.Click(mouse.leftButton);
 
             await Awaitable.NextFrameAsync();
 
             await CaptureScreenAsync(nameof(UssTab_AllElementsTest) + "_scroll-before");
 
-            _input.Set(mouse.position, new Vector2(280, 430));
-            _input.Set(mouse.scroll, new Vector2(0, -100));
+            Input.Set(mouse.position, new Vector2(280, 430));
+            Input.Set(mouse.scroll, new Vector2(0, -100));
 
             await Awaitable.NextFrameAsync();
 
@@ -119,9 +93,6 @@ namespace DebugToolkit.Tests
 
             Assert.That(tab1.childCount, Is.GreaterThan(0));
         }
-
-        private static EditorWindow GetGameView()
-            => EditorWindow.GetWindow(System.Type.GetType("UnityEditor.GameView,UnityEditor"));
 
         private static async Awaitable<string> CaptureScreenAsync(string fineName)
         {

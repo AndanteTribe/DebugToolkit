@@ -2,7 +2,6 @@
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.UIElements;
-using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 using System.Threading.Tasks;
 using System.Collections.Generic;
@@ -10,33 +9,17 @@ using UnityEngine.TestTools;
 
 namespace DebugToolkit.Tests
 {
-    public class CustomElementTest
+    public class CustomElementTest: TestBase
     {
         private DebugViewTestBase _debugViewCustomElementTest;
-        private readonly InputTestFixture _input = new();
 
         [OneTimeSetUp]
-        public void OneTimeSetUp()
-        {
-            var gameView = GetGameView();
-            gameView.minSize = new Vector2(1920, 1080);
-            gameView.maxSize = new Vector2(1920, 1080);
-            gameView.Focus();
-            gameView.position = new Rect(0, 0, 1920, 1080);
-        }
+        public override void OneTimeSetUp() => base.OneTimeSetUp();
 
         [SetUp]
-        public async Task SetUp()
+        public override async Task SetUp()
         {
-            var document = Object.FindAnyObjectByType<UIDocument>();
-            if (document != null)
-            {
-                Object.DestroyImmediate(document.gameObject);
-            }
-
-            _input.Setup();
-            InputSystem.settings.backgroundBehavior = InputSettings.BackgroundBehavior.IgnoreFocus;
-            await SceneManager.LoadSceneAsync("DefaultTests", LoadSceneMode.Additive);
+            await base.SetUp();
             _debugViewCustomElementTest = new DebugViewTestBase();
             _debugViewCustomElementTest.Start();
             await Awaitable.NextFrameAsync();
@@ -44,15 +27,9 @@ namespace DebugToolkit.Tests
         }
 
         [TearDown]
-        public async Task TearDown()
+        public override async Task TearDown()
         {
-            _input.TearDown();
-            InputSystem.settings.backgroundBehavior = InputSettings.BackgroundBehavior.ResetAndDisableNonBackgroundDevices;
-            var testScene = SceneManager.GetSceneByName("DefaultTests");
-            if (testScene.isLoaded)
-            {
-                await SceneManager.UnloadSceneAsync(testScene);
-            }
+            await base.TearDown();
 
             //  インスタンスの破棄、場合によってはやめた方がいいかも？
             _debugViewCustomElementTest= null;
@@ -63,7 +40,7 @@ namespace DebugToolkit.Tests
         [Test]
         public void InputNullTest()
         {
-            Assert.That(_input, Is.Not.Null);
+            Assert.That(Input, Is.Not.Null);
         }
 
         private static EditorWindow GetGameView()
@@ -125,8 +102,8 @@ namespace DebugToolkit.Tests
             Assert.That(items, Is.Not.Null.And.Count.GreaterThanOrEqualTo(3), "There are fewer than 3 items in the ListView.");
 
             var mouse = InputSystem.AddDevice<Mouse>();
-            _input.Set(mouse.position, new Vector2(positionX0, 824));
-            _input.Click(mouse.leftButton);
+            Input.Set(mouse.position, new Vector2(positionX0, 824));
+            Input.Click(mouse.leftButton);
             await Awaitable.NextFrameAsync();
             await Awaitable.NextFrameAsync();
             await Awaitable.NextFrameAsync();
@@ -135,8 +112,8 @@ namespace DebugToolkit.Tests
             Assert.That(filteredItems, Is.Not.Null, "1: The type of the filter result is incorrect.");
             Assert.That(filteredItems.Count, Is.EqualTo(2), "1: The search results are not filtered correctly.");
 
-            _input.Set(mouse.position, new Vector2(positionX1, 824));
-            _input.Click(mouse.leftButton);
+            Input.Set(mouse.position, new Vector2(positionX1, 824));
+            Input.Click(mouse.leftButton);
             await Awaitable.NextFrameAsync();
             await Awaitable.NextFrameAsync();
 
@@ -145,8 +122,8 @@ namespace DebugToolkit.Tests
             Assert.That(filteredItems.Count, Is.EqualTo(1), "2: The search results are not filtered correctly.");
             Assert.That(filteredItems[0].type, Is.EqualTo(type), "2: The log type of the filter result is not a warning.");
 
-            _input.Set(mouse.position, new Vector2(positionX2, 824));
-            _input.Click(mouse.leftButton);
+            Input.Set(mouse.position, new Vector2(positionX2, 824));
+            Input.Click(mouse.leftButton);
             await Awaitable.NextFrameAsync();
             await Awaitable.NextFrameAsync();
 

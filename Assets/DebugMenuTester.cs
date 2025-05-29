@@ -13,7 +13,7 @@ namespace DebugToolkit
 
         private void Update()
         {
-            Debug.Log(Pointer.current.position.ReadValue());
+            // Debug.Log(Pointer.current.position.ReadValue());
         }
     }
 }
