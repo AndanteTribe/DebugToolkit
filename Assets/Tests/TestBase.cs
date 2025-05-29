@@ -34,7 +34,8 @@ namespace DebugToolkit.Tests
             Input.Setup();
             InputSystem.settings.backgroundBehavior = InputSettings.BackgroundBehavior.IgnoreFocus;
             await SceneManager.LoadSceneAsync("DefaultTests", LoadSceneMode.Additive);
-            await Awaitable.EndOfFrameAsync();
+            await Awaitable.NextFrameAsync();
+            await Awaitable.NextFrameAsync();
         }
 
         [TearDown]
