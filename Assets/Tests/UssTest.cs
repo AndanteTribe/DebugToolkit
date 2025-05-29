@@ -47,11 +47,13 @@ namespace DebugToolkit.Tests
             window.Add(scrollview);
             AddAllUIElements(scrollview);
             await Awaitable.NextFrameAsync();
+            await Awaitable.NextFrameAsync();
 
             var mouse = InputSystem.AddDevice<Mouse>();
             Input.Set(mouse.position, new Vector2(110, 930));
             Input.Click(mouse.leftButton);
 
+            await Awaitable.NextFrameAsync();
             await Awaitable.NextFrameAsync();
 
             await CaptureScreenAsync(nameof(UssWindow_AllElementsTest) + "_scroll-before");
@@ -59,6 +61,7 @@ namespace DebugToolkit.Tests
             Input.Set(mouse.position, new Vector2(280, 430));
             Input.Set(mouse.scroll, new Vector2(0, -100));
 
+            await Awaitable.NextFrameAsync();
             await Awaitable.NextFrameAsync();
 
             await CaptureScreenAsync(nameof(UssWindow_AllElementsTest) + "_scroll-after");
@@ -75,11 +78,13 @@ namespace DebugToolkit.Tests
             var (tabRoot, tab1) = window.AddTab("Test");
             AddAllUIElements(tab1);
             await Awaitable.NextFrameAsync();
+            await Awaitable.NextFrameAsync();
 
             var mouse = InputSystem.AddDevice<Mouse>();
             Input.Set(mouse.position, new Vector2(110, 930));
             Input.Click(mouse.leftButton);
 
+            await Awaitable.NextFrameAsync();
             await Awaitable.NextFrameAsync();
 
             await CaptureScreenAsync(nameof(UssTab_AllElementsTest) + "_scroll-before");
@@ -87,6 +92,7 @@ namespace DebugToolkit.Tests
             Input.Set(mouse.position, new Vector2(280, 430));
             Input.Set(mouse.scroll, new Vector2(0, -100));
 
+            await Awaitable.NextFrameAsync();
             await Awaitable.NextFrameAsync();
 
             await CaptureScreenAsync(nameof(UssTab_AllElementsTest) + "_scroll-after");
