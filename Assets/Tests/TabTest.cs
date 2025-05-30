@@ -1,8 +1,7 @@
 ﻿#if UNITY_2023_2_OR_NEWER
-using NUnit.Framework;
-using UnityEngine;
-using UnityEngine.UIElements;
 using System.Threading.Tasks;
+using NUnit.Framework;
+using UnityEngine.UIElements;
 
 namespace DebugToolkit.Tests
 {
@@ -26,13 +25,11 @@ namespace DebugToolkit.Tests
         {
             await base.TearDown();
 
-            //  インスタンスの破棄、場合によってはやめた方がいいかも？
+            // Destroy the instance. In some cases, it might be better not to do this.
             _debugViewTabTest = null;
-            DebugViewerBase.MasterWindow = null;
-            DebugViewerBase.DebugWindowList.Clear();
         }
 
-        // タブにスクロールビューが生えてるかテスト
+        // Test if ScrollView is properly added to the tab
         [Test]
         public void ScrollView_IsCorrectlyAddedAtTab()
         {
@@ -40,7 +37,7 @@ namespace DebugToolkit.Tests
             Assert.That(tab.Q<ScrollView>(), Is.Not.Null, "ScrollView should be added to Tab.");
         }
 
-        // タブビューがないときにAddTabしたらTabViewが生えるかテスト
+        // Test if TabView is created when AddTab is called without an existing TabView
         [Test]
         public void TabView_IsCorrectlyAdded_WhenAddTab()
         {
@@ -49,7 +46,7 @@ namespace DebugToolkit.Tests
             Assert.That(anotherWindow.Q<TabView>(), Is.Not.Null, "TabView should be added to Window when AddTab.");
         }
 
-        // タブの名前のラベルが正しく適応されているかテスト
+        // Test if the tab label is correctly set
         [Test]
         public void TabLabel_IsCorrectlySet()
         {

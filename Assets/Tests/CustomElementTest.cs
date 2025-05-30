@@ -1,11 +1,10 @@
-﻿using NUnit.Framework;
-using UnityEngine;
-using UnityEditor;
-using UnityEngine.UIElements;
-using UnityEngine.InputSystem;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Collections.Generic;
+using NUnit.Framework;
+using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.TestTools;
+using UnityEngine.UIElements;
 
 namespace DebugToolkit.Tests
 {
@@ -22,8 +21,6 @@ namespace DebugToolkit.Tests
             await base.SetUp();
             _debugViewCustomElementTest = new DebugViewTestBase();
             _debugViewCustomElementTest.Start();
-            await Awaitable.NextFrameAsync();
-            await Awaitable.NextFrameAsync();
         }
 
         [TearDown]
@@ -31,14 +28,9 @@ namespace DebugToolkit.Tests
         {
             await base.TearDown();
 
-            //  インスタンスの破棄、場合によってはやめた方がいいかも？
+            // Destroy the instance. In some cases, it might be better not to do this.
             _debugViewCustomElementTest= null;
-            DebugViewerBase.MasterWindow = null;
-            DebugViewerBase.DebugWindowList.Clear();
         }
-
-        private static EditorWindow GetGameView()
-            => EditorWindow.GetWindow(System.Type.GetType("UnityEditor.GameView,UnityEditor"));
 
         [Test]
         public async Task AddProfileInfoLabel_DisplaysCorrectProfileInfo()
@@ -74,7 +66,7 @@ namespace DebugToolkit.Tests
         [TestCase(332, 220, 441, LogType.Error)]
         [TestCase(441, 220, 332, LogType.Warning)]
         [TestCase(441, 332, 220, LogType.Log)]
-        public async Task ConsoleVIew_SearchAndCategorizeMessages_WorksCorrectly(
+        public async Task ConsoleView_SearchAndCategorizeMessages_WorksCorrectly(
             int positionX0, int positionX1, int positionX2, LogType type)
         {
             var window = _debugViewCustomElementTest.Root.AddWindow("TestWindow");
@@ -87,39 +79,26 @@ namespace DebugToolkit.Tests
             LogAssert.Expect("Test error message");
             Debug.LogError("Test error message");
 
-            await Awaitable.NextFrameAsync();
-            await Awaitable.NextFrameAsync();
-
             var listView = consoleView.Q<ListView>();
             Assert.That(listView, Is.Not.Null, "The ListView does not exist.");
             var items = listView.itemsSource as List<(string message, string stackTrace, LogType type)>;
             Assert.That(items, Is.Not.Null.And.Count.GreaterThanOrEqualTo(3), "There are fewer than 3 items in the ListView.");
 
             var mouse = InputSystem.AddDevice<Mouse>();
-            Input.Set(mouse.position, new Vector2(positionX0, 824));
-            Input.Click(mouse.leftButton);
-            await Awaitable.NextFrameAsync();
-            await Awaitable.NextFrameAsync();
-            await Awaitable.NextFrameAsync();
+            await ClickAtPositionAsync(mouse, new Vector2(positionX0, 824));
 
             var filteredItems = listView.itemsSource as List<(string message, string stackTrace, LogType type)>;
             Assert.That(filteredItems, Is.Not.Null, "1: The type of the filter result is incorrect.");
             Assert.That(filteredItems.Count, Is.EqualTo(2), "1: The search results are not filtered correctly.");
 
-            Input.Set(mouse.position, new Vector2(positionX1, 824));
-            Input.Click(mouse.leftButton);
-            await Awaitable.NextFrameAsync();
-            await Awaitable.NextFrameAsync();
+            await ClickAtPositionAsync(mouse, new Vector2(positionX1, 824));
 
             filteredItems = listView.itemsSource as List<(string message, string stackTrace, LogType type)>;
             Assert.That(filteredItems, Is.Not.Null, "2: The type of the filter result is incorrect.");
             Assert.That(filteredItems.Count, Is.EqualTo(1), "2: The search results are not filtered correctly.");
             Assert.That(filteredItems[0].type, Is.EqualTo(type), "2: The log type of the filter result is not a warning.");
 
-            Input.Set(mouse.position, new Vector2(positionX2, 824));
-            Input.Click(mouse.leftButton);
-            await Awaitable.NextFrameAsync();
-            await Awaitable.NextFrameAsync();
+            await ClickAtPositionAsync(mouse, new Vector2(positionX2, 824));
 
             filteredItems = listView.itemsSource as List<(string message, string stackTrace, LogType type)>;
             Assert.That(filteredItems, Is.Not.Null, "3: The type of the filter result is incorrect.");

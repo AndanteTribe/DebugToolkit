@@ -44,6 +44,7 @@ namespace DebugToolkit.Tests
                 await SceneManager.UnloadSceneAsync(testScene);
             }
             DebugViewerBase.MasterWindow = null;
+            DebugViewerBase.DebugWindowList.Clear();
         }
 
         [Test]
@@ -54,5 +55,21 @@ namespace DebugToolkit.Tests
 
         private static EditorWindow GetGameView()
             => EditorWindow.GetWindow(System.Type.GetType("UnityEditor.GameView,UnityEditor"));
+
+        protected async Awaitable ClickAtPositionAsync(Mouse mouse, Vector2 position)
+        {
+            Input.Set(mouse.position, position);
+            Input.Click(mouse.leftButton);
+            // Wait for two frames to ensure InputSystem events are processed
+            await Awaitable.NextFrameAsync();
+            await Awaitable.NextFrameAsync();
+        }
+
+        protected async Awaitable ScrollAtPositionAsync(Mouse mouse, Vector2 position, Vector2 scrollDelta)
+        {
+            Input.Set(mouse.position, position);
+            Input.Set(mouse.scroll, scrollDelta);
+            await Awaitable.NextFrameAsync();
+        }
     }
 }

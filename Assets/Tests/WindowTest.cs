@@ -27,14 +27,12 @@ namespace DebugToolkit.Tests
         {
             await base.TearDown();
 
-            //  インスタンスの破棄、場合によってはやめた方がいいかも？
+            //  Disposing instances, might be better to reconsider this approach?
             _debugViewWindowTest = null;
-            DebugViewerBase.MasterWindow = null;
-            DebugViewerBase.DebugWindowList.Clear();
         }
 
-        // マスターウィンドウが正しく生成されるかテスト
-        //  いずれマスターウィンドウをstaticじゃなくするときは変更する
+        // Test if the master window is correctly generated
+        //  This will need to be changed when the master window is no longer static
         [Test]
         public void MasterWindow_IsCorrectlyGenerated()
         {
@@ -45,7 +43,7 @@ namespace DebugToolkit.Tests
                 .text, Is.EqualTo("Debug Toolkit"), "MasterWindow title is incorrect.");
         }
 
-        // マスターウィンドウに他のウィンドウを表示するボタンが生成されているかテスト
+        // Test if buttons to display other windows are generated in the master window
         [Test]
         public void MasterWindow_ContainsWindowListButtonsForOtherWindows()
         {
@@ -60,7 +58,7 @@ namespace DebugToolkit.Tests
             Assert.That(toggles.Any(t => t.text == "TestWindow2"), Is.True, "Toggle for TestWindow2 not found.");
         }
 
-        // マスターウィンドウのウィンドウ表示ボタンが正しく動作するかテスト
+        // Test if the window display buttons in the master window work correctly
         [Test]
         [TestCase("TestWindow1", 110, 930)]
         [TestCase("TestWindow2", 112, 872)]
@@ -80,21 +78,14 @@ namespace DebugToolkit.Tests
 
 
             var mouse = InputSystem.AddDevice<Mouse>();
-            Input.Set(mouse.position, new Vector2(screenPosX, screenPosY));
-            Input.Click(mouse.leftButton);
-            await Awaitable.NextFrameAsync();
-            await Awaitable.NextFrameAsync();
+            await ClickAtPositionAsync(mouse, new Vector2(screenPosX, screenPosY));
 
             Assert.That(testWindow.style.display.value, Is.EqualTo(DisplayStyle.Flex),
                 "Window should be visible after toggle.");
             Assert.That(toggle.style.backgroundColor.value, Is.EqualTo(new Color(0.4f, 0.8f, 0.4f)),
                 "Toggle color for visible window is incorrect.");
 
-            Input.Set(mouse.position, new Vector2(screenPosX, screenPosY));
-            Input.Click(mouse.leftButton);
-            await Awaitable.NextFrameAsync();
-            await Awaitable.NextFrameAsync();
-
+            await ClickAtPositionAsync(mouse,  new Vector2(screenPosX, screenPosY));
 
             Assert.That(testWindow.style.display.value, Is.EqualTo(DisplayStyle.None),
                 "Window should be hidden after toggle.");
@@ -102,7 +93,7 @@ namespace DebugToolkit.Tests
                 "Toggle color for hidden window is incorrect.");
         }
 
-        // マスターウィンドウを最小化できるかテスト
+        // Test if the master window can be minimized
         [Test]
         public async Task MasterWindow_CanBeMinimized()
         {
@@ -115,19 +106,14 @@ namespace DebugToolkit.Tests
                 "Window content should be visible initially.");
 
             var mouse = InputSystem.AddDevice<Mouse>();
-            Input.Set(mouse.position, new Vector2(422, 995));
-            Input.Click(mouse.leftButton);
-            await Awaitable.NextFrameAsync();
-            await Awaitable.NextFrameAsync();
+            await ClickAtPositionAsync(mouse,  new Vector2(422, 995));
 
             Assert.That(windowContent.style.display.value, Is.EqualTo(DisplayStyle.None),
                 "Window content should be hidden after minimizing.");
             Assert.That(minimizeButton.text, Is.EqualTo("^"),
                 "Minimize button text should change to '^' when minimized.");
 
-            Input.Click(mouse.leftButton);
-            await Awaitable.NextFrameAsync();
-            await Awaitable.NextFrameAsync();
+            await ClickAtPositionAsync(mouse,  new Vector2(422, 995));
 
             Assert.That(windowContent.style.display.value, Is.EqualTo(DisplayStyle.Flex),
                 "Window content should be visible after maximizing.");
@@ -135,7 +121,7 @@ namespace DebugToolkit.Tests
                 "Minimize button text should change to '-' when maximized.");
         }
 
-        // マスターウィンドウが１つしかないかテスト
+        // Test if there is only one master window
         [Test]
         public void MasterWindow_OnlyOneExists()
         {
@@ -144,7 +130,7 @@ namespace DebugToolkit.Tests
             Assert.That(masterWindows.Count, Is.EqualTo(1), "There should be exactly one master window.");
         }
 
-        // 全表示非表示ボタンが表示されているかテスト
+        // Test if the toggle all button is visible
         [Test]
         public void ToggleAllButton_IsVisible()
         {
@@ -153,7 +139,7 @@ namespace DebugToolkit.Tests
             Assert.That(toggleAllButton, Is.Not.Null, "Toggle all button should be visible.");
         }
 
-        // 全表示非表示ボタンが正しく機能するかテスト
+        // Test if the toggle all button functions correctly
         [Test]
         public async Task ToggleAllButton_TogglesAllWindowsVisibility()
         {
@@ -163,10 +149,7 @@ namespace DebugToolkit.Tests
             }
 
             var mouse = InputSystem.AddDevice<Mouse>();
-            Input.Set(mouse.position, new Vector2(15, 20));
-            Input.Click(mouse.leftButton);
-            await Awaitable.NextFrameAsync();
-            await Awaitable.NextFrameAsync();
+            await ClickAtPositionAsync(mouse, new Vector2(15, 20));
 
             foreach (var window in DebugViewerBase.DebugWindowList)
             {
@@ -174,9 +157,7 @@ namespace DebugToolkit.Tests
                     "Window should be hidden after toggle all.");
             }
 
-            Input.Click(mouse.leftButton);
-            await Awaitable.NextFrameAsync();
-            await Awaitable.NextFrameAsync();
+            await ClickAtPositionAsync(mouse, new Vector2(15, 20));
 
             foreach (var window in DebugViewerBase.DebugWindowList)
             {
@@ -185,7 +166,7 @@ namespace DebugToolkit.Tests
             }
         }
 
-        // 全表示非表示ボタンが１つしかないかテスト
+        // Test if there is only one toggle all button
         [Test]
         public void ToggleAllButton_OnlyOneExists()
         {
@@ -194,7 +175,7 @@ namespace DebugToolkit.Tests
             Assert.That(toggleAllButtons.Count, Is.EqualTo(1), "There should be exactly one toggle all button.");
         }
 
-        // AddWindowで正しいrootが帰って来るかテスト
+        // Test if AddWindow returns the correct root
         [Test]
         public void AddWindow_ReturnsCorrectRoot()
         {
@@ -204,7 +185,7 @@ namespace DebugToolkit.Tests
                 "Returned element should have the window content class.");
         }
 
-        // AddWindowの引数でとったwindowNameが正しく表示されてるかテスト
+        // Test if the windowName taken as an argument in AddWindow is displayed correctly
         [Test]
         public void AddWindow_DisplaysCorrectWindowName()
         {
@@ -217,7 +198,7 @@ namespace DebugToolkit.Tests
             Assert.That(windowLabel.text, Is.EqualTo(windowName), "Window name is not displayed correctly.");
         }
 
-        // ウィンドウがクリックされたら、最前面に来るかテスト
+        // Test if the window comes to the front when clicked
         [Test]
         public async Task Window_BringsToFrontWhenClicked()
         {
@@ -228,26 +209,20 @@ namespace DebugToolkit.Tests
             }
 
             var mouse = InputSystem.AddDevice<Mouse>();
-            Input.Set(mouse.position, new Vector2(476, 894));
-            Input.Click(mouse.leftButton);
-            await Awaitable.NextFrameAsync();
-            await Awaitable.NextFrameAsync();
+            await ClickAtPositionAsync(mouse, new Vector2(476, 894));
 
             var parent = windows[0].parent;
             int lastIndex = parent.childCount - 1;
             Assert.That(parent[lastIndex], Is.EqualTo(windows[1]),
                 "Clicked window1 should be brought to front (last child in parent).");
 
-            Input.Set(mouse.position, new Vector2(557, 828));
-            Input.Click(mouse.leftButton);
-            await Awaitable.NextFrameAsync();
-            await Awaitable.NextFrameAsync();
+            await ClickAtPositionAsync(mouse, new Vector2(557, 828));
 
             Assert.That(parent[lastIndex], Is.EqualTo(windows[2]),
                 "Clicked window2 should be brought to front (last child in parent).");
         }
 
-        // ウィンドウが正しく追加できているかテスト
+        // Test if the window is added correctly
         [Test]
         public void Window_IsCorrectlyAdded()
         {
@@ -261,7 +236,7 @@ namespace DebugToolkit.Tests
                 "Window should be added to the debug window list.");
         }
 
-        // ウィンドウヘッダーが正しく追加されているかテスト
+        // Test if the window header is added correctly
         [Test]
         public void WindowHeader_IsCorrectlyAdded()
         {
@@ -278,7 +253,7 @@ namespace DebugToolkit.Tests
                 "Normal window header should contain a delete button.");
         }
 
-        // ウィンドウの✕ボタンで非表示にできるか & マスターウィンドウ上で表示ボタンの状態が正しく変わるかテスト
+        // Test if the window can be hidden using the X button & if the display button state changes correctly in the master window
         [Test]
         [TestCase("TestWindow1", 110, 930)]
         [TestCase("TestWindow2", 112, 872)]
@@ -290,23 +265,16 @@ namespace DebugToolkit.Tests
                 .Where(t => t.text == windowName).First();
 
             var window = _debugViewWindowTest.Root.Q<VisualElement>(name: windowName);
-            var closeButton = window.Q<Button>(className: DebugConst.ClassName + "__delete-button");
 
             var mouse = InputSystem.AddDevice<Mouse>();
-            Input.Set(mouse.position, new Vector2(screenPosX, screenPosY));
-            Input.Click(mouse.leftButton);
-            await Awaitable.NextFrameAsync();
-            await Awaitable.NextFrameAsync();
+            await ClickAtPositionAsync(mouse, new Vector2(screenPosX, screenPosY));
 
             Assert.That(window.style.display.value, Is.EqualTo(DisplayStyle.Flex),
                 "Window should be visible initially.");
             Assert.That(toggle.style.backgroundColor.value, Is.EqualTo(new Color(0.4f, 0.8f, 0.4f)),
                 "Toggle color should indicate visible window.");
 
-            Input.Set(mouse.position, new Vector2(screenPosX, screenPosY));
-            Input.Click(mouse.leftButton);
-            await Awaitable.NextFrameAsync();
-            await Awaitable.NextFrameAsync();
+            await ClickAtPositionAsync(mouse,new Vector2(screenPosX, screenPosY));
 
             Assert.That(window.style.display.value, Is.EqualTo(DisplayStyle.None),
                 "Window should be hidden after clicking close button.");

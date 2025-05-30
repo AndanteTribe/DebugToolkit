@@ -34,7 +34,7 @@ namespace DebugToolkit.Tests
         {
             await base.TearDown();
 
-            //  インスタンスの破棄、場合によってはやめた方がいいかも？
+            // Destroy the instance. In some cases, it might be better not to do this.
             _debugViewUssTest = null;
         }
 
@@ -45,17 +45,13 @@ namespace DebugToolkit.Tests
             var scrollview = new ScrollView();
             window.Add(scrollview);
             AddAllUIElements(scrollview);
-            await Awaitable.NextFrameAsync();
-            await Awaitable.NextFrameAsync();
 
             var mouse = InputSystem.AddDevice<Mouse>();
-            Input.Set(mouse.position, new Vector2(110, 930));
-            Input.Click(mouse.leftButton);
+            await ClickAtPositionAsync(mouse, new Vector2(110, 930));
 
             await CaptureScreenAsync(nameof(UssWindow_AllElementsTest) + "_scroll-before");
 
-            Input.Set(mouse.position, new Vector2(525, 430));
-            Input.Set(mouse.scroll, new Vector2(0, -100));
+            await ScrollAtPositionAsync(mouse, new Vector2(525, 430), new Vector2(0, -100));
 
             await CaptureScreenAsync(nameof(UssWindow_AllElementsTest) + "_scroll-after");
 
@@ -68,17 +64,13 @@ namespace DebugToolkit.Tests
             var window = _debugViewUssTest.Root.AddWindow("UssTabTest");
             var (tabRoot, tab1) = window.AddTab("Test");
             AddAllUIElements(tab1);
-            await Awaitable.NextFrameAsync();
-            await Awaitable.NextFrameAsync();
 
             var mouse = InputSystem.AddDevice<Mouse>();
-            Input.Set(mouse.position, new Vector2(110, 930));
-            Input.Click(mouse.leftButton);
+            await ClickAtPositionAsync(mouse, new Vector2(110, 930));
 
             await CaptureScreenAsync(nameof(UssTab_AllElementsTest) + "_scroll-before");
 
-            Input.Set(mouse.position, new Vector2(525, 430));
-            Input.Set(mouse.scroll, new Vector2(0, -100));
+            await ScrollAtPositionAsync(mouse, new Vector2(525, 430), new Vector2(0, -100));
 
             await CaptureScreenAsync(nameof(UssTab_AllElementsTest) + "_scroll-after");
 
@@ -90,7 +82,6 @@ namespace DebugToolkit.Tests
             var directoryPath = Path.Combine(Application.dataPath, "..", "artifacts-screenshot");
 
             await Awaitable.EndOfFrameAsync();
-            await Awaitable.NextFrameAsync();
             var result = Path.Combine(directoryPath, fineName + ".png");
             ScreenCapture.CaptureScreenshot(result);
             Debug.Log($"Screenshot captured: {result}");
@@ -191,6 +182,4 @@ namespace DebugToolkit.Tests
         }
     }
 }
-
-
 
