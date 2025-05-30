@@ -15,7 +15,7 @@ namespace DebugToolkit.Tests
         public override void OneTimeSetUp() => base.OneTimeSetUp();
 
         [SetUp]
-        public　override async Task SetUp()
+        public override async Task SetUp()
         {
             await base.SetUp();
             _debugViewWindowTest = new DebugViewWindowTest();
