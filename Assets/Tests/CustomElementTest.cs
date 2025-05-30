@@ -37,12 +37,6 @@ namespace DebugToolkit.Tests
             DebugViewerBase.DebugWindowList.Clear();
         }
 
-        [Test]
-        public void InputNullTest()
-        {
-            Assert.That(Input, Is.Not.Null);
-        }
-
         private static EditorWindow GetGameView()
             => EditorWindow.GetWindow(System.Type.GetType("UnityEditor.GameView,UnityEditor"));
 

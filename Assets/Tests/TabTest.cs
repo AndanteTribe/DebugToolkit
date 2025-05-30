@@ -1,13 +1,12 @@
-﻿using NUnit.Framework;
+﻿#if UNITY_2023_2_OR_NEWER
+using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.UIElements;
 using System.Threading.Tasks;
 
-#if UNITY_2023_2_OR_NEWER
 namespace DebugToolkit.Tests
 {
     public class TabTest : TestBase
-
     {
         private DebugViewTabTest _debugViewTabTest;
 
@@ -20,8 +19,6 @@ namespace DebugToolkit.Tests
             await base.SetUp();
             _debugViewTabTest = new DebugViewTabTest();
             _debugViewTabTest.Start();
-            await Awaitable.NextFrameAsync();
-            await Awaitable.NextFrameAsync();
         }
 
         [TearDown]

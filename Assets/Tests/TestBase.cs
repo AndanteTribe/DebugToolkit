@@ -12,7 +12,6 @@ namespace DebugToolkit.Tests
     {
         protected readonly InputTestFixture Input = new();
 
-        [OneTimeSetUp]
         public virtual void OneTimeSetUp()
         {
             var gameView = GetGameView();
@@ -22,7 +21,6 @@ namespace DebugToolkit.Tests
             gameView.position = new Rect(0, 0, 1920, 1080);
         }
 
-        [SetUp]
         public virtual async Task SetUp()
         {
             var document = Object.FindAnyObjectByType<UIDocument>();
@@ -34,11 +32,8 @@ namespace DebugToolkit.Tests
             Input.Setup();
             InputSystem.settings.backgroundBehavior = InputSettings.BackgroundBehavior.IgnoreFocus;
             await SceneManager.LoadSceneAsync("DefaultTests", LoadSceneMode.Additive);
-            await Awaitable.NextFrameAsync();
-            await Awaitable.NextFrameAsync();
         }
 
-        [TearDown]
         public virtual async Task TearDown()
         {
             Input.TearDown();
@@ -48,6 +43,7 @@ namespace DebugToolkit.Tests
             {
                 await SceneManager.UnloadSceneAsync(testScene);
             }
+            DebugViewerBase.MasterWindow = null;
         }
 
         [Test]

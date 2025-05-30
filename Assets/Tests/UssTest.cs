@@ -25,6 +25,7 @@ namespace DebugToolkit.Tests
         public override async Task SetUp()
         {
             await base.SetUp();
+            Debug.Log("Scene Loaded" + Time.frameCount);
             _debugViewUssTest = new DebugViewTestBase();
             _debugViewUssTest.Start();
         }
@@ -41,6 +42,7 @@ namespace DebugToolkit.Tests
         [Test]
         public async Task UssWindow_AllElementsTest()
         {
+            Debug.Log("Scene Loaded" + Time.frameCount);
             var window = _debugViewUssTest.Root.AddWindow("UssWindowTest");
             var scrollview = new ScrollView();
             window.Add(scrollview);
@@ -52,16 +54,10 @@ namespace DebugToolkit.Tests
             Input.Set(mouse.position, new Vector2(110, 930));
             Input.Click(mouse.leftButton);
 
-            await Awaitable.NextFrameAsync();
-            await Awaitable.NextFrameAsync();
-
             await CaptureScreenAsync(nameof(UssWindow_AllElementsTest) + "_scroll-before");
 
             Input.Set(mouse.position, new Vector2(525, 430));
             Input.Set(mouse.scroll, new Vector2(0, -100));
-
-            await Awaitable.NextFrameAsync();
-            await Awaitable.NextFrameAsync();
 
             await CaptureScreenAsync(nameof(UssWindow_AllElementsTest) + "_scroll-after");
 
@@ -71,6 +67,7 @@ namespace DebugToolkit.Tests
         [Test]
         public async Task UssTab_AllElementsTest()
         {
+            Debug.Log("Scene Loaded" + Time.frameCount);
             var window = _debugViewUssTest.Root.AddWindow("UssTabTest");
             var (tabRoot, tab1) = window.AddTab("Test");
             AddAllUIElements(tab1);
@@ -81,16 +78,10 @@ namespace DebugToolkit.Tests
             Input.Set(mouse.position, new Vector2(110, 930));
             Input.Click(mouse.leftButton);
 
-            await Awaitable.NextFrameAsync();
-            await Awaitable.NextFrameAsync();
-
             await CaptureScreenAsync(nameof(UssTab_AllElementsTest) + "_scroll-before");
 
             Input.Set(mouse.position, new Vector2(525, 430));
             Input.Set(mouse.scroll, new Vector2(0, -100));
-
-            await Awaitable.NextFrameAsync();
-            await Awaitable.NextFrameAsync();
 
             await CaptureScreenAsync(nameof(UssTab_AllElementsTest) + "_scroll-after");
 
