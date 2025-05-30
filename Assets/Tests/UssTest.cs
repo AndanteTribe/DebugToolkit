@@ -1,91 +1,57 @@
 ﻿using NUnit.Framework;
 using UnityEngine;
-using UnityEditor;
 using UnityEngine.UIElements;
 using System.IO;
-using UnityEngine.SceneManagement;
 using System.Threading.Tasks;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
 
 namespace DebugToolkit.Tests
 {
-    public class UssTest
+    public class UssTest : TestBase
     {
-        private DebugViewUssTest _debugViewUssTest;
-        private readonly InputTestFixture _input = new();
+        private DebugViewTestBase _debugViewUssTest;
 
         [OneTimeSetUp]
-        public void OneTimeSetUp()
+        public override void OneTimeSetUp()
         {
             var directoryPath = Path.Combine(Application.dataPath, "..", "artifacts-screenshot");
             Directory.CreateDirectory(directoryPath);
 
-            var gameView = GetGameView();
-            gameView.minSize = new Vector2(1920, 1080);
-            gameView.position = new Rect(0, 0, 1920, 1080);
+            base.OneTimeSetUp();
         }
 
         [SetUp]
-        public async Task SetUp()
+        public override async Task SetUp()
         {
-            var document = Object.FindAnyObjectByType<UIDocument>();
-            if (document != null)
-            {
-                Object.DestroyImmediate(document.gameObject);
-            }
-
-            DebugViewerBase.MasterWindow = null;
-            _input.Setup();
-            InputSystem.settings.backgroundBehavior = InputSettings.BackgroundBehavior.IgnoreFocus;
-            await SceneManager.LoadSceneAsync("DefaultTests", LoadSceneMode.Additive);
-            _debugViewUssTest = new DebugViewUssTest();
+            await base.SetUp();
+            _debugViewUssTest = new DebugViewTestBase();
+            _debugViewUssTest.Start();
         }
 
         [TearDown]
-        public async Task TearDown()
+        public override async Task TearDown()
         {
-            _input.TearDown();
-            InputSystem.settings.backgroundBehavior = InputSettings.BackgroundBehavior.ResetAndDisableNonBackgroundDevices;
-            var testScene = SceneManager.GetSceneByName("DefaultTests");
-            if (testScene.isLoaded)
-            {
-                await SceneManager.UnloadSceneAsync(testScene);
-            }
+            await base.TearDown();
 
-            //  インスタンスの破棄、場合によってはやめた方がいいかも？
+            // Destroy the instance. In some cases, it might be better not to do this.
             _debugViewUssTest = null;
-        }
-
-        [Test]
-        public void NullTest()
-        {
-            Assert.That(_input, Is.Not.Null);
         }
 
         [Test]
         public async Task UssWindow_AllElementsTest()
         {
-            _debugViewUssTest.Start();
-            await Awaitable.NextFrameAsync();
             var window = _debugViewUssTest.Root.AddWindow("UssWindowTest");
             var scrollview = new ScrollView();
             window.Add(scrollview);
             AddAllUIElements(scrollview);
-            await Awaitable.NextFrameAsync();
 
             var mouse = InputSystem.AddDevice<Mouse>();
-            _input.Set(mouse.position, new Vector2(110, 930));
-            _input.Click(mouse.leftButton);
-
-            await Awaitable.NextFrameAsync();
+            await ClickAtPositionAsync(mouse, new Vector2(110, 930));
 
             await CaptureScreenAsync(nameof(UssWindow_AllElementsTest) + "_scroll-before");
 
-            _input.Set(mouse.position, new Vector2(280, 430));
-            _input.Set(mouse.scroll, new Vector2(0, -100));
-
-            await Awaitable.NextFrameAsync();
+            await ScrollAtPositionAsync(mouse, new Vector2(525, 430), new Vector2(0, -100));
 
             await CaptureScreenAsync(nameof(UssWindow_AllElementsTest) + "_scroll-after");
 
@@ -95,40 +61,27 @@ namespace DebugToolkit.Tests
         [Test]
         public async Task UssTab_AllElementsTest()
         {
-            _debugViewUssTest.Start();
-            await Awaitable.NextFrameAsync();
             var window = _debugViewUssTest.Root.AddWindow("UssTabTest");
             var (tabRoot, tab1) = window.AddTab("Test");
             AddAllUIElements(tab1);
-            await Awaitable.NextFrameAsync();
 
             var mouse = InputSystem.AddDevice<Mouse>();
-            _input.Set(mouse.position, new Vector2(110, 930));
-            _input.Click(mouse.leftButton);
-
-            await Awaitable.NextFrameAsync();
+            await ClickAtPositionAsync(mouse, new Vector2(110, 930));
 
             await CaptureScreenAsync(nameof(UssTab_AllElementsTest) + "_scroll-before");
 
-            _input.Set(mouse.position, new Vector2(280, 430));
-            _input.Set(mouse.scroll, new Vector2(0, -100));
-
-            await Awaitable.NextFrameAsync();
+            await ScrollAtPositionAsync(mouse, new Vector2(525, 430), new Vector2(0, -100));
 
             await CaptureScreenAsync(nameof(UssTab_AllElementsTest) + "_scroll-after");
 
             Assert.That(tab1.childCount, Is.GreaterThan(0));
         }
 
-        private static EditorWindow GetGameView()
-            => EditorWindow.GetWindow(System.Type.GetType("UnityEditor.GameView,UnityEditor"));
-
         private static async Awaitable<string> CaptureScreenAsync(string fineName)
         {
             var directoryPath = Path.Combine(Application.dataPath, "..", "artifacts-screenshot");
 
             await Awaitable.EndOfFrameAsync();
-            await Awaitable.NextFrameAsync();
             var result = Path.Combine(directoryPath, fineName + ".png");
             ScreenCapture.CaptureScreenshot(result);
             Debug.Log($"Screenshot captured: {result}");
@@ -229,6 +182,4 @@ namespace DebugToolkit.Tests
         }
     }
 }
-
-
 

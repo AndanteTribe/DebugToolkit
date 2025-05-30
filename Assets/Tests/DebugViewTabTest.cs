@@ -2,7 +2,7 @@
 
 namespace DebugToolkit.Tests
 {
-    public class DebugViewWindowTest : DebugViewerBase
+    public class DebugViewTabTest : DebugViewerBase
     {
         public VisualElement Root { get; private set; }
 
@@ -11,9 +11,11 @@ namespace DebugToolkit.Tests
             var root = base.CreateViewGUI();
             Root = root;
             var window0 = root.AddWindow("TestWindow1");
-            window0.Add(new Button(){text = "TestButton"});
-            var window1 = root.AddWindow("TestWindow2");
-            window1.AddProfileInfoLabel();
+            var (tabRoot, tab1 ) = window0.AddTab("Tab1");
+            tab1.Add(new Label(){text = "TestTab1"});
+            tab1.Add(new Button(){text = "TestButton1"});
+            var tab2 = tabRoot.AddTab("Tab2");
+            tab2.AddProfileInfoLabel();
             return root;
         }
     }
