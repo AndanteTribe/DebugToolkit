@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 
 namespace DebugToolkit.Tests
 {
-    public class CustomElementTest: TestBase
+    public class CustomElementTest : TestBase
     {
         private DebugViewTestBase _debugViewCustomElementTest;
 

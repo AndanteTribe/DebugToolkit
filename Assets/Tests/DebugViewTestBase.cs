@@ -2,7 +2,7 @@
 
 namespace DebugToolkit.Tests
 {
-    public class DebugViewTestBase: DebugViewerBase
+    public class DebugViewTestBase : DebugViewerBase
     {
         public VisualElement Root { get; private set; }
 
