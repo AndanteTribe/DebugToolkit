@@ -25,7 +25,6 @@ namespace DebugToolkit.Tests
         public override async Task SetUp()
         {
             await base.SetUp();
-            Debug.Log("Scene Loaded" + Time.frameCount);
             _debugViewUssTest = new DebugViewTestBase();
             _debugViewUssTest.Start();
         }
@@ -42,7 +41,6 @@ namespace DebugToolkit.Tests
         [Test]
         public async Task UssWindow_AllElementsTest()
         {
-            Debug.Log("Scene Loaded" + Time.frameCount);
             var window = _debugViewUssTest.Root.AddWindow("UssWindowTest");
             var scrollview = new ScrollView();
             window.Add(scrollview);
@@ -67,7 +65,6 @@ namespace DebugToolkit.Tests
         [Test]
         public async Task UssTab_AllElementsTest()
         {
-            Debug.Log("Scene Loaded" + Time.frameCount);
             var window = _debugViewUssTest.Root.AddWindow("UssTabTest");
             var (tabRoot, tab1) = window.AddTab("Test");
             AddAllUIElements(tab1);
