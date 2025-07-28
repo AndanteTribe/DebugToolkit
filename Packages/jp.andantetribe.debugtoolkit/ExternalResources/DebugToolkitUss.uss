@@ -448,6 +448,7 @@
     border-bottom-width: 2px;
     border-bottom-color: var(--debug-toolkit-color-black);
     align-items: flex-end;
+    flex-shrink: 0;
 }
 
 .debug-toolkit__master .debug-toolkit__window-content {
@@ -512,9 +513,9 @@ debug-toolkit__toggle-all-button:hover {
 }
 
 .debug-toolkit__master .debug-toolkit__log-label {
-    
+
 }
 
 .debug-toolkit__master .debug-toolkit__console-toggle-log-show {
-    
+
 }
