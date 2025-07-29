@@ -1,4 +1,7 @@
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class DebugSceneActivater : MonoBehaviour,IDebugInterface
 {
@@ -7,6 +10,24 @@ public class DebugSceneActivater : MonoBehaviour,IDebugInterface
     GameObject _cubeToggleG1;
     GameObject _cubeToggleG2;
     GameObject _cubeToggleG3;
+    Slider _slider;
+    Text _textField;
+    private Slider _vslider;
+    private ParticleSystem _emitParticle;
+    RandomSpawner _randomSpawner;
+    Material _material;
+
+
+    /*
+     * 標準フレームワークと言語のバージョンは違うぞ
+     * 例えばint型。言語で定義されているわけではなく、フレームワークで定義。
+     * public,privateは言語。classとか{get;set;}もc#。
+     * void での return はフレームワークで入所、配布している。
+     * 密接に関わっているもの。疎結合であるものの２つ。
+     * javaはバージョンそろえないとダメ。密接。
+     * C#にはコンパイラーがいる。
+     * List
+     */
 
     public void SetParticle(ParticleSystem par)
     {
@@ -42,10 +63,60 @@ public class DebugSceneActivater : MonoBehaviour,IDebugInterface
         else _cubeToggleG3.SetActive(false);
     }
 
+    public void SetSlider(Slider s)
+    {
+        _slider = s;
+    }
+
+    public void SetVerticalSlider(Slider s)
+    {
+        _vslider = s;
+    }
+
+    public void SetVerticalSliderValue(float s)
+    {
+        _vslider.value = s;
+    }
+
+    public void SetSliderValue(float f)
+    {
+        _slider.value = f;
+    }
+
+    public void SetText(Text t)
+    {
+        _textField = t;
+    }
+
+    public void SetTextValue(string text)
+    {
+        _textField.text = text;
+    }
+
     public void Integer1(int i)
     {
         Debug.Log(i);
     }
 
+    public void SetParticleEmitter(ParticleSystem p)
+    {
+        _emitParticle = p;
+    }
+    public void ChangeParticleEmitter(int count)
+    {
+        var emitter=_emitParticle.emission;
+        emitter.rateOverTime = count;
+    }
+
+    public void SetRandomSpawner(RandomSpawner r)
+    {
+        _randomSpawner = r;
+    }
+
+    public void SetSpawnerRange(float min, float max)
+    {
+        _randomSpawner.minRange = min;
+        _randomSpawner.maxRange = max;
+    }
 
 }
