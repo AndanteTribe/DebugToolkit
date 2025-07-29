@@ -448,6 +448,7 @@
     border-bottom-width: 2px;
     border-bottom-color: var(--debug-toolkit-color-black);
     align-items: flex-end;
+    flex-shrink: 0;
 }
 
 .debug-toolkit__master .debug-toolkit__window-content {
