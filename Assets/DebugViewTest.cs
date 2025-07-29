@@ -15,6 +15,18 @@ namespace DebugToolkit
         bool _objectFinding = false;
         float _minXValue = 1f;
         float _maXValue = 100f;
+        DebugSceneActivater _debugSceneActivater=new DebugSceneActivater();
+
+        public DebugViewTest(ParticleSystem par,GameObject obj1,
+            GameObject objToG1,GameObject objToG2,GameObject objToG3)
+        {
+            _debugSceneActivater.SetParticle(par);
+            _debugSceneActivater.SetCube(obj1);
+            _debugSceneActivater.SetCapToggle(objToG1,0);
+            _debugSceneActivater.SetCapToggle(objToG2,1);
+            _debugSceneActivater.SetCapToggle(objToG3,2);
+        }
+
 
         public enum EnumTypes
         {
@@ -32,26 +44,45 @@ namespace DebugToolkit
             var tab2 = tabRoot.AddTab("Tab2");
 
 
+
             var testText = new Label() { text = "hoge" };
             tab1.Add(testText);
 
             var objectFinderButton = new Button() { text = "Object Finder" };
-            objectFinderButton.clicked += () => Debug.Log("Button Clicked");
+            objectFinderButton.clicked += () =>
+            {
+                _debugSceneActivater.PlayParticle();
+            };
             tab1.Add(objectFinderButton);
 
             var toggle = new Toggle() { text = $"Toggle:false" };
-            toggle.RegisterValueChangedCallback((evt) => toggle.text = $"Toggle:{evt.newValue}");
+            toggle.RegisterValueChangedCallback((evt) =>
+            {
+                _debugSceneActivater.Boolean1(evt.newValue);
+            });
             tab1.Add(toggle);
 
             var toggleGroup = new ToggleButtonGroup();
             toggleGroup.label="ToggleGroup";
-            //toggle以外にもいけるのでは？
-            var button = new Button() { text = "Button" };
-            toggleGroup.Add(button);
+            var toggleG1=new Toggle(){text = "Toggle 1"};
+            toggleG1.RegisterValueChangedCallback(evt =>
+            {
+                _debugSceneActivater.ShowToggle(0);
+            });
             var toggleG2=new Toggle(){text = "Toggle 2"};
+            toggleG2.RegisterValueChangedCallback(evt =>
+            {
+                _debugSceneActivater.ShowToggle(1);
+            });
             var toggleG3=new Toggle(){text = "Toggle 3"};
+            toggleG3.RegisterValueChangedCallback(evt =>
+            {
+                _debugSceneActivater.ShowToggle(2);
+            });
+            toggleGroup.Add(toggleG1);
             toggleGroup.Add(toggleG2);
             toggleGroup.Add(toggleG3);
+            toggleGroup.isMultipleSelection = false;
             tab1.Add(toggleGroup);
 
 

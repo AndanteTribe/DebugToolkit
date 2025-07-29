@@ -1,4 +1,5 @@
 public interface IDebugInterface
 {
-    int Integer1();
+    void Integer1(int i);
+    void Boolean1(bool b);
 }
