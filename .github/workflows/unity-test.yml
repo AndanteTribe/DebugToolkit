@@ -1,9 +1,5 @@
 name: Run the Unity Test
 on:
-  pull_request:
-    types:
-      - opened
-      - synchronize
   pull_request_target:
     types:
       - labeled
