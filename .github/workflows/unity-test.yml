@@ -1,5 +1,9 @@
 name: Run the Unity Test
 on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
   pull_request_target:
     types:
       - labeled
@@ -12,7 +16,7 @@ jobs:
   build:
       name: Run the Unity Test
       runs-on: ubuntu-latest
-      if: contains(github.event.pull_request.labels.*.name, 'request-ci')
+      if: github.event.label.name == 'request-ci'
       steps:
         - uses: actions/checkout@v4
           with:
