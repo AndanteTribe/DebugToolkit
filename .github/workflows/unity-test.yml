@@ -2,23 +2,21 @@ name: Run the Unity Test
 on:
   pull_request_target:
     types:
-      - opened
-      - synchronize
+      - labeled
   push:
     branches:
     - main
   workflow_dispatch: {}
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
 
 jobs:
   build:
       name: Run the Unity Test
       runs-on: ubuntu-latest
-      if: contains(github.event.pull_request.labels.*.name, 'request-ci')
+      if: github.event.label.name == 'request-ci'
       steps:
         - uses: actions/checkout@v4
+          with:
+            ref: ${{ github.event.pull_request.head.sha }}
         - name: Set outputs
           id: vars
           run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
