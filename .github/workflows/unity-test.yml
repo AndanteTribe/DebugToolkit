@@ -2,8 +2,7 @@ name: Run the Unity Test
 on:
   pull_request_target:
     types:
-      - opened
-      - synchronize
+      - labeled
   push:
     branches:
     - main
@@ -16,6 +15,8 @@ jobs:
       if: contains(github.event.pull_request.labels.*.name, 'request-ci')
       steps:
         - uses: actions/checkout@v4
+          with:
+            ref: ${{ github.event.pull_request.head.sha }}
         - name: Set outputs
           id: vars
           run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
