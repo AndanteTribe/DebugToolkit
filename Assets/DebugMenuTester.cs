@@ -14,11 +14,16 @@ namespace DebugToolkit
         public Slider vSlider;
         public ParticleSystem emitter;
         public RandomSpawner randomSpawner;
+        public Text dropFieldText;
+        public Text enumFieldText;
+        public Material material;
+        public GameObject hideObject;
         void Start()
         {
             DebugViewTest debugViewTest = new DebugViewTest(particle,cube,
                 toggleObjects[0],toggleObjects[1],toggleObjects[2],
-                slider,text,vSlider,emitter,randomSpawner);
+                slider,text,vSlider,emitter,randomSpawner,
+                dropFieldText,enumFieldText,hideObject,material);
             debugViewTest.Start();
         }
 
