@@ -15,7 +15,7 @@ jobs:
       if: ${{ github.event_name == 'pull_request_target' && github.event.label.name == 'request-ci' || github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
       steps:
         - uses: actions/checkout@v4
-          with:
+        - with:
             ref: ${{ github.event.pull_request.head.sha || github.sha }}
         - name: Set outputs
           id: vars
