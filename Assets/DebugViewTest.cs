@@ -20,7 +20,8 @@ namespace DebugToolkit
 
         public DebugViewTest(ParticleSystem par,GameObject obj1,
             GameObject objToG1,GameObject objToG2,GameObject objToG3,
-            Slider sl,Text txt,Slider vSlider,ParticleSystem emitter,RandomSpawner randomSpawner)
+            Slider sl,Text txt,Slider vSlider,ParticleSystem emitter,RandomSpawner randomSpawner,
+            Text dropText,Text enumText,GameObject hider,Material mat)
         {
             _debugSceneActivater.SetParticle(par);
             _debugSceneActivater.SetCube(obj1);
@@ -32,6 +33,10 @@ namespace DebugToolkit
             _debugSceneActivater.SetVerticalSlider(vSlider);
             _debugSceneActivater.SetParticleEmitter(emitter);
             _debugSceneActivater.SetRandomSpawner(randomSpawner);
+            _debugSceneActivater.material = mat;
+            _debugSceneActivater.hideObject = hider;
+            _debugSceneActivater.dropDownText= dropText;
+            _debugSceneActivater.enumFieldText= enumText;
         }
 
 
@@ -186,21 +191,32 @@ namespace DebugToolkit
             var dropdown = new DropdownField();
             dropdown.label = "Dropdown:";
             dropdown.choices = new List<string>() {"Choice 1","Choice 2","Choice 3" };
+            dropdown.RegisterValueChangedCallback(evt =>
+            {
+                _debugSceneActivater.SetDropdownText(evt.newValue);
+            });
             tab1.Add(dropdown);
 
             var enumField=new EnumField("EnumField :",EnumTypes.Enum1);
+            enumField.RegisterValueChangedCallback(evt =>
+            {
+                _debugSceneActivater.SetEnumText(evt.newValue.ToString());
+            });
             tab1.Add(enumField);
 
             var radioButton = new RadioButton();
             radioButton.label = "RadioButton:";
+            radioButton.RegisterValueChangedCallback(evt =>
+            {
+                _debugSceneActivater.SetHide(evt.newValue);
+            });
             tab1.Add(radioButton);
 
             var radioGroup = new RadioButtonGroup();
-            radioGroup.choices = new List<string>() {"Radio 1","Radio 2","Radio 3"};
+            radioGroup.choices = new List<string>() {"red","green","blue"};
             radioGroup.RegisterValueChangedCallback(t =>
             {
-                string answerValue = t.newValue.ToString();
-                Debug.Log($"Pushed :{answerValue}");
+                _debugSceneActivater.SetMaterial(radioGroup.value);
             });
             tab1.Add(radioGroup);
 

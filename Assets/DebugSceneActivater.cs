@@ -15,7 +15,10 @@ public class DebugSceneActivater : MonoBehaviour,IDebugInterface
     private Slider _vslider;
     private ParticleSystem _emitParticle;
     RandomSpawner _randomSpawner;
-    Material _material;
+    public Text dropDownText;
+    public Text enumFieldText;
+    public GameObject hideObject;
+    public Material material;
 
 
     /*
@@ -117,6 +120,28 @@ public class DebugSceneActivater : MonoBehaviour,IDebugInterface
     {
         _randomSpawner.minRange = min;
         _randomSpawner.maxRange = max;
+    }
+
+    public void SetDropdownText(string st)
+    {
+        dropDownText.text = st;
+    }
+
+    public void SetEnumText(string st)
+    {
+        enumFieldText.text = st;
+    }
+
+    public void SetHide(bool b)
+    {
+        hideObject.SetActive(b);
+    }
+
+    public void SetMaterial(int v)
+    {
+        if (v == 0) material.color = Color.red;
+        if (v == 1) material.color = Color.green;
+        if (v == 2) material.color = Color.blue;
     }
 
 }
