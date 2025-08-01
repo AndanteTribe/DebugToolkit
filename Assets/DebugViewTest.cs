@@ -28,6 +28,7 @@ namespace DebugToolkit
             _debugSceneActivator.SetCapToggle(objToG1,0);
             _debugSceneActivator.SetCapToggle(objToG2,1);
             _debugSceneActivator.SetCapToggle(objToG3,2);
+            _debugSceneActivator.SetCapToggle2(objToG1,objToG2,objToG3);
             _debugSceneActivator.SetSlider(sl);
             _debugSceneActivator.SetText(txt);
             _debugSceneActivator.SetVerticalSlider(vSlider);

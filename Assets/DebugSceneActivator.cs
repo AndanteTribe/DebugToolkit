@@ -20,89 +20,81 @@ public class DebugSceneActivator : MonoBehaviour
     private GameObject _hideObject;
     private Material _material;
 
-    public void SetParticle(ParticleSystem par)
-    {
-        _particle = par;
-    }
+    public void SetParticle(ParticleSystem par) => _particle = par;
 
-    public void PlayParticle()
-    {
-        _particle.Play();
-    }
+    public void PlayParticle() => _particle.Play();
 
-    public void SetCube(GameObject obj1)
-    {
-        _cube = obj1;
-    }
-    public void Boolean1(bool b)
-    {
-        _cube.SetActive(b);
-    }
+    public void SetCube(GameObject obj1) => _cube = obj1;
+
+    public void Boolean1(bool b) => _cube.SetActive(b);
+
     public void SetCapToggle(GameObject obj,int i)
     {
-        if (i == 0) _cubeToggleG1 = obj;
-        if (i == 1) _cubeToggleG2 = obj;
-        if (i == 2) _cubeToggleG3 = obj;
+        switch (i)
+        {
+            case 0:
+                _cubeToggleG1 = obj;
+                break;
+            case 1:
+                _cubeToggleG2 = obj;
+                break;
+            case 2:
+                _cubeToggleG3 = obj;
+                break;
+        }
+    }
+
+    public void SetCapToggle2(GameObject obj, GameObject obj2, GameObject obj3)
+    {
+        _cubeToggleG1 = obj;
+        _cubeToggleG2 = obj2;
+        _cubeToggleG3 = obj3;
     }
     public void ShowToggle(int i)
     {
-        if (i == 0) _cubeToggleG1.SetActive(true);
-        else _cubeToggleG1.SetActive(false);
-        if (i == 1) _cubeToggleG2.SetActive(true);
-        else _cubeToggleG2.SetActive(false);
-        if (i == 2) _cubeToggleG3.SetActive(true);
-        else _cubeToggleG3.SetActive(false);
+        switch (i)
+        {
+            case 0:
+                _cubeToggleG1.SetActive(true);
+                _cubeToggleG2.SetActive(false);
+                _cubeToggleG3.SetActive(false);
+                break;
+            case 1:
+                _cubeToggleG1.SetActive(false);
+                _cubeToggleG2.SetActive(true);
+                _cubeToggleG3.SetActive(false);
+                break;
+            case 2:
+                _cubeToggleG1.SetActive(false);
+                _cubeToggleG2.SetActive(false);
+                _cubeToggleG3.SetActive(true);
+                break;
+        }
     }
 
-    public void SetSlider(Slider s)
-    {
-        _slider = s;
-    }
+    public void SetSlider(Slider s) => _slider = s;
 
-    public void SetVerticalSlider(Slider s)
-    {
-        _vslider = s;
-    }
+    public void SetVerticalSlider(Slider s) => _vslider = s;
 
-    public void SetVerticalSliderValue(float s)
-    {
-        _vslider.value = s;
-    }
+    public void SetVerticalSliderValue(float s) => _vslider.value = s;
 
-    public void SetSliderValue(float f)
-    {
-        _slider.value = f;
-    }
+    public void SetSliderValue(float f) => _slider.value = f;
 
-    public void SetText(Text t)
-    {
-        _textField = t;
-    }
+    public void SetText(Text t) => _textField = t;
 
-    public void SetTextValue(string text)
-    {
-        _textField.text = text;
-    }
+    public void SetTextValue(string text) => _textField.text = text;
 
-    public void Integer1(int i)
-    {
-        Debug.Log(i);
-    }
+    public void Integer1(int i) => Debug.Log(i);
 
-    public void SetParticleEmitter(ParticleSystem p)
-    {
-        _emitParticle = p;
-    }
+    public void SetParticleEmitter(ParticleSystem p) => _emitParticle = p;
+
     public void ChangeParticleEmitter(int count)
     {
         var emitter=_emitParticle.emission;
         emitter.rateOverTime = count;
     }
 
-    public void SetRandomSpawner(RandomSpawner r)
-    {
-        _randomSpawner = r;
-    }
+    public void SetRandomSpawner(RandomSpawner r) => _randomSpawner = r;
 
     public void SetSpawnerRange(float min, float max)
     {
@@ -110,45 +102,29 @@ public class DebugSceneActivator : MonoBehaviour
         _randomSpawner.maxRange = max;
     }
 
-    public void SetDropDown(Text txt)
-    {
-        _dropDownText = txt;
-    }
+    public void SetDropDown(Text txt) => _dropDownText = txt;
 
-    public void SetDropdownText(string st)
-    {
-        _dropDownText.text = st;
-    }
-    public void SetEnum(Text txt)
-    {
-        _enumFieldText = txt;
-    }
+    public void SetDropdownText(string st) => _dropDownText.text = st;
 
-    public void SetEnumText(string st)
-    {
-        _enumFieldText.text = st;
-    }
+    public void SetEnum(Text txt) => _enumFieldText = txt;
 
-    public void SetHideObject(GameObject obj)
-    {
-        _hideObject = obj;
-    }
+    public void SetEnumText(string st) => _enumFieldText.text = st;
 
-    public void SetHide(bool b)
-    {
-        _hideObject.SetActive(b);
-    }
+    public void SetHideObject(GameObject obj) => _hideObject = obj;
 
-    public void SetMaterial(Material m)
-    {
-        _material = m;
-    }
+    public void SetHide(bool b) => _hideObject.SetActive(b);
+
+    public void SetMaterial(Material m) => _material = m;
 
     public void SetMaterialColor(int v)
     {
-        if (v == 0) _material.color = Color.red;
-        if (v == 1) _material.color = Color.green;
-        if (v == 2) _material.color = Color.blue;
+        _material.color = v switch
+        {
+            0 => Color.red,
+            1 => Color.green,
+            2 => Color.blue,
+            _ => _material.color
+        };
     }
 
 }

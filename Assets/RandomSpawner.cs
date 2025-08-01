@@ -8,7 +8,7 @@ public class RandomSpawner : MonoBehaviour
 
     void Start()
     {
-        InvokeRepeating("PrefabSpawn",1,3);
+        InvokeRepeating(nameof(PrefabSpawn),1,3);
     }
 
     void PrefabSpawn()
