@@ -16,27 +16,27 @@ namespace DebugToolkit
         bool _objectFinding = false;
         float _minXValue = 1f;
         float _maXValue = 100f;
-        DebugSceneActivater _debugSceneActivater=new DebugSceneActivater();
+        DebugSceneActivator _debugSceneActivator=new DebugSceneActivator();
 
         public DebugViewTest(ParticleSystem par,GameObject obj1,
             GameObject objToG1,GameObject objToG2,GameObject objToG3,
             Slider sl,Text txt,Slider vSlider,ParticleSystem emitter,RandomSpawner randomSpawner,
             Text dropText,Text enumText,GameObject hider,Material mat)
         {
-            _debugSceneActivater.SetParticle(par);
-            _debugSceneActivater.SetCube(obj1);
-            _debugSceneActivater.SetCapToggle(objToG1,0);
-            _debugSceneActivater.SetCapToggle(objToG2,1);
-            _debugSceneActivater.SetCapToggle(objToG3,2);
-            _debugSceneActivater.SetSlider(sl);
-            _debugSceneActivater.SetText(txt);
-            _debugSceneActivater.SetVerticalSlider(vSlider);
-            _debugSceneActivater.SetParticleEmitter(emitter);
-            _debugSceneActivater.SetRandomSpawner(randomSpawner);
-            _debugSceneActivater.material = mat;
-            _debugSceneActivater.hideObject = hider;
-            _debugSceneActivater.dropDownText= dropText;
-            _debugSceneActivater.enumFieldText= enumText;
+            _debugSceneActivator.SetParticle(par);
+            _debugSceneActivator.SetCube(obj1);
+            _debugSceneActivator.SetCapToggle(objToG1,0);
+            _debugSceneActivator.SetCapToggle(objToG2,1);
+            _debugSceneActivator.SetCapToggle(objToG3,2);
+            _debugSceneActivator.SetSlider(sl);
+            _debugSceneActivator.SetText(txt);
+            _debugSceneActivator.SetVerticalSlider(vSlider);
+            _debugSceneActivator.SetParticleEmitter(emitter);
+            _debugSceneActivator.SetRandomSpawner(randomSpawner);
+            _debugSceneActivator.SetMaterial(mat);
+            _debugSceneActivator.SetHideObject(hider);
+            _debugSceneActivator.SetDropDown(dropText);
+            _debugSceneActivator.SetEnum(enumText);
         }
 
 
@@ -63,14 +63,14 @@ namespace DebugToolkit
             var particleEmitButton = new Button() { text = "Particle Emitter" };
             particleEmitButton.clicked += () =>
             {
-                _debugSceneActivater.PlayParticle();
+                _debugSceneActivator.PlayParticle();
             };
             tab1.Add(particleEmitButton);
 
             var toggle = new Toggle() { text = $"Toggle:false" };
             toggle.RegisterValueChangedCallback((evt) =>
             {
-                _debugSceneActivater.Boolean1(evt.newValue);
+                _debugSceneActivator.Boolean1(evt.newValue);
             });
             tab1.Add(toggle);
 
@@ -79,17 +79,17 @@ namespace DebugToolkit
             var toggleG1=new Toggle(){text = "Toggle 1"};
             toggleG1.RegisterValueChangedCallback(evt =>
             {
-                _debugSceneActivater.ShowToggle(0);
+                _debugSceneActivator.ShowToggle(0);
             });
             var toggleG2=new Toggle(){text = "Toggle 2"};
             toggleG2.RegisterValueChangedCallback(evt =>
             {
-                _debugSceneActivater.ShowToggle(1);
+                _debugSceneActivator.ShowToggle(1);
             });
             var toggleG3=new Toggle(){text = "Toggle 3"};
             toggleG3.RegisterValueChangedCallback(evt =>
             {
-                _debugSceneActivater.ShowToggle(2);
+                _debugSceneActivator.ShowToggle(2);
             });
             toggleGroup.Add(toggleG1);
             toggleGroup.Add(toggleG2);
@@ -109,7 +109,7 @@ namespace DebugToolkit
             horizontalScroller.style.width = 300;
             horizontalScroller.valueChanged += (value) =>
             {
-                _debugSceneActivater.SetSliderValue(value);
+                _debugSceneActivator.SetSliderValue(value);
                 ballBlocker.style.left = value;
                 ballBlockerLabel.text = $"Ball Blocker Position: {ballBlocker.style.left}";
             };
@@ -122,7 +122,7 @@ namespace DebugToolkit
             var textField = new TextField() { label = "TextField:" };
             textField.RegisterValueChangedCallback((v) =>
             {
-                _debugSceneActivater.SetTextValue(v.newValue);
+                _debugSceneActivator.SetTextValue(v.newValue);
             });
             tab1.Add(textField);
 
@@ -133,7 +133,7 @@ namespace DebugToolkit
             var particleEmitButtonInFold = new Button() { text = "Particle Emitter" };
             particleEmitButtonInFold.clicked += () =>
             {
-                _debugSceneActivater.PlayParticle();
+                _debugSceneActivator.PlayParticle();
             };
             foldOut.contentContainer.Add(particleEmitButtonInFold);
             foldOut.contentContainer.Add(textInFold1);
@@ -143,7 +143,7 @@ namespace DebugToolkit
             var particleEmitButtonInFold2 = new Button() { text = "Particle Emitter" };
             particleEmitButtonInFold2.clicked += () =>
             {
-                _debugSceneActivater.PlayParticle();
+                _debugSceneActivator.PlayParticle();
             };
             foldOut2.contentContainer.Add(particleEmitButtonInFold2);
             foldOut2.contentContainer.Add(textInFold2);
@@ -164,7 +164,7 @@ namespace DebugToolkit
             slider.RegisterValueChangedCallback(evt =>
             {
                 progressBar.value = evt.newValue;
-                _debugSceneActivater.SetVerticalSliderValue(evt.newValue);
+                _debugSceneActivator.SetVerticalSliderValue(evt.newValue);
             });
             tab1.Add(slider);
             var sliderInt = new SliderInt();
@@ -172,16 +172,17 @@ namespace DebugToolkit
             sliderInt.lowValue = 1;
             sliderInt.RegisterValueChangedCallback(evt =>
             {
-                _debugSceneActivater.ChangeParticleEmitter(evt.newValue);
+                _debugSceneActivator.ChangeParticleEmitter(evt.newValue);
             });
             tab1.Add(sliderInt);
 
             var minMaxSlider = new MinMaxSlider();
             minMaxSlider.highLimit = 10f;
             minMaxSlider.lowLimit = -10;
+            _debugSceneActivator.SetSpawnerRange(minMaxSlider.value.x, minMaxSlider.value.y);
             minMaxSlider.RegisterValueChangedCallback(evt =>
             {
-                _debugSceneActivater.SetSpawnerRange(minMaxSlider.value.x, minMaxSlider.value.y);
+                _debugSceneActivator.SetSpawnerRange(minMaxSlider.value.x, minMaxSlider.value.y);
             });
             tab1.Add(minMaxSlider);
 
@@ -193,14 +194,14 @@ namespace DebugToolkit
             dropdown.choices = new List<string>() {"Choice 1","Choice 2","Choice 3" };
             dropdown.RegisterValueChangedCallback(evt =>
             {
-                _debugSceneActivater.SetDropdownText(evt.newValue);
+                _debugSceneActivator.SetDropdownText(evt.newValue);
             });
             tab1.Add(dropdown);
 
             var enumField=new EnumField("EnumField :",EnumTypes.Enum1);
             enumField.RegisterValueChangedCallback(evt =>
             {
-                _debugSceneActivater.SetEnumText(evt.newValue.ToString());
+                _debugSceneActivator.SetEnumText(evt.newValue.ToString());
             });
             tab1.Add(enumField);
 
@@ -208,7 +209,7 @@ namespace DebugToolkit
             radioButton.label = "RadioButton:";
             radioButton.RegisterValueChangedCallback(evt =>
             {
-                _debugSceneActivater.SetHide(evt.newValue);
+                _debugSceneActivator.SetHide(evt.newValue);
             });
             tab1.Add(radioButton);
 
@@ -216,7 +217,7 @@ namespace DebugToolkit
             radioGroup.choices = new List<string>() {"red","green","blue"};
             radioGroup.RegisterValueChangedCallback(t =>
             {
-                _debugSceneActivater.SetMaterial(radioGroup.value);
+                _debugSceneActivator.SetMaterialColor(radioGroup.value);
             });
             tab1.Add(radioGroup);
 

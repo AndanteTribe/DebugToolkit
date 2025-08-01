@@ -3,9 +3,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DebugSceneActivater : MonoBehaviour,IDebugInterface
+public class DebugSceneActivator : MonoBehaviour
 {
-    ParticleSystem _particle;
+    private ParticleSystem _particle;
     GameObject _cube;
     GameObject _cubeToggleG1;
     GameObject _cubeToggleG2;
@@ -15,22 +15,10 @@ public class DebugSceneActivater : MonoBehaviour,IDebugInterface
     private Slider _vslider;
     private ParticleSystem _emitParticle;
     RandomSpawner _randomSpawner;
-    public Text dropDownText;
-    public Text enumFieldText;
-    public GameObject hideObject;
-    public Material material;
-
-
-    /*
-     * 標準フレームワークと言語のバージョンは違うぞ
-     * 例えばint型。言語で定義されているわけではなく、フレームワークで定義。
-     * public,privateは言語。classとか{get;set;}もc#。
-     * void での return はフレームワークで入所、配布している。
-     * 密接に関わっているもの。疎結合であるものの２つ。
-     * javaはバージョンそろえないとダメ。密接。
-     * C#にはコンパイラーがいる。
-     * List
-     */
+    private Text _dropDownText;
+    private Text _enumFieldText;
+    private GameObject _hideObject;
+    private Material _material;
 
     public void SetParticle(ParticleSystem par)
     {
@@ -122,26 +110,45 @@ public class DebugSceneActivater : MonoBehaviour,IDebugInterface
         _randomSpawner.maxRange = max;
     }
 
+    public void SetDropDown(Text txt)
+    {
+        _dropDownText = txt;
+    }
+
     public void SetDropdownText(string st)
     {
-        dropDownText.text = st;
+        _dropDownText.text = st;
+    }
+    public void SetEnum(Text txt)
+    {
+        _enumFieldText = txt;
     }
 
     public void SetEnumText(string st)
     {
-        enumFieldText.text = st;
+        _enumFieldText.text = st;
+    }
+
+    public void SetHideObject(GameObject obj)
+    {
+        _hideObject = obj;
     }
 
     public void SetHide(bool b)
     {
-        hideObject.SetActive(b);
+        _hideObject.SetActive(b);
     }
 
-    public void SetMaterial(int v)
+    public void SetMaterial(Material m)
     {
-        if (v == 0) material.color = Color.red;
-        if (v == 1) material.color = Color.green;
-        if (v == 2) material.color = Color.blue;
+        _material = m;
+    }
+
+    public void SetMaterialColor(int v)
+    {
+        if (v == 0) _material.color = Color.red;
+        if (v == 1) _material.color = Color.green;
+        if (v == 2) _material.color = Color.blue;
     }
 
 }
