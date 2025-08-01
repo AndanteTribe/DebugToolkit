@@ -26,7 +26,6 @@ insert_final_newline = false
 # C# files
 [*.cs]
 
-
 #### C# 命名規則 ####
 # name all constant fields using PascalCase
 dotnet_naming_rule.constant_fields_should_be_pascal_case.severity = error
