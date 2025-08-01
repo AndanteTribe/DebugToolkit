@@ -18,6 +18,7 @@ namespace DebugToolkit
         public Text enumFieldText;
         public Material material;
         public GameObject hideObject;
+        //
         void Start()
         {
             DebugViewTest debugViewTest = new DebugViewTest(particle,cube,

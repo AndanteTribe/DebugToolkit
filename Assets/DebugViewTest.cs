@@ -221,6 +221,7 @@ namespace DebugToolkit
             tab1.Add(radioGroup);
 
             //tab2の追加、コンソールのみになっている
+            //
             tab2.AddProfileInfoLabel();
             var window2 = root.AddWindow("TestWindow2");
             window2.AddConsoleView();
