@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 using UnityEngine.UI;
@@ -19,19 +18,13 @@ namespace DebugToolkit
         DebugSceneActivater _debugSceneActivater=new DebugSceneActivater();
 
         public DebugViewTest(ParticleSystem par,GameObject obj1,
-            GameObject objToG1,GameObject objToG2,GameObject objToG3,
-            Slider sl,Text txt,Slider vSlider,ParticleSystem emitter,RandomSpawner randomSpawner)
+            GameObject objToG1,GameObject objToG2,GameObject objToG3)
         {
             _debugSceneActivater.SetParticle(par);
             _debugSceneActivater.SetCube(obj1);
             _debugSceneActivater.SetCapToggle(objToG1,0);
             _debugSceneActivater.SetCapToggle(objToG2,1);
             _debugSceneActivater.SetCapToggle(objToG3,2);
-            _debugSceneActivater.SetSlider(sl);
-            _debugSceneActivater.SetText(txt);
-            _debugSceneActivater.SetVerticalSlider(vSlider);
-            _debugSceneActivater.SetParticleEmitter(emitter);
-            _debugSceneActivater.SetRandomSpawner(randomSpawner);
         }
 
 
@@ -55,12 +48,12 @@ namespace DebugToolkit
             var testText = new Label() { text = "hoge" };
             tab1.Add(testText);
 
-            var particleEmitButton = new Button() { text = "Particle Emitter" };
-            particleEmitButton.clicked += () =>
+            var objectFinderButton = new Button() { text = "Object Finder" };
+            objectFinderButton.clicked += () =>
             {
                 _debugSceneActivater.PlayParticle();
             };
-            tab1.Add(particleEmitButton);
+            tab1.Add(objectFinderButton);
 
             var toggle = new Toggle() { text = $"Toggle:false" };
             toggle.RegisterValueChangedCallback((evt) =>
@@ -104,7 +97,6 @@ namespace DebugToolkit
             horizontalScroller.style.width = 300;
             horizontalScroller.valueChanged += (value) =>
             {
-                _debugSceneActivater.SetSliderValue(value);
                 ballBlocker.style.left = value;
                 ballBlockerLabel.text = $"Ball Blocker Position: {ballBlocker.style.left}";
             };
@@ -115,72 +107,45 @@ namespace DebugToolkit
             tab1.Add(ballBlockerLabel);
 
             var textField = new TextField() { label = "TextField:" };
-            textField.RegisterValueChangedCallback((v) =>
-            {
-                _debugSceneActivater.SetTextValue(v.newValue);
-            });
+            var textLabel = new Label() { text = $"Label:" };
+            var textButton=new Button() { text = "Change Label" };
+            textButton.clicked += () => textLabel.text = $"Label: {textField.value}";
             tab1.Add(textField);
+            tab1.Add(textLabel);
+            tab1.Add(textButton);
 
 
             var foldOut=new Foldout();
             foldOut.text = "FoldOut 1";
             var textInFold1=new Label() { text="TextInFold1" };
-            var particleEmitButtonInFold = new Button() { text = "Particle Emitter" };
-            particleEmitButtonInFold.clicked += () =>
-            {
-                _debugSceneActivater.PlayParticle();
-            };
-            foldOut.contentContainer.Add(particleEmitButtonInFold);
             foldOut.contentContainer.Add(textInFold1);
             var foldOut2=new Foldout();
             foldOut2.text = "FoldOut2";
             var textInFold2=new Label() { text="TextInFold2" };
-            var particleEmitButtonInFold2 = new Button() { text = "Particle Emitter" };
-            particleEmitButtonInFold2.clicked += () =>
-            {
-                _debugSceneActivater.PlayParticle();
-            };
-            foldOut2.contentContainer.Add(particleEmitButtonInFold2);
             foldOut2.contentContainer.Add(textInFold2);
             foldOut2.value = false;
             foldOut.contentContainer.Add(foldOut2);
             foldOut.value = false;
             tab1.Add(foldOut);
 
+            var slider = new UnityEngine.UIElements.Slider();
+            slider.highValue = 111.1f;
+            slider.lowValue = 0;
+            tab1.Add(slider);
+            var sliderInt = new SliderInt();
+            sliderInt.highValue = 10;
+            sliderInt.lowValue = 0;
+            tab1.Add(sliderInt);
+            var minMaxSlider = new MinMaxSlider();
+            minMaxSlider.maxValue = 100f;
+            minMaxSlider.minValue = 0;
+            tab1.Add(minMaxSlider);
+
             var progressBar = new ProgressBar();
             progressBar.title = "Progress";
             progressBar.lowValue = 0f;
             progressBar.value = 0f;
             progressBar.highValue = 100f;
-
-            var slider = new UnityEngine.UIElements.Slider();
-            slider.highValue = 100f;
-            slider.lowValue = 0;
-            slider.RegisterValueChangedCallback(evt =>
-            {
-                progressBar.value = evt.newValue;
-                _debugSceneActivater.SetVerticalSliderValue(evt.newValue);
-            });
-            tab1.Add(slider);
-            var sliderInt = new SliderInt();
-            sliderInt.highValue = 10;
-            sliderInt.lowValue = 1;
-            sliderInt.RegisterValueChangedCallback(evt =>
-            {
-                _debugSceneActivater.ChangeParticleEmitter(evt.newValue);
-            });
-            tab1.Add(sliderInt);
-
-            var minMaxSlider = new MinMaxSlider();
-            minMaxSlider.highLimit = 10f;
-            minMaxSlider.lowLimit = -10;
-            minMaxSlider.RegisterValueChangedCallback(evt =>
-            {
-                _debugSceneActivater.SetSpawnerRange(minMaxSlider.value.x, minMaxSlider.value.y);
-            });
-            tab1.Add(minMaxSlider);
-
-
             tab1.Add(progressBar);
 
             var dropdown = new DropdownField();
@@ -203,6 +168,26 @@ namespace DebugToolkit
                 Debug.Log($"Pushed :{answerValue}");
             });
             tab1.Add(radioGroup);
+
+            // var testButton = new Button(){text = "Hoge"};
+            // testButton.clicked += () => Debug.Log("TestButton");
+            // tab1.Add(testButton);
+            // var logButton = new Button(){ text = "Log" };
+            // logButton.clicked += () => Debug.Log("Log test message");
+            // tab1.Add(logButton);
+            //
+            // var warningButton = new Button(){ text = "Warning" };
+            // warningButton.clicked += () => Debug.LogWarning("Warning test message");
+            // tab1.Add(warningButton);
+            //
+            // var errorButton = new Button(){ text = "Error" };
+            // errorButton.clicked += () => Debug.LogError("Error test message");
+            // tab1.Add(errorButton);
+            //
+            // for (int i = 0; i < 10; i++)
+            // {
+            //     tab1.Add(new Button(){text = "hogehoge"});
+            // }
 
             //tab2の追加、コンソールのみになっている
             tab2.AddProfileInfoLabel();
