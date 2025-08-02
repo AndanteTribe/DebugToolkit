@@ -1,4 +1,5 @@
 #if ENABLE_DEBUGTOOLKIT
+#nullable enable
 
 using System.Collections.Generic;
 using UnityEngine.UIElements;
@@ -13,7 +14,7 @@ namespace DebugToolkit
 
         private bool _isUndoRedoOperation;
 
-        public HistoryTextField(string label = null) : base(label)
+        public HistoryTextField(string? label = null) : base(label)
         {
             this.RegisterValueChangedCallback(OnValueChanged);
 
