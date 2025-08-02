@@ -36,15 +36,7 @@ namespace DebugToolkit
 
             var window2 = root.AddWindow("TestWindow2");
             window2.AddConsoleView();
-
-            var window3 = root.AddWindow("TestWindow3");
-            for (var i = 0; i < 30; i++)
-            {
-                window3.Add(new Button(){text = "hoge"});
-            }
-
             return root;
-
         }
     }
 }
