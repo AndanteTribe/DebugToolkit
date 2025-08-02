@@ -1,3 +1,5 @@
+#if ENABLE_DEBUGTOOLKIT
+
 using System.Collections.Generic;
 using UnityEngine.UIElements;
 using UnityEngine;
@@ -11,13 +13,13 @@ namespace DebugToolkit
 
         private bool _isUndoRedoOperation;
 
-        public HistoryTextField() : this(null) { }
-
-        private HistoryTextField(string label) : base(label)
+        public HistoryTextField(string label = null) : base(label)
         {
             this.RegisterValueChangedCallback(OnValueChanged);
 
+            #if !ENABLE_INPUT_SYSTEM
             RegisterCallback<KeyDownEvent>(OnKeyDown);
+            #endif
         }
 
         private void OnValueChanged(ChangeEvent<string> evt)
@@ -31,25 +33,26 @@ namespace DebugToolkit
             _redoStack.Clear();
         }
 
+        #if !ENABLE_INPUT_SYSTEM
         private void OnKeyDown(KeyDownEvent evt)
         {
             var isCtrlOrCmd = evt.ctrlKey || evt.commandKey;
 
             if (isCtrlOrCmd)
             {
-                if (evt.keyCode == KeyCode.Z)
+                if (evt.keyCode == KeyCode.Z && !evt.shiftKey)
                 {
                     Undo();
                     evt.StopPropagation();
                 }
-
-                if (evt.keyCode == KeyCode.Y)
+                else if (evt.keyCode == KeyCode.Y || (evt.keyCode == KeyCode.Z && evt.shiftKey))
                 {
                     Redo();
                     evt.StopPropagation();
                 }
             }
         }
+        #endif
 
         private void Undo()
         {
@@ -76,3 +79,5 @@ namespace DebugToolkit
         }
     }
 }
+
+#endif

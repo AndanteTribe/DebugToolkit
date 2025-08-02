@@ -12,7 +12,6 @@ namespace DebugToolkit
             var (tabRoot, tab1) = window.AddTab();
             var tab2 = tabRoot.AddTab("Tab2");
 
-
             var testButton = new Button(){text = "Hoge"};
             testButton.clicked += () => Debug.Log("TestButton");
             tab1.Add(testButton);
@@ -37,12 +36,6 @@ namespace DebugToolkit
 
             var window2 = root.AddWindow("TestWindow2");
             window2.AddConsoleView();
-
-            var window3 = root.AddWindow("TestWindow3");
-            for (var i = 0; i < 30; i++)
-            {
-                window3.Add(new Button(){text = "hoge"});
-            }
 
             return root;
 
