@@ -14,13 +14,13 @@ namespace DebugToolkit
 
         private bool _isUndoRedoOperation;
 
-        public HistoryTextField(string? label = null) : base(label)
+        public HistoryTextField(string label = "") : base(label)
         {
             this.RegisterValueChangedCallback(OnValueChanged);
 
-            #if !ENABLE_INPUT_SYSTEM
+#if !ENABLE_INPUT_SYSTEM
             RegisterCallback<KeyDownEvent>(OnKeyDown);
-            #endif
+#endif
         }
 
         private void OnValueChanged(ChangeEvent<string> evt)
@@ -34,7 +34,7 @@ namespace DebugToolkit
             _redoStack.Clear();
         }
 
-        #if !ENABLE_INPUT_SYSTEM
+#if !ENABLE_INPUT_SYSTEM
         private void OnKeyDown(KeyDownEvent evt)
         {
             var isCtrlOrCmd = evt.ctrlKey || evt.commandKey;
@@ -53,7 +53,7 @@ namespace DebugToolkit
                 }
             }
         }
-        #endif
+#endif
 
         private void Undo()
         {
