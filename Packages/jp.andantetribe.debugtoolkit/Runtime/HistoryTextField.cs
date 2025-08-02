@@ -1,4 +1,3 @@
-#if ENABLE_DEBUGTOOLKIT
 #nullable enable
 
 using System.Collections.Generic;
