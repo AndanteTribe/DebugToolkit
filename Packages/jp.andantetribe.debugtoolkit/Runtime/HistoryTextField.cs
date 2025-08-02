@@ -2,7 +2,6 @@
 #nullable enable
 
 using System.Collections.Generic;
-using System.Transactions;
 using UnityEngine.UIElements;
 using UnityEngine;
 #if ENABLE_INPUT_SYSTEM
@@ -26,12 +25,8 @@ namespace DebugToolkit
         {
             this.RegisterValueChangedCallback(OnValueChanged);
 
-#if ENABLE_INPUT_SYSTEM
             RegisterCallback<FocusInEvent>(OnFocusIn);
             RegisterCallback<FocusOutEvent>(OnFocusOut);
-#else
-            RegisterCallback<KeyDownEvent>(OnKeyDown);
-#endif
         }
 
         private void OnValueChanged(ChangeEvent<string> evt)
@@ -75,6 +70,8 @@ namespace DebugToolkit
             }
         }
 #else
+        private void OnFocusIn(FocusInEvent evt) => RegisterCallback<KeyDownEvent>(OnKeyDown);
+        private void OnFocusOut(FocusOutEvent evt) => UnregisterCallback<KeyDownEvent>(OnKeyDown);
         private void OnKeyDown(KeyDownEvent evt)
         {
             var isCtrlOrCmd = evt.ctrlKey || evt.commandKey;
