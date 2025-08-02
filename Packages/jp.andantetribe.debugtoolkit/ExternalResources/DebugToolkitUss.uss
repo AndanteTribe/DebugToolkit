@@ -513,9 +513,9 @@ debug-toolkit__toggle-all-button:hover {
 }
 
 .debug-toolkit__master .debug-toolkit__log-label {
-
+    
 }
 
 .debug-toolkit__master .debug-toolkit__console-toggle-log-show {
-
+    
 }
