@@ -37,7 +37,6 @@ namespace DebugToolkit
             var window2 = root.AddWindow("TestWindow2");
             window2.AddConsoleView();
             return root;
-
         }
     }
 }
