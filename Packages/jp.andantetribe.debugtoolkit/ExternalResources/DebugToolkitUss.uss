@@ -15,7 +15,7 @@
     --debug-toolkit-px-radius-medium: 8px;
     --debug-toolkit-tab-height: 30px;
     --debug-toolkit-tab-min-width: 60px;
-    --debug-toolkit-panel-width: 400px;
+    --debug-toolkit-panel-min-width: 400px;
     --debug-toolkit-panel-max-height: 600px;
 }
 
@@ -24,8 +24,8 @@
     font-size: 12px;
     position: absolute;
     border-radius: var(--debug-toolkit-px-radius-medium);
-    width: var(--debug-toolkit-panel-width);
     height: auto;
+    min-width: var(--debug-toolkit-panel-min-width);
     max-height: var(--debug-toolkit-panel-max-height);
     background-color: var(--debug-toolkit-color-background);
     transition-property: position;
