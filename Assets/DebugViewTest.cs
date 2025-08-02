@@ -12,7 +12,6 @@ namespace DebugToolkit
             var (tabRoot, tab1) = window.AddTab();
             var tab2 = tabRoot.AddTab("Tab2");
 
-
             var testButton = new Button(){text = "Hoge"};
             testButton.clicked += () => Debug.Log("TestButton");
             tab1.Add(testButton);
