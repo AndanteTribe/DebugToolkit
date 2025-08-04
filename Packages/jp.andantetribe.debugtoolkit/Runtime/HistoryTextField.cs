@@ -3,9 +3,6 @@
 using System.Collections.Generic;
 using UnityEngine.UIElements;
 using UnityEngine;
-#if ENABLE_INPUT_SYSTEM
-using UnityEngine.InputSystem;
-#endif
 
 namespace DebugToolkit
 {
@@ -16,16 +13,10 @@ namespace DebugToolkit
 
         private bool _isUndoRedoOperation;
 
-#if ENABLE_INPUT_SYSTEM
-        private IVisualElementScheduledItem? _pollingAction = null;
-#endif
-
         public HistoryTextField(string label = "") : base(label)
         {
             this.RegisterValueChangedCallback(OnValueChanged);
-
-            RegisterCallback<FocusInEvent>(OnFocusIn);
-            RegisterCallback<FocusOutEvent>(OnFocusOut);
+            RegisterCallback<KeyDownEvent>(OnKeyDown);
         }
 
         private void OnValueChanged(ChangeEvent<string> evt)
@@ -39,38 +30,6 @@ namespace DebugToolkit
             _redoStack.Clear();
         }
 
-#if ENABLE_INPUT_SYSTEM
-        private void OnFocusIn(FocusInEvent evt) => _pollingAction = this.schedule.Execute(PollKeyboard).Every(0);
-
-        private void OnFocusOut(FocusOutEvent evt) => _pollingAction?.Pause();
-
-        private void PollKeyboard()
-        {
-            var keyboard = Keyboard.current;
-            if (keyboard == null)
-            {
-                return;
-            }
-
-            var isCtrlOrCmd = keyboard.leftCtrlKey.isPressed || keyboard.rightCtrlKey.isPressed ||
-                              keyboard.leftCommandKey.isPressed || keyboard.rightCommandKey.isPressed;
-
-            if (isCtrlOrCmd)
-            {
-                var isShift = keyboard.leftShiftKey.isPressed || keyboard.rightShiftKey.isPressed;
-                if (keyboard.zKey.wasPressedThisFrame && !isShift)
-                {
-                    Undo();
-                }
-                else if (keyboard.yKey.wasPressedThisFrame || (keyboard.zKey.wasPressedThisFrame && isShift))
-                {
-                    Redo();
-                }
-            }
-        }
-#else
-        private void OnFocusIn(FocusInEvent evt) => RegisterCallback<KeyDownEvent>(OnKeyDown);
-        private void OnFocusOut(FocusOutEvent evt) => UnregisterCallback<KeyDownEvent>(OnKeyDown);
         private void OnKeyDown(KeyDownEvent evt)
         {
             var isCtrlOrCmd = evt.ctrlKey || evt.commandKey;
@@ -89,7 +48,6 @@ namespace DebugToolkit
                 }
             }
         }
-#endif
 
         private void Undo()
         {
