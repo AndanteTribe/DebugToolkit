@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DebugSceneActivator : MonoBehaviour
+public class DebugSceneActivator
 {
     private ParticleSystem _particle;
     GameObject _cube;

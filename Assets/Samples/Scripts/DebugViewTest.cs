@@ -13,7 +13,6 @@ namespace DebugToolkit
 {
     public class DebugViewTest : DebugViewerBase
     {
-        bool _objectFinding = false;
         float _minXValue = 1f;
         float _maXValue = 100f;
         DebugSceneActivator _debugSceneActivator=new DebugSceneActivator();
