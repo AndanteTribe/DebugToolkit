@@ -6,7 +6,7 @@ public class RandomSpawner : MonoBehaviour
     public float minRange;
     public float maxRange;
     private float _initialDelay = 1f;
-    private float _repeatRate=3f;
+    private float _repeatRate = 3f;
 
     void Start()
     {

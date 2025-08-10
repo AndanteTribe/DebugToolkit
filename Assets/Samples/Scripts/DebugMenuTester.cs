@@ -8,7 +8,7 @@ namespace DebugToolkit
     {
         public ParticleSystem particle;
         public GameObject cube;
-        public GameObject[] toggleObjects=new GameObject[3];
+        public GameObject[] toggleObjects = new GameObject[3];
         public Slider slider;
         public Text text;
         public Slider vSlider;
