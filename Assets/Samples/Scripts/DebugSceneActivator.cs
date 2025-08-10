@@ -100,8 +100,8 @@ namespace DebugToolkit
 
         public void SetSpawnerRange(float min, float max)
         {
-            _randomSpawner.minRange = min;
-            _randomSpawner.maxRange = max;
+            _randomSpawner._minRange = min;
+            _randomSpawner._maxRange = max;
         }
 
         public void SetDropDown(Text txt) => _dropDownText = txt;

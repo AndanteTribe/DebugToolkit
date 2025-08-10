@@ -1,10 +1,11 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class RandomSpawner : MonoBehaviour
 {
-    public GameObject prefab;
-    public float minRange;
-    public float maxRange;
+    public GameObject _prefab;
+    public float _minRange;
+    public float _maxRange;
     private float _initialDelay = 1f;
     private float _repeatRate = 3f;
 
@@ -15,7 +16,7 @@ public class RandomSpawner : MonoBehaviour
 
     void PrefabSpawn()
     {
-        GameObject obj=Instantiate(prefab);
-        obj.transform.position = new Vector3(Random.Range(minRange,maxRange),5,0);
+        GameObject obj=Instantiate(_prefab);
+        obj.transform.position = new Vector3(Random.Range(_minRange,_maxRange),5,0);
     }
 }

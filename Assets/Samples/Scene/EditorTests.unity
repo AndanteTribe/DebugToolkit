@@ -5281,9 +5281,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b10a8c12d8c01a40ab6422edd2f149a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 3124968186928725916, guid: 9141cdaeb334bb24aa74e04d3862708d, type: 3}
-  minRange: 0
-  maxRange: 0
+  _prefab: {fileID: 3124968186928725916, guid: 9141cdaeb334bb24aa74e04d3862708d, type: 3}
+  _minRange: 0
+  _maxRange: 0
 --- !u!4 &291467644
 Transform:
   m_ObjectHideFlags: 0
@@ -5829,21 +5829,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a5e03e4d7342ef4faf70a1cc63d6125, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  particle: {fileID: 1094338154}
-  cube: {fileID: 747856093}
-  toggleObjects:
+  _particle: {fileID: 1094338154}
+  _cube: {fileID: 747856093}
+  _toggleObjects:
   - {fileID: 914481351}
   - {fileID: 154330504}
   - {fileID: 874582707}
-  slider: {fileID: 957430015}
-  text: {fileID: 2027488342}
-  vSlider: {fileID: 798878263}
-  emitter: {fileID: 204991887}
-  randomSpawner: {fileID: 291467643}
-  dropFieldText: {fileID: 183441398}
-  enumFieldText: {fileID: 1193544435}
-  material: {fileID: 2100000, guid: e51686182b25752478410fba1f4f6f63, type: 2}
-  hideObject: {fileID: 362235776}
+  _slider: {fileID: 957430015}
+  _text: {fileID: 2027488342}
+  _vSlider: {fileID: 798878263}
+  _emitter: {fileID: 204991887}
+  _randomSpawner: {fileID: 291467643}
+  _dropFieldText: {fileID: 183441398}
+  _enumFieldText: {fileID: 1193544435}
+  _material: {fileID: 2100000, guid: e51686182b25752478410fba1f4f6f63, type: 2}
+  _hideObject: {fileID: 362235776}
 --- !u!4 &698892725
 Transform:
   m_ObjectHideFlags: 0
