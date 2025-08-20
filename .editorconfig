@@ -64,6 +64,9 @@ dotnet_naming_style.pascal_case_underscore_style.capitalization = pascal_case
 
 # ReSharper(JetBrains Rider) name rule
 dotnet_naming_rule.unity_serialized_field_rule.import_to_resharper = False
+dotnet_naming_rule.unity_serialized_field_rule.severity = none
+dotnet_naming_rule.unity_serialized_field_rule.symbols = unity_serialized_field_symbols
+dotnet_naming_rule.unity_serialized_field_rule.style = none
 
 #### .NET Coding Conventions ####
 # IDE0003: this または Me の修飾を削除する.
@@ -321,5 +324,3 @@ csharp_place_field_attribute_on_same_line = false
 
 [*.{csproj,vbproj,proj,nativeproj,locproj}]
 charset = utf-8
-
-
