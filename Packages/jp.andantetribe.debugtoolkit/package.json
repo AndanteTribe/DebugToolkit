@@ -1,8 +1,8 @@
 {
   "name": "jp.andantetribe.debugtoolkit",
   "version": "0.0.1",
-  "displayName": "Debug Toolkit",
-  "description": "A toolkit for debugging and profiling Unity applications.",
+  "displayName": "DebugToolkit - Minimalist Debug UI",
+  "description": "A minimalist, lightweight debugging interface for Unity applications. Focused on essential debugging features with a clean, simple UI.",
   "unity": "2021.3",
   "dependencies": {
     "com.unity.modules.uielements": "1.0.0"
