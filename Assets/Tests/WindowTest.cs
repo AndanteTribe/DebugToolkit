@@ -32,12 +32,11 @@ namespace DebugToolkit.Tests
         }
 
         // Test if the master window is correctly generated
-        //  This will need to be changed when the master window is no longer static
         [Test]
         public void MasterWindow_IsCorrectlyGenerated()
         {
-            Assert.That(DebugViewerBase.MasterWindow, Is.Not.Null, "MasterWindow should be generated.");
-            Assert.That(DebugViewerBase.MasterWindow.parent.Q<Label>(
+            Assert.That(_debugViewWindowTest.MasterWindow, Is.Not.Null, "MasterWindow should be generated.");
+            Assert.That(_debugViewWindowTest.MasterWindow.parent.Q<Label>(
                     name: "window-label",
                     className: DebugConst.WindowLabelClassName)
                 .text, Is.EqualTo("Debug Toolkit"), "MasterWindow title is incorrect.");
@@ -48,7 +47,7 @@ namespace DebugToolkit.Tests
         public void MasterWindow_ContainsWindowListButtonsForOtherWindows()
         {
             var windowListScrollView =
-                DebugViewerBase.MasterWindow.Q<ScrollView>(className: DebugConst.WindowListClassName);
+                _debugViewWindowTest.MasterWindow.Q<ScrollView>(className: DebugConst.WindowListClassName);
             Assert.That(windowListScrollView, Is.Not.Null, "WindowList ScrollView not found in MasterWindow.");
 
             var toggles = windowListScrollView.Query<Toggle>(className: DebugConst.ToggleWindowDisplayClassName)
@@ -65,7 +64,7 @@ namespace DebugToolkit.Tests
         public async Task MasterWindow_WindowListButton_TogglesWindowVisibility(string windowName, float screenPosX,
             float screenPosY)
         {
-            var toggle = DebugViewerBase.MasterWindow.Q<ScrollView>(className: DebugConst.WindowListClassName)
+            var toggle = _debugViewWindowTest.MasterWindow.Q<ScrollView>(className: DebugConst.WindowListClassName)
                 .Query<Toggle>(className: DebugConst.ToggleWindowDisplayClassName)
                 .Where(t => t.text == windowName).First();
 
@@ -97,9 +96,9 @@ namespace DebugToolkit.Tests
         [Test]
         public async Task MasterWindow_CanBeMinimized()
         {
-            var masterWindow = DebugViewerBase.MasterWindow.parent;
+            var masterWindow = _debugViewWindowTest.MasterWindow.parent;
             var minimizeButton = masterWindow.Q<Button>(className: DebugConst.ClassName + "__minimize-button");
-            var windowContent = DebugViewerBase.MasterWindow;
+            var windowContent = _debugViewWindowTest.MasterWindow;
 
             Assert.That(minimizeButton, Is.Not.Null, "Minimize button not found in MasterWindow.");
             Assert.That(windowContent.style.display.value, Is.EqualTo(DisplayStyle.Flex),
@@ -143,7 +142,7 @@ namespace DebugToolkit.Tests
         [Test]
         public async Task ToggleAllButton_TogglesAllWindowsVisibility()
         {
-            foreach (var window in DebugViewerBase.DebugWindowList)
+            foreach (var window in _debugViewWindowTest.DebugWindowList)
             {
                 window.style.display = DisplayStyle.Flex;
             }
@@ -151,7 +150,7 @@ namespace DebugToolkit.Tests
             var mouse = InputSystem.AddDevice<Mouse>();
             await ClickAtPositionAsync(mouse, new Vector2(15, 20));
 
-            foreach (var window in DebugViewerBase.DebugWindowList)
+            foreach (var window in _debugViewWindowTest.DebugWindowList)
             {
                 Assert.That(window.style.display.value, Is.EqualTo(DisplayStyle.None),
                     "Window should be hidden after toggle all.");
@@ -159,11 +158,43 @@ namespace DebugToolkit.Tests
 
             await ClickAtPositionAsync(mouse, new Vector2(15, 20));
 
-            foreach (var window in DebugViewerBase.DebugWindowList)
+            foreach (var window in _debugViewWindowTest.DebugWindowList)
             {
                 Assert.That(window.style.display.value, Is.Not.EqualTo(DisplayStyle.None),
                     "Window should be visible after toggling back.");
             }
+        }
+
+        // Test if multiple instances can coexist independently
+        [Test]
+        public void MultipleInstances_CanCoexistIndependently()
+        {
+            // Create second instance
+            var secondInstance = new DebugViewWindowTest();
+            secondInstance.Start();
+
+            // Verify both instances have their own master windows
+            Assert.That(_debugViewWindowTest.MasterWindow, Is.Not.Null, "First instance should have master window.");
+            Assert.That(secondInstance.MasterWindow, Is.Not.Null, "Second instance should have master window.");
+            Assert.That(_debugViewWindowTest.MasterWindow, Is.Not.EqualTo(secondInstance.MasterWindow), 
+                "Each instance should have its own master window.");
+
+            // Verify both instances have their own debug window lists
+            Assert.That(_debugViewWindowTest.DebugWindowList, Is.Not.EqualTo(secondInstance.DebugWindowList),
+                "Each instance should have its own debug window list.");
+
+            // Verify window counts are independent
+            var firstInstanceWindowCount = _debugViewWindowTest.DebugWindowList.Count;
+            var secondInstanceWindowCount = secondInstance.DebugWindowList.Count;
+            
+            // Both should have 3 windows (1 master + 2 test windows)
+            Assert.That(firstInstanceWindowCount, Is.EqualTo(3), "First instance should have 3 windows.");
+            Assert.That(secondInstanceWindowCount, Is.EqualTo(3), "Second instance should have 3 windows.");
+
+            // Add a window to the second instance and verify it doesn't affect the first
+            var newWindow = secondInstance.Root.AddWindow("SecondInstanceWindow");
+            Assert.That(secondInstance.DebugWindowList.Count, Is.EqualTo(4), "Second instance should now have 4 windows.");
+            Assert.That(_debugViewWindowTest.DebugWindowList.Count, Is.EqualTo(3), "First instance should still have 3 windows.");
         }
 
         // Test if there is only one toggle all button
@@ -202,7 +233,7 @@ namespace DebugToolkit.Tests
         [Test]
         public async Task Window_BringsToFrontWhenClicked()
         {
-            var windows = DebugViewerBase.DebugWindowList;
+            var windows = _debugViewWindowTest.DebugWindowList;
             foreach (var window in windows)
             {
                 window.style.display = DisplayStyle.Flex;
@@ -232,7 +263,7 @@ namespace DebugToolkit.Tests
             Assert.That(window, Is.Not.Null, "Window should be added to the DOM.");
             Assert.That(window.ClassListContains(DebugConst.ClassName + "__normal-window"), Is.True,
                 "Added window should have the normal window class.");
-            Assert.That(DebugViewerBase.DebugWindowList.Contains(window), Is.True,
+            Assert.That(_debugViewWindowTest.DebugWindowList.Contains(window), Is.True,
                 "Window should be added to the debug window list.");
         }
 
@@ -260,7 +291,7 @@ namespace DebugToolkit.Tests
         public async Task WindowCloseButton_HidesWindowAndUpdatesToggle(string windowName, float screenPosX,
             float screenPosY)
         {
-            var toggle = DebugViewerBase.MasterWindow.Q<ScrollView>(className: DebugConst.WindowListClassName)
+            var toggle = _debugViewWindowTest.MasterWindow.Q<ScrollView>(className: DebugConst.WindowListClassName)
                 .Query<Toggle>(className: DebugConst.ToggleWindowDisplayClassName)
                 .Where(t => t.text == windowName).First();
 
