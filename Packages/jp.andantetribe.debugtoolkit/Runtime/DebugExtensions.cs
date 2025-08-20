@@ -221,7 +221,7 @@ namespace DebugToolkit
                             var toggle = windowItem.Q<Toggle>();
                             if (toggle != null && toggle.text == windowName)
                             {
-                                toggle.style.backgroundColor = GetWindowStateColor(root);
+                                toggle.value = false;
                             }
                         }
                     }
