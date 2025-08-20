@@ -68,7 +68,7 @@ namespace DebugToolkit
             tab1.Add(particleEmitButton);
 
             var toggle = new Toggle() { text = $"Toggle:false" };
-            toggle.RegisterValueChangedCallback((evt) =>
+            toggle.RegisterValueChangedCallbackWithTracking((evt) =>
             {
                 _debugSceneActivator.Boolean1(evt.newValue);
             });
@@ -120,7 +120,7 @@ namespace DebugToolkit
             tab1.Add(ballBlockerLabel);
 
             var textField = new TextField() { label = "TextField:" };
-            textField.RegisterValueChangedCallback((v) =>
+            textField.RegisterValueChangedCallbackWithTracking((v) =>
             {
                 _debugSceneActivator.SetTextValue(v.newValue);
             });
@@ -161,7 +161,8 @@ namespace DebugToolkit
             var slider = new UnityEngine.UIElements.Slider();
             slider.highValue = 100f;
             slider.lowValue = 0;
-            slider.RegisterValueChangedCallback(evt =>
+            slider.label = "Progress Slider";
+            slider.RegisterValueChangedCallbackWithTracking(evt =>
             {
                 progressBar.value = evt.newValue;
                 _debugSceneActivator.SetVerticalSliderValue(evt.newValue);
@@ -170,7 +171,8 @@ namespace DebugToolkit
             var sliderInt = new SliderInt();
             sliderInt.highValue = 10;
             sliderInt.lowValue = 1;
-            sliderInt.RegisterValueChangedCallback(evt =>
+            sliderInt.label = "Particle Count";
+            sliderInt.RegisterValueChangedCallbackWithTracking(evt =>
             {
                 _debugSceneActivator.ChangeParticleEmitter(evt.newValue);
             });
@@ -192,14 +194,14 @@ namespace DebugToolkit
             var dropdown = new DropdownField();
             dropdown.label = "Dropdown:";
             dropdown.choices = new List<string>() {"Choice 1","Choice 2","Choice 3" };
-            dropdown.RegisterValueChangedCallback(evt =>
+            dropdown.RegisterValueChangedCallbackWithTracking(evt =>
             {
                 _debugSceneActivator.SetDropdownText(evt.newValue);
             });
             tab1.Add(dropdown);
 
             var enumField=new EnumField("EnumField :",EnumTypes.Enum1);
-            enumField.RegisterValueChangedCallback(evt =>
+            enumField.RegisterValueChangedCallbackWithTracking(evt =>
             {
                 _debugSceneActivator.SetEnumText(evt.newValue.ToString());
             });
@@ -234,6 +236,10 @@ namespace DebugToolkit
             var window3 = root.AddWindow("TestWindow3");
             var window3Label = new Label() { text = "This is Window3." };
             window3.Add(window3Label);
+
+            // Add change log window to demonstrate change visualization
+            var changeLogWindow = root.AddWindow("Change Log");
+            changeLogWindow.AddChangeLogView();
 
             return root;
         }
