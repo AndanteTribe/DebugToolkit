@@ -218,10 +218,10 @@ namespace DebugToolkit
                     {
                         foreach (var windowItem in windowList.Children())
                         {
-                            var button = windowItem.Q<Button>();
-                            if (button != null && button.text == windowName)
+                            var toggle = windowItem.Q<Toggle>();
+                            if (toggle != null && toggle.text == windowName)
                             {
-                                button.style.backgroundColor = GetWindowStateColor(root);
+                                toggle.value = false;
                             }
                         }
                     }
