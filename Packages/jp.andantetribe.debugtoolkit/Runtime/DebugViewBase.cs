@@ -12,10 +12,10 @@ namespace DebugToolkit
     public abstract class DebugViewerBase
     {
         /// <summary>
-        /// Static collection that maintains references to all debug windows in the application.
-        /// Used for global operations such as toggling visibility of all windows at once.
+        /// Collection that maintains references to all debug windows in this instance.
+        /// Used for operations such as toggling visibility of all windows at once.
         /// </summary>
-        protected internal static readonly List<VisualElement> DebugWindowList = new();
+        protected internal readonly List<VisualElement> DebugWindowList = new();
 
         /// <summary>
         /// Custom <see cref="UnityEngine.UIElements.PanelSettings"/>.
@@ -31,13 +31,13 @@ namespace DebugToolkit
         /// Reference to the main window that contains controls for managing all other debug windows.
         /// Provides functionality for toggling visibility and accessing the list of all debug windows.
         /// </summary>
-        protected internal static VisualElement? MasterWindow { get; set; }
+        protected internal VisualElement? MasterWindow { get; set; }
 
         /// <summary>
         /// Flag that controls the visibility of all windows.
         /// When true, all windows are displayed; when false, all windows are hidden.
         /// </summary>
-        private static bool s_allWindowsVisible = true;
+        private bool _allWindowsVisible = true;
 
         /// <summary>
         /// EntryPoint.
@@ -73,6 +73,8 @@ namespace DebugToolkit
             var root = uiDocument.rootVisualElement;
             var safeAreaContainer = new SafeAreaContainer();
             safeAreaContainer.pickingMode = PickingMode.Ignore;
+            // Store instance reference for use by extension methods
+            safeAreaContainer.userData = this;
             root.Add(safeAreaContainer);
 
             if (MasterWindow == null)
@@ -87,7 +89,7 @@ namespace DebugToolkit
                 MasterWindow = masterWindow;
 
                 var toggleAllButton = new Button();
-                toggleAllButton.clicked += ToggleAllVisible;
+                toggleAllButton.clicked += () => ToggleAllVisible();
                 toggleAllButton.AddToClassList(DebugConst.ClassName + "__toggle-all-button");
                 safeAreaContainer.Add(toggleAllButton);
             }
@@ -100,12 +102,12 @@ namespace DebugToolkit
         /// Based on the current visibility state, shows or hides all windows.
         /// Also synchronizes the state of toggle buttons in the master window.
         /// </summary>
-        private static void ToggleAllVisible()
+        private void ToggleAllVisible()
         {
-            s_allWindowsVisible = !s_allWindowsVisible;
+            _allWindowsVisible = !_allWindowsVisible;
             foreach (var window in DebugWindowList)
             {
-                if (s_allWindowsVisible  && window.userData is StyleEnum<DisplayStyle> previous)
+                if (_allWindowsVisible  && window.userData is StyleEnum<DisplayStyle> previous)
                 {
                     window.style.display = previous;
                 }

@@ -9,6 +9,24 @@ namespace DebugToolkit
 {
     public static partial class DebugExtensions
     {
+        /// <summary>
+        /// Finds the DebugViewerBase instance associated with the given element or its ancestors.
+        /// </summary>
+        /// <param name="element">The element to search from</param>
+        /// <returns>The DebugViewerBase instance or null if not found</returns>
+        private static DebugViewerBase? FindDebugViewerInstance(VisualElement element)
+        {
+            var current = element;
+            while (current != null)
+            {
+                if (current.userData is DebugViewerBase instance)
+                {
+                    return instance;
+                }
+                current = current.parent;
+            }
+            return null;
+        }
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void AddProfileInfoLabel(this VisualElement visualElement)
             => AddProfileInfoLabel(visualElement, TimeSpan.FromMilliseconds(500));
@@ -64,12 +82,18 @@ namespace DebugToolkit
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static VisualElement AddWindow(this VisualElement root, string windowName = "")
         {
+            var instance = FindDebugViewerInstance(root);
+            if (instance == null)
+            {
+                throw new InvalidOperationException("Could not find DebugViewerBase instance. Make sure AddWindow is called on an element within a DebugViewerBase hierarchy.");
+            }
+
             var window = new VisualElement(){name = windowName};
             root.Add(window);
 
             window.AddToClassList(DebugConst.ClassName + "__master");
 
-            var isMasterWindow = DebugViewerBase.MasterWindow == null;
+            var isMasterWindow = instance.MasterWindow == null;
             if (isMasterWindow)
             {
                 window.AddToClassList(DebugConst.ClassName + "__master-window");
@@ -78,7 +102,7 @@ namespace DebugToolkit
             {
                 window.AddToClassList(DebugConst.ClassName + "__normal-window");
             }
-            window.AddWindowHeader(windowName, isMasterWindow);
+            window.AddWindowHeader(windowName, isMasterWindow, instance);
 
             var windowContent = new VisualElement();
             windowContent.AddToClassList(DebugConst.WindowContentClassName);
@@ -89,15 +113,15 @@ namespace DebugToolkit
                 window.BringToFront();
             }, window, TrickleDown.TrickleDown);
 
-            DebugViewerBase.DebugWindowList.Add(window);
+            instance.DebugWindowList.Add(window);
 
             window.style.display = DisplayStyle.Flex;
 
             var windowNum = 1;
             if (!isMasterWindow)
             {
-                AddWindowListItem(window, windowName);
-                windowNum += DebugViewerBase.MasterWindow.Q<ScrollView>(className: DebugConst.WindowListClassName).childCount;
+                AddWindowListItem(window, windowName, instance);
+                windowNum += instance.MasterWindow.Q<ScrollView>(className: DebugConst.WindowListClassName).childCount;
             }
 
             window.style.position = Position.Absolute;
@@ -113,9 +137,10 @@ namespace DebugToolkit
         /// </summary>
         /// <param name="window">The window element to add to the list</param>
         /// <param name="windowName">The name of the window</param>
-        private static void AddWindowListItem(VisualElement window, string windowName)
+        /// <param name="instance">The DebugViewerBase instance</param>
+        private static void AddWindowListItem(VisualElement window, string windowName, DebugViewerBase instance)
         {
-            var windowList = DebugViewerBase.MasterWindow.Q<ScrollView>(className: DebugConst.WindowListClassName);
+            var windowList = instance.MasterWindow?.Q<ScrollView>(className: DebugConst.WindowListClassName);
             if (windowList == null) return;
 
             var listItem = new VisualElement();
@@ -166,9 +191,10 @@ namespace DebugToolkit
         /// </summary>
         /// <param name="root">The parent element to which the header will be added</param>
         /// <param name="windowName">The name of the window</param>
-        ///  <param name="isMasterWindow">Indicates if this is the master window</param>
+        /// <param name="isMasterWindow">Indicates if this is the master window</param>
+        /// <param name="instance">The DebugViewerBase instance</param>
         /// <returns>The created header element</returns>
-        public static VisualElement AddWindowHeader(this VisualElement root, string windowName = "", bool isMasterWindow = false)
+        public static VisualElement AddWindowHeader(this VisualElement root, string windowName = "", bool isMasterWindow = false, DebugViewerBase? instance = null)
         {
             var windowHeader = new VisualElement(){name = "window-header"};
             windowHeader.AddToClassList(DebugConst.WindowHeaderClassName);
@@ -211,7 +237,9 @@ namespace DebugToolkit
                 {
                     root.style.display = DisplayStyle.None;
 
-                    var windowList = DebugViewerBase.MasterWindow.Q<ScrollView>(
+                    // Use the provided instance or find it from the hierarchy
+                    var debugInstance = instance ?? FindDebugViewerInstance(root);
+                    var windowList = debugInstance?.MasterWindow?.Q<ScrollView>(
                         className: DebugConst.WindowListClassName);
 
                     if (windowList != null)
