@@ -448,6 +448,7 @@
     border-bottom-width: 2px;
     border-bottom-color: var(--debug-toolkit-color-black);
     align-items: flex-end;
+    flex-shrink: 0;
 }
 
 .debug-toolkit__master .debug-toolkit__window-content {
@@ -504,6 +505,28 @@ debug-toolkit__toggle-all-button:hover {
     background-color: var(--debug-toolkit-color-lowlight);
 }
 
+.debug-toolkit__master-button {
+    position: absolute;
+    bottom: 0;
+    left: 36px;
+    width: 30px;
+    height: 30px;
+    background-color: rgba(246, 137, 30, 0.7);
+    border-radius: var(--debug-toolkit-px-radius-small);
+    border-width: 0;
+    opacity: 0.8;
+    transition: opacity 0.2s ease-in-out;
+}
+
+debug-toolki__master-button:hover {
+    opacity: 1;
+    background-color: var(--debug-toolkit-color-highlight);
+}
+
+.debug-toolkit__master .debug-toolki__master-button:active {
+    background-color: var(--debug-toolkit-color-lowlight);
+}
+
 .debug-toolkit__master .debug-toolkit__console-view {
     flex-grow: 1;
     border-width: var(--debug-toolkit-px-space-xsmall);
@@ -512,9 +535,9 @@ debug-toolkit__toggle-all-button:hover {
 }
 
 .debug-toolkit__master .debug-toolkit__log-label {
-    
+
 }
 
 .debug-toolkit__master .debug-toolkit__console-toggle-log-show {
-    
+
 }

@@ -77,10 +77,22 @@ namespace DebugToolkit
                 windowList.Add(label);
                 DebugStatic.Master = masterWindow;
 
-                var toggleAllButton = new Button();
-                toggleAllButton.clicked += () => ToggleAllVisible();
+                var toggleAllButton = new Button() {text = "A"};
+                toggleAllButton.RegisterCallback<ClickEvent, DebugViewerBase>((evt, t) => t.ToggleAllVisible(), this);
                 toggleAllButton.AddToClassList(DebugConst.ClassName + "__toggle-all-button");
                 safeAreaContainer.Add(toggleAllButton);
+
+                var masterButton = new Button() {text = "M"};
+                masterButton.RegisterCallback<ClickEvent>( (evt) =>
+                {
+                    var masterWindowRoot = DebugStatic.Master;
+                    masterWindowRoot.userData = masterWindowRoot.style.display;
+                    masterWindowRoot.style.display = masterWindowRoot.style.display == DisplayStyle.None
+                        ? DisplayStyle.Flex
+                        : DisplayStyle.None;
+                });
+                masterButton.AddToClassList(DebugConst.ClassName + "__master-button");
+                safeAreaContainer.Add(masterButton);
             }
 
             return safeAreaContainer;
