@@ -167,7 +167,6 @@ namespace DebugToolkit
         /// <param name="root">The parent element to which the header will be added</param>
         /// <param name="windowName">The name of the window</param>
         /// <param name="isMasterWindow">Indicates if this is the master window</param>
-        /// <param name="instance">The DebugViewerBase instance</param>
         /// <returns>The created header element</returns>
         public static VisualElement AddWindowHeader(this VisualElement root, string windowName = "", bool isMasterWindow = false)
         {

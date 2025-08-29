@@ -165,38 +165,6 @@ namespace DebugToolkit.Tests
             }
         }
 
-        // Test if multiple instances can coexist independently
-        [Test]
-        public void MultipleInstances_CanCoexistIndependently()
-        {
-            // Create second instance
-            var secondInstance = new DebugViewWindowTest();
-            secondInstance.Start();
-
-            // Verify both instances have their own master windows
-            Assert.That(DebugStatic.Master, Is.Not.Null, "First instance should have master window.");
-            Assert.That(DebugStatic.Master, Is.Not.Null, "Second instance should have master window.");
-            Assert.That(DebugStatic.Master, Is.Not.EqualTo(DebugStatic.Master),
-                "Each instance should have its own master window.");
-
-            // Verify both instances have their own debug window lists
-            Assert.That(DebugStatic.WindowList, Is.Not.EqualTo(DebugStatic.WindowList),
-                "Each instance should have its own debug window list.");
-
-            // Verify window counts are independent
-            var firstInstanceWindowCount = DebugStatic.WindowList.Count;
-            var secondInstanceWindowCount = DebugStatic.WindowList.Count;
-
-            // Both should have 3 windows (1 master + 2 test windows)
-            Assert.That(firstInstanceWindowCount, Is.EqualTo(3), "First instance should have 3 windows.");
-            Assert.That(secondInstanceWindowCount, Is.EqualTo(3), "Second instance should have 3 windows.");
-
-            // Add a window to the second instance and verify it doesn't affect the first
-            var newWindow = secondInstance.Root.AddWindow("SecondInstanceWindow");
-            Assert.That(DebugStatic.WindowList.Count, Is.EqualTo(4), "Second instance should now have 4 windows.");
-            Assert.That(DebugStatic.WindowList.Count, Is.EqualTo(3), "First instance should still have 3 windows.");
-        }
-
         // Test if there is only one toggle all button
         [Test]
         public void ToggleAllButton_OnlyOneExists()
