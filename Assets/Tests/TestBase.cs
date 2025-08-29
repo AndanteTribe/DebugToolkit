@@ -43,7 +43,9 @@ namespace DebugToolkit.Tests
             {
                 await SceneManager.UnloadSceneAsync(testScene);
             }
-            // No need to clean up static fields since they are now instance-based
+
+            DebugStatic.Master = null;
+            DebugStatic.WindowList.Clear();
         }
 
         [Test]

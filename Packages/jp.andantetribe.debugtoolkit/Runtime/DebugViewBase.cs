@@ -11,11 +11,6 @@ namespace DebugToolkit
     /// </summary>
     public abstract class DebugViewerBase
     {
-        /// <summary>
-        /// Collection that maintains references to all debug windows in this instance.
-        /// Used for operations such as toggling visibility of all windows at once.
-        /// </summary>
-        protected internal readonly List<VisualElement> DebugWindowList = new();
 
         /// <summary>
         /// Custom <see cref="UnityEngine.UIElements.PanelSettings"/>.
@@ -26,12 +21,6 @@ namespace DebugToolkit
         /// Custom <see cref="UnityEngine.UIElements.ThemeStyleSheet"/>.
         /// </summary>
         public ThemeStyleSheet? ThemeStyleSheet { get; set; }
-
-        /// <summary>
-        /// Reference to the main window that contains controls for managing all other debug windows.
-        /// Provides functionality for toggling visibility and accessing the list of all debug windows.
-        /// </summary>
-        protected internal VisualElement? MasterWindow { get; set; }
 
         /// <summary>
         /// Flag that controls the visibility of all windows.
@@ -77,7 +66,7 @@ namespace DebugToolkit
             safeAreaContainer.userData = this;
             root.Add(safeAreaContainer);
 
-            if (MasterWindow == null)
+            if (DebugStatic.Master == null)
             {
                 var masterWindow = safeAreaContainer.AddWindow("Debug Toolkit");
 
@@ -86,7 +75,7 @@ namespace DebugToolkit
                 masterWindow.Add(windowList);
                 var label = new Label("Debug Window List");
                 windowList.Add(label);
-                MasterWindow = masterWindow;
+                DebugStatic.Master = masterWindow;
 
                 var toggleAllButton = new Button();
                 toggleAllButton.clicked += () => ToggleAllVisible();
@@ -105,7 +94,7 @@ namespace DebugToolkit
         private void ToggleAllVisible()
         {
             _allWindowsVisible = !_allWindowsVisible;
-            foreach (var window in DebugWindowList)
+            foreach (var window in DebugStatic.WindowList)
             {
                 if (_allWindowsVisible  && window.userData is StyleEnum<DisplayStyle> previous)
                 {
