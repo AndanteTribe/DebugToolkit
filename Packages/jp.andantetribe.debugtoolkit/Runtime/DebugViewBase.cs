@@ -85,11 +85,21 @@ namespace DebugToolkit
                 var masterButton = new Button() {text = "M"};
                 masterButton.RegisterCallback<ClickEvent>( (evt) =>
                 {
-                    var masterWindowRoot = DebugStatic.Master;
-                    masterWindowRoot.userData = masterWindowRoot.style.display;
-                    masterWindowRoot.style.display = masterWindowRoot.style.display == DisplayStyle.None
-                        ? DisplayStyle.Flex
-                        : DisplayStyle.None;
+                    var masterWindowRoot = DebugStatic.Master.parent;
+                    if (masterWindowRoot.style.display != DisplayStyle.None)
+                    {
+                        masterWindowRoot.userData = masterWindowRoot.style.display;
+                        masterWindowRoot.style.display = DisplayStyle.None;
+                        return;
+                    }
+                    else
+                    {
+                        if (masterWindowRoot.userData is StyleEnum<DisplayStyle> previous)
+                        {
+                            masterWindowRoot.style.display = previous;
+                        }
+                        masterWindowRoot.style.display = DisplayStyle.Flex;
+                    }
                 });
                 masterButton.AddToClassList(DebugConst.ClassName + "__master-button");
                 safeAreaContainer.Add(masterButton);

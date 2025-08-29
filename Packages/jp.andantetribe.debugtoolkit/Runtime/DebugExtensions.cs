@@ -91,7 +91,7 @@ namespace DebugToolkit
 
             DebugStatic.WindowList.Add(window);
 
-            window.style.display = DisplayStyle.Flex;
+            window.style.display = DisplayStyle.None;
 
             var windowNum = 1;
             if (!isMasterWindow)
