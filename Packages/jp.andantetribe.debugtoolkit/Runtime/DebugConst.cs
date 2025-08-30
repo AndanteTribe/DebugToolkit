@@ -8,5 +8,6 @@
         public const string WindowLabelClassName = ClassName + "__window-label";
         public const string WindowHeaderClassName = ClassName + "__window-header";
         public const string ToggleWindowDisplayClassName = ClassName + "__toggle-window-display";
+        public const string SafeAreaContainerClassName = ClassName + "__safe-area-container";
     }
 }

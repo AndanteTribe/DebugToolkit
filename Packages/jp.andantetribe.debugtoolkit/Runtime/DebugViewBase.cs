@@ -22,15 +22,14 @@ namespace DebugToolkit
         public ThemeStyleSheet? ThemeStyleSheet { get; set; }
 
         /// <summary>
-        /// Flag that controls the visibility of all windows.
-        /// When true, all windows are displayed; when false, all windows are hidden.
-        /// </summary>
-        private bool _allWindowsVisible = true;
-
-        /// <summary>
         /// EntryPoint.
         /// </summary>
         public void Start() => CreateViewGUI();
+
+        /// <summary>
+        /// The main window
+        /// </summary>
+        public VisualElement? MasterWindow { get; set; }
 
         /// <summary>
         /// Implement this method to make a custom UIElements viewer.
@@ -63,48 +62,29 @@ namespace DebugToolkit
             safeAreaContainer.pickingMode = PickingMode.Ignore;
             // Store instance reference for use by extension methods
             safeAreaContainer.userData = this;
+            safeAreaContainer.AddToClassList(DebugConst.SafeAreaContainerClassName);
             root.Add(safeAreaContainer);
 
-            if (DebugStatic.Master == null)
+            MasterWindow = safeAreaContainer.AddWindow("Debug Toolkit");
+
+            var windowList = new ScrollView();
+            windowList.AddToClassList(DebugConst.WindowListClassName);
+            MasterWindow.Add(windowList);
+            var label = new Label("Debug Window List");
+            windowList.Add(label);
+
+            // 全表示非表示ボタンは1つだけ作成
+            if(DebugStatic.ToggleAllButton == null)
             {
-                var masterWindow = safeAreaContainer.AddWindow("Debug Toolkit");
-
-                var windowList = new ScrollView();
-                windowList.AddToClassList(DebugConst.WindowListClassName);
-                masterWindow.Add(windowList);
-                var label = new Label("Debug Window List");
-                windowList.Add(label);
-                DebugStatic.Master = masterWindow;
-
                 var toggleAllButton = new Button() {text = "A"};
-                toggleAllButton.RegisterCallback<ClickEvent, DebugViewerBase>((evt, t) => t.ToggleAllVisible(), this);
+                toggleAllButton.RegisterCallback<ClickEvent>((evt)
+                    => ToggleAllVisible());
                 toggleAllButton.AddToClassList(DebugConst.ClassName + "__toggle-all-button");
                 safeAreaContainer.Add(toggleAllButton);
-
-                var masterButton = new Button() {text = "M"};
-                masterButton.RegisterCallback<ClickEvent>( (evt) =>
-                {
-                    var masterWindowRoot = DebugStatic.Master.parent;
-                    if (masterWindowRoot.style.display != DisplayStyle.None)
-                    {
-                        masterWindowRoot.userData = masterWindowRoot.style.display;
-                        masterWindowRoot.style.display = DisplayStyle.None;
-                        return;
-                    }
-                    else
-                    {
-                        if (masterWindowRoot.userData is StyleEnum<DisplayStyle> previous)
-                        {
-                            masterWindowRoot.style.display = previous;
-                        }
-                        masterWindowRoot.style.display = DisplayStyle.Flex;
-                    }
-                });
-                masterButton.AddToClassList(DebugConst.ClassName + "__master-button");
-                safeAreaContainer.Add(masterButton);
+                DebugStatic.ToggleAllButton = toggleAllButton;
             }
 
-            return safeAreaContainer;
+            return MasterWindow;
         }
 
         /// <summary>
@@ -112,12 +92,12 @@ namespace DebugToolkit
         /// Based on the current visibility state, shows or hides all windows.
         /// Also synchronizes the state of toggle buttons in the master window.
         /// </summary>
-        private void ToggleAllVisible()
+        private static void ToggleAllVisible()
         {
-            _allWindowsVisible = !_allWindowsVisible;
+            DebugStatic.s_allWindowsVisible = !DebugStatic.s_allWindowsVisible;
             foreach (var window in DebugStatic.WindowList)
             {
-                if (_allWindowsVisible  && window.userData is StyleEnum<DisplayStyle> previous)
+                if (DebugStatic.s_allWindowsVisible  && window.userData is StyleEnum<DisplayStyle> previous)
                 {
                     window.style.display = previous;
                 }

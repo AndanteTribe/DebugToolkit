@@ -65,11 +65,11 @@ namespace DebugToolkit
         public static VisualElement AddWindow(this VisualElement root, string windowName = "")
         {
             var window = new VisualElement(){name = windowName};
-            root.Add(window);
+            root.GetSafeAreaContainer().Add(window);
 
             window.AddToClassList(DebugConst.ClassName + "__master");
 
-            var isMasterWindow = DebugStatic.Master == null;
+            var isMasterWindow = !root.ClassListContains(DebugConst.ClassName + "__master-window");
             if (isMasterWindow)
             {
                 window.AddToClassList(DebugConst.ClassName + "__master-window");
@@ -77,8 +77,9 @@ namespace DebugToolkit
             else
             {
                 window.AddToClassList(DebugConst.ClassName + "__normal-window");
+                AddWindowListItem(root, windowName);
             }
-            window.AddWindowHeader(windowName, isMasterWindow);
+            window.AddWindowHeader(root, windowName, isMasterWindow);
 
             var windowContent = new VisualElement();
             windowContent.AddToClassList(DebugConst.WindowContentClassName);
@@ -91,14 +92,13 @@ namespace DebugToolkit
 
             DebugStatic.WindowList.Add(window);
 
-            window.style.display = DisplayStyle.None;
+            window.style.display = DisplayStyle.Flex;
 
             var windowNum = 1;
-            if (!isMasterWindow)
-            {
-                AddWindowListItem(window, windowName);
-                windowNum += DebugStatic.Master.Q<ScrollView>(className: DebugConst.WindowListClassName).childCount;
-            }
+            windowNum += root.GetSafeAreaContainer().Query<VisualElement>(
+                DebugConst.ClassName + "__master-window").ToList().Count;
+            windowNum += root.GetSafeAreaContainer().Query<VisualElement>(
+                DebugConst.ClassName + "__normal-window").ToList().Count;
 
             window.style.position = Position.Absolute;
             window.style.left = 50 * windowNum;
@@ -115,8 +115,7 @@ namespace DebugToolkit
         /// <param name="windowName">The name of the window</param>
         private static void AddWindowListItem(VisualElement window, string windowName)
         {
-            var windowList = DebugStatic.Master.Q<ScrollView>(className: DebugConst.WindowListClassName);
-            if (windowList == null) return;
+            var windowList = window;
 
             var listItem = new VisualElement();
             listItem.style.flexDirection = FlexDirection.Row;
@@ -165,10 +164,11 @@ namespace DebugToolkit
         /// The header includes a window name, a draggable area, and optionally a delete button.
         /// </summary>
         /// <param name="root">The parent element to which the header will be added</param>
+        /// <param name="addedElement">The element containing the list of windows</param>
         /// <param name="windowName">The name of the window</param>
         /// <param name="isMasterWindow">Indicates if this is the master window</param>
         /// <returns>The created header element</returns>
-        public static VisualElement AddWindowHeader(this VisualElement root, string windowName = "", bool isMasterWindow = false)
+        public static VisualElement AddWindowHeader(this VisualElement root, VisualElement addedElement, string windowName = "", bool isMasterWindow = false)
         {
             var windowHeader = new VisualElement(){name = "window-header"};
             windowHeader.AddToClassList(DebugConst.WindowHeaderClassName);
@@ -183,53 +183,41 @@ namespace DebugToolkit
             windowLabel.AddToClassList(DebugConst.WindowLabelClassName);
             dragArea.Add(windowLabel);
 
-            if (isMasterWindow)
+            var deleteButton = new Button() { text = "X" };
+            deleteButton.AddToClassList(DebugConst.ClassName + "__delete-button");
+            deleteButton.clicked += () =>
             {
-                var minimizeButton = new Button() { text = "-" };
-                minimizeButton.AddToClassList(DebugConst.ClassName + "__minimize-button");
+                root.style.display = DisplayStyle.None;
 
-                var isMinimized = false;
+                var windowList = addedElement;
 
-                minimizeButton.clicked += () =>
+                foreach (var windowItem in windowList.Children())
                 {
-                    isMinimized = !isMinimized;
-                    var windowContent = root.Q<VisualElement>(className: DebugConst.WindowContentClassName);
-                    if (windowContent != null)
+                    var toggle = windowItem.Q<Toggle>();
+                    if (toggle != null && toggle.text == windowName)
                     {
-                        windowContent.style.display = isMinimized ? DisplayStyle.None : DisplayStyle.Flex;
+                        toggle.value = false;
                     }
-                    minimizeButton.text = isMinimized ? "^" : "-";
-                };
+                }
 
-                windowHeader.Add(minimizeButton);
-            }
-            else
-            {
-                var deleteButton = new Button() { text = "X" };
-                deleteButton.AddToClassList(DebugConst.ClassName + "__delete-button");
-                deleteButton.clicked += () =>
-                {
-                    root.style.display = DisplayStyle.None;
-
-                    var windowList = DebugStatic.Master.Q<ScrollView>(
-                        className: DebugConst.WindowListClassName);
-
-                    if (windowList != null)
-                    {
-                        foreach (var windowItem in windowList.Children())
-                        {
-                            var toggle = windowItem.Q<Toggle>();
-                            if (toggle != null && toggle.text == windowName)
-                            {
-                                toggle.value = false;
-                            }
-                        }
-                    }
-                };
                 windowHeader.Add(deleteButton);
-            }
+            };
             root.Add(windowHeader);
             return windowHeader;
+        }
+
+        private static VisualElement GetSafeAreaContainer(this VisualElement root)
+        {
+            var element = root;
+            while (true)
+            {
+                if (root.ClassListContains(DebugConst.SafeAreaContainerClassName))
+                {
+                    return element;
+                }
+                if (element.parent == null) return element;
+                element = element.parent;
+            }
         }
 
 #if UNITY_2023_2_OR_NEWER

@@ -35,8 +35,8 @@ namespace DebugToolkit.Tests
         [Test]
         public void MasterWindow_IsCorrectlyGenerated()
         {
-            Assert.That(DebugStatic.Master, Is.Not.Null, "MasterWindow should be generated.");
-            Assert.That(DebugStatic.Master.parent.Q<Label>(
+            Assert.That( _debugViewWindowTest.MasterWindow, Is.Not.Null, "MasterWindow should be generated.");
+            Assert.That( _debugViewWindowTest.MasterWindow.parent.Q<Label>(
                     name: "window-label",
                     className: DebugConst.WindowLabelClassName)
                 .text, Is.EqualTo("Debug Toolkit"), "MasterWindow title is incorrect.");
@@ -47,7 +47,7 @@ namespace DebugToolkit.Tests
         public void MasterWindow_ContainsWindowListButtonsForOtherWindows()
         {
             var windowListScrollView =
-                DebugStatic.Master.Q<ScrollView>(className: DebugConst.WindowListClassName);
+                 _debugViewWindowTest.MasterWindow.Q<ScrollView>(className: DebugConst.WindowListClassName);
             Assert.That(windowListScrollView, Is.Not.Null, "WindowList ScrollView not found in MasterWindow.");
 
             var toggles = windowListScrollView.Query<Toggle>(className: DebugConst.ToggleWindowDisplayClassName)
@@ -64,7 +64,7 @@ namespace DebugToolkit.Tests
         public async Task MasterWindow_WindowListButton_TogglesWindowVisibility(string windowName, float screenPosX,
             float screenPosY)
         {
-            var toggle = DebugStatic.Master.Q<ScrollView>(className: DebugConst.WindowListClassName)
+            var toggle =  _debugViewWindowTest.MasterWindow.Q<ScrollView>(className: DebugConst.WindowListClassName)
                 .Query<Toggle>(className: DebugConst.ToggleWindowDisplayClassName)
                 .Where(t => t.text == windowName).First();
 
@@ -96,9 +96,9 @@ namespace DebugToolkit.Tests
         [Test]
         public async Task MasterWindow_CanBeMinimized()
         {
-            var masterWindow = DebugStatic.Master.parent;
+            var masterWindow =  _debugViewWindowTest.MasterWindow.parent;
             var minimizeButton = masterWindow.Q<Button>(className: DebugConst.ClassName + "__minimize-button");
-            var windowContent = DebugStatic.Master;
+            var windowContent =  _debugViewWindowTest.MasterWindow;
 
             Assert.That(minimizeButton, Is.Not.Null, "Minimize button not found in MasterWindow.");
             Assert.That(windowContent.style.display.value, Is.EqualTo(DisplayStyle.Flex),
@@ -259,7 +259,7 @@ namespace DebugToolkit.Tests
         public async Task WindowCloseButton_HidesWindowAndUpdatesToggle(string windowName, float screenPosX,
             float screenPosY)
         {
-            var toggle = DebugStatic.Master.Q<ScrollView>(className: DebugConst.WindowListClassName)
+            var toggle =  _debugViewWindowTest.MasterWindow.Q<ScrollView>(className: DebugConst.WindowListClassName)
                 .Query<Toggle>(className: DebugConst.ToggleWindowDisplayClassName)
                 .Where(t => t.text == windowName).First();
 
