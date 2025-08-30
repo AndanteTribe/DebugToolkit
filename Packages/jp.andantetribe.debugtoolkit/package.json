@@ -1,6 +1,6 @@
 {
   "name": "jp.andantetribe.debugtoolkit",
-  "version": "0.0.1",
+  "version": "0.1.1",
   "displayName": "Debug Toolkit",
   "description": "A toolkit for debugging and profiling Unity applications.",
   "unity": "2021.3",
