@@ -93,7 +93,7 @@ namespace DebugToolkit.Tests
         public void MasterWindow_OnlyOneExists()
         {
             var masterWindows = _debugViewWindowTest.Root.parent.parent
-                .Query<VisualElement>(className: DebugConst.ClassName + "__master-window").ToList();
+                .Query<VisualElement>(className: DebugConst.MasterWindowClassName).ToList();
             Assert.That(masterWindows.Count, Is.EqualTo(1), "There should be exactly one master window.");
         }
 
@@ -197,7 +197,7 @@ namespace DebugToolkit.Tests
             var window = windowContent.parent;
 
             Assert.That(window, Is.Not.Null, "Window should be added to the DOM.");
-            Assert.That(window.ClassListContains(DebugConst.ClassName + "__normal-window"), Is.True,
+            Assert.That(window.ClassListContains(DebugConst.NormalWindowClassName), Is.True,
                 "Added window should have the normal window class.");
             Assert.That(_debugViewWindowTest.Root.GetAllDebugWindows().Contains(window), Is.True,
                 "Window should be added to the debug window list.");

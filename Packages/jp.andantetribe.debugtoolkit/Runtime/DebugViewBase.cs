@@ -115,15 +115,15 @@ namespace DebugToolkit
                     switch (isAnyVisibleEnable)
                     {
                         case true:
-                            ((DebugWindow)window).VisibilityToggleButton.value = false;
+                            window.VisibilityToggleButton.value = false;
                             window.style.display = DisplayStyle.None;
                             break;
                         case false:
-                            if (((DebugWindow)window).IsLastOperated ||
-                                window.ClassListContains(DebugConst.ClassName + "__master-window") ||
-                                window.VisibilityToggleButton.parent.parent.parent.ClassListContains(DebugConst.ClassName + "__master-window"))
+                            if (window.IsLastOperated ||
+                                window.ClassListContains(DebugConst.MasterWindowClassName) ||
+                                window.GetDebugWindowParent().ClassListContains(DebugConst.MasterWindowClassName))
                             {
-                                ((DebugWindow)window).VisibilityToggleButton.value = true;
+                                window.VisibilityToggleButton.value = true;
                                 window.style.display = DisplayStyle.Flex;
                             }
                             break;

@@ -73,12 +73,12 @@ namespace DebugToolkit
             var isMasterWindow = root.ClassListContains(DebugConst.SafeAreaContainerClassName);
             if (isMasterWindow)
             {
-                window.AddToClassList(DebugConst.ClassName + "__master-window");
+                window.AddToClassList(DebugConst.MasterWindowClassName);
                 window.style.display = DisplayStyle.Flex;
             }
             else
             {
-                window.AddToClassList(DebugConst.ClassName + "__normal-window");
+                window.AddToClassList(DebugConst.NormalWindowClassName);
                 root.AddWindowToggle(window, windowName);
                 window.style.display = DisplayStyle.None;
             }
@@ -92,7 +92,7 @@ namespace DebugToolkit
             {
                 window.BringToFront();
                 window.GetSafeAreaContainer().parent.BringToFront();
-                if (!window.ClassListContains(DebugConst.ClassName + "__master-window"))
+                if (!window.ClassListContains(DebugConst.MasterWindowClassName))
                 {
                     foreach (var debugWindow in window.GetAllDebugWindows())
                     {
@@ -104,9 +104,9 @@ namespace DebugToolkit
 
             var windowNum = 1;
             windowNum += root.GetSafeAreaContainer().Query<VisualElement>(
-                className: DebugConst.ClassName + "__master-window").ToList().Count;
+                className: DebugConst.MasterWindowClassName).ToList().Count;
             windowNum += root.GetSafeAreaContainer().Query<VisualElement>(
-                className: DebugConst.ClassName + "__normal-window").ToList().Count;
+                className: DebugConst.NormalWindowClassName).ToList().Count;
 
             var instanceNum = root.GetSafeAreaContainer().parent.parent.Query<VisualElement>(
                 className: DebugConst.SafeAreaContainerClassName).ToList().Count;
@@ -175,11 +175,10 @@ namespace DebugToolkit
         /// The header includes a window name, a draggable area, and optionally a delete button.
         /// </summary>
         /// <param name="root">The parent element to which the header will be added</param>
-        /// <param name="addedElement">The element containing the list of windows</param>
         /// <param name="windowName">The name of the window</param>
         /// <param name="isMasterWindow">Indicates if this is the master window</param>
         /// <returns>The created header element</returns>
-        public static VisualElement AddWindowHeader(this VisualElement root, string windowName = "", bool isMasterWindow = false)
+        private static VisualElement AddWindowHeader(this VisualElement root, string windowName = "", bool isMasterWindow = false)
         {
             var windowHeader = new VisualElement(){name = "window-header"};
             windowHeader.AddToClassList(DebugConst.WindowHeaderClassName);
@@ -199,6 +198,7 @@ namespace DebugToolkit
             deleteButton.clicked += () =>
             {
                 root.style.display = DisplayStyle.None;
+                ((DebugWindow)root).IsLastOperated = false;
 
                 var toggle = ((DebugWindow)root).VisibilityToggleButton;
                 if (toggle != null && toggle.text == windowName)
@@ -217,6 +217,21 @@ namespace DebugToolkit
             while (true)
             {
                 if (element.ClassListContains(DebugConst.SafeAreaContainerClassName))
+                {
+                    return element;
+                }
+                if (element.parent == null) return element;
+                element = element.parent;
+            }
+        }
+
+        internal static VisualElement GetDebugWindowParent(this DebugWindow root)
+        {
+            VisualElement element = root.VisibilityToggleButton;
+            while (true)
+            {
+                if (element.ClassListContains(DebugConst.MasterWindowClassName) ||
+                    element.ClassListContains(DebugConst.NormalWindowClassName))
                 {
                     return element;
                 }
