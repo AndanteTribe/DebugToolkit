@@ -241,7 +241,7 @@ namespace DebugToolkit
         }
 
         internal static List<DebugWindow> GetAllDebugWindows(this VisualElement root)
-            =>root.GetSafeAreaContainer().parent.parent.Query<DebugWindow>().ToList();
+            => root.GetSafeAreaContainer().parent.parent.Query<DebugWindow>().ToList();
 
 #if UNITY_2023_2_OR_NEWER
         /// <summary>
