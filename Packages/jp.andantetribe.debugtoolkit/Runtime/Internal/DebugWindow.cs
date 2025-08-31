@@ -15,7 +15,7 @@ namespace DebugToolkit
         /// <summary>
         /// UIBuilderのLibraryに登録するためのUXML要素のファクトリクラス.
         /// </summary>
-        public class SafeAreaContainerFactory : UxmlFactory<SafeAreaContainer, UxmlTraits>
+        public class DebugWindowFactory : UxmlFactory<DebugWindow, UxmlTraits>
         {
         }
 #endif
