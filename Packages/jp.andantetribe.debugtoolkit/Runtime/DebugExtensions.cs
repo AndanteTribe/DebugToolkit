@@ -82,7 +82,7 @@ namespace DebugToolkit
                 root.AddWindowToggle(window, windowName);
                 window.style.display = DisplayStyle.None;
             }
-            window.AddWindowHeader(root, windowName, isMasterWindow);
+            window.AddWindowHeader(windowName, isMasterWindow);
 
             var windowContent = new VisualElement();
             windowContent.AddToClassList(DebugConst.WindowContentClassName);
@@ -179,7 +179,7 @@ namespace DebugToolkit
         /// <param name="windowName">The name of the window</param>
         /// <param name="isMasterWindow">Indicates if this is the master window</param>
         /// <returns>The created header element</returns>
-        public static VisualElement AddWindowHeader(this VisualElement root, VisualElement addedElement, string windowName = "", bool isMasterWindow = false)
+        public static VisualElement AddWindowHeader(this VisualElement root, string windowName = "", bool isMasterWindow = false)
         {
             var windowHeader = new VisualElement(){name = "window-header"};
             windowHeader.AddToClassList(DebugConst.WindowHeaderClassName);
