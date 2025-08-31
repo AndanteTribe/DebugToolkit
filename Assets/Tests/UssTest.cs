@@ -42,6 +42,7 @@ namespace DebugToolkit.Tests
         public async Task UssWindow_AllElementsTest()
         {
             var window = _debugViewUssTest.Root.AddWindow("UssWindowTest");
+            window.parent.style.display = DisplayStyle.Flex;
             var scrollview = new ScrollView();
             window.Add(scrollview);
             AddAllUIElements(scrollview);
@@ -62,6 +63,7 @@ namespace DebugToolkit.Tests
         public async Task UssTab_AllElementsTest()
         {
             var window = _debugViewUssTest.Root.AddWindow("UssTabTest");
+            window.parent.style.display = DisplayStyle.Flex;
             var (tabRoot, tab1) = window.AddTab("Test");
             AddAllUIElements(tab1);
 
