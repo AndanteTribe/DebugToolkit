@@ -76,7 +76,7 @@ namespace DebugToolkit
             // 全表示非表示ボタンは1つだけ作成
             if(DebugStatic.ToggleAllButton == null)
             {
-                var toggleAllButton = new Button() {text = "A"};
+                var toggleAllButton = new Button();
                 toggleAllButton.RegisterCallback<ClickEvent>((evt)
                     => ToggleAllVisible());
                 toggleAllButton.AddToClassList(DebugConst.ClassName + "__toggle-all-button");

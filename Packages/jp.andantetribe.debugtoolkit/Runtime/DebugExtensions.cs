@@ -69,7 +69,7 @@ namespace DebugToolkit
 
             window.AddToClassList(DebugConst.ClassName + "__master");
 
-            var isMasterWindow = !root.ClassListContains(DebugConst.ClassName + "__master-window");
+            var isMasterWindow = root.ClassListContains(DebugConst.SafeAreaContainerClassName);
             if (isMasterWindow)
             {
                 window.AddToClassList(DebugConst.ClassName + "__master-window");
@@ -77,7 +77,7 @@ namespace DebugToolkit
             else
             {
                 window.AddToClassList(DebugConst.ClassName + "__normal-window");
-                AddWindowListItem(root, windowName);
+                root.AddWindowToggle(window, windowName);
             }
             window.AddWindowHeader(root, windowName, isMasterWindow);
 
@@ -88,20 +88,24 @@ namespace DebugToolkit
             window.RegisterCallback<PointerDownEvent, VisualElement>(static (_, window) =>
             {
                 window.BringToFront();
+                window.GetSafeAreaContainer().parent.BringToFront();
             }, window, TrickleDown.TrickleDown);
 
             DebugStatic.WindowList.Add(window);
 
             window.style.display = DisplayStyle.Flex;
 
-            var windowNum = 1;
+            var windowNum = 0;
             windowNum += root.GetSafeAreaContainer().Query<VisualElement>(
-                DebugConst.ClassName + "__master-window").ToList().Count;
+                className: DebugConst.ClassName + "__master-window").ToList().Count;
             windowNum += root.GetSafeAreaContainer().Query<VisualElement>(
-                DebugConst.ClassName + "__normal-window").ToList().Count;
+                className: DebugConst.ClassName + "__normal-window").ToList().Count;
+
+            var instanceNum = root.GetSafeAreaContainer().parent.parent.Query<VisualElement>(
+                className: DebugConst.SafeAreaContainerClassName).ToList().Count;
 
             window.style.position = Position.Absolute;
-            window.style.left = 50 * windowNum;
+            window.style.left = 50 * windowNum + 400 * (instanceNum - 1);
             window.style.top = 50 * windowNum;
 
             return windowContent;
@@ -111,11 +115,12 @@ namespace DebugToolkit
         /// Adds a window list item to the master window.
         /// Includes a toggle for controlling visibility and a label with the window name.
         /// </summary>
+        /// <param name="root">The parent element to which the window list item will be added</param>
         /// <param name="window">The window element to add to the list</param>
         /// <param name="windowName">The name of the window</param>
-        private static void AddWindowListItem(VisualElement window, string windowName)
+        private static void AddWindowToggle(this VisualElement root, VisualElement window, string windowName)
         {
-            var windowList = window;
+            var windowList = root;
 
             var listItem = new VisualElement();
             listItem.style.flexDirection = FlexDirection.Row;
@@ -135,9 +140,9 @@ namespace DebugToolkit
                     : DisplayStyle.None;
                 args.toggle.style.backgroundColor = GetWindowStateColor(args.window);
                 args.window.BringToFront();
+                args.window.GetSafeAreaContainer().parent.BringToFront();
             }, (window, toggle));
 
-            window.style.display = DisplayStyle.None;
             listItem.Add(toggle);
             windowList.Add(listItem);
             toggle.style.backgroundColor = GetWindowStateColor(window);
@@ -199,9 +204,8 @@ namespace DebugToolkit
                         toggle.value = false;
                     }
                 }
-
-                windowHeader.Add(deleteButton);
             };
+            windowHeader.Add(deleteButton);
             root.Add(windowHeader);
             return windowHeader;
         }
@@ -211,7 +215,7 @@ namespace DebugToolkit
             var element = root;
             while (true)
             {
-                if (root.ClassListContains(DebugConst.SafeAreaContainerClassName))
+                if (element.ClassListContains(DebugConst.SafeAreaContainerClassName))
                 {
                     return element;
                 }
