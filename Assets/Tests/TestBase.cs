@@ -43,7 +43,6 @@ namespace DebugToolkit.Tests
             {
                 await SceneManager.UnloadSceneAsync(testScene);
             }
-            DebugStatic.WindowList.Clear();
         }
 
         [Test]

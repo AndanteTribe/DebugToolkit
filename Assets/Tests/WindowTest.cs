@@ -110,7 +110,7 @@ namespace DebugToolkit.Tests
         [Test]
         public async Task ToggleAllButton_TogglesAllWindowsVisibility()
         {
-            foreach (var window in DebugStatic.WindowList)
+            foreach (var window in _debugViewWindowTest.Root.GetAllDebugWindows())
             {
                 window.style.display = DisplayStyle.Flex;
             }
@@ -118,7 +118,7 @@ namespace DebugToolkit.Tests
             var mouse = InputSystem.AddDevice<Mouse>();
             await ClickAtPositionAsync(mouse, new Vector2(15, 20));
 
-            foreach (var window in DebugStatic.WindowList)
+            foreach (var window in _debugViewWindowTest.Root.GetAllDebugWindows())
             {
                 Assert.That(window.style.display.value, Is.EqualTo(DisplayStyle.None),
                     "Window should be hidden after toggle all.");
@@ -126,7 +126,7 @@ namespace DebugToolkit.Tests
 
             await ClickAtPositionAsync(mouse, new Vector2(15, 20));
 
-            foreach (var window in DebugStatic.WindowList)
+            foreach (var window in _debugViewWindowTest.Root.GetAllDebugWindows())
             {
                 Assert.That(window.style.display.value, Is.Not.EqualTo(DisplayStyle.None),
                     "Window should be visible after toggling back.");
@@ -169,7 +169,7 @@ namespace DebugToolkit.Tests
         [Test]
         public async Task Window_BringsToFrontWhenClicked()
         {
-            var windows = DebugStatic.WindowList;
+            var windows = _debugViewWindowTest.Root.GetAllDebugWindows();
             foreach (var window in windows)
             {
                 window.style.display = DisplayStyle.Flex;
@@ -199,7 +199,7 @@ namespace DebugToolkit.Tests
             Assert.That(window, Is.Not.Null, "Window should be added to the DOM.");
             Assert.That(window.ClassListContains(DebugConst.ClassName + "__normal-window"), Is.True,
                 "Added window should have the normal window class.");
-            Assert.That(DebugStatic.WindowList.Contains(window), Is.True,
+            Assert.That(_debugViewWindowTest.Root.GetAllDebugWindows().Contains(window), Is.True,
                 "Window should be added to the debug window list.");
         }
 

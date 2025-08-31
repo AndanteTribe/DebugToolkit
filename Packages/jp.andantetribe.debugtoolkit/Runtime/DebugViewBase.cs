@@ -1,5 +1,6 @@
 #nullable enable
 
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -29,7 +30,7 @@ namespace DebugToolkit
         /// <summary>
         /// The main window
         /// </summary>
-        public VisualElement? MasterWindow { get; set; }
+        public VisualElement? MasterWindow { get; private set; }
 
         /// <summary>
         /// Implement this method to make a custom UIElements viewer.
@@ -80,7 +81,7 @@ namespace DebugToolkit
                 safeAreaContainer.Add(toggleAllButton);
             }
 
-        return MasterWindow;
+            return MasterWindow;
         }
 
         /// <summary>
@@ -88,19 +89,45 @@ namespace DebugToolkit
         /// Based on the current visibility state, shows or hides all windows.
         /// Also synchronizes the state of toggle buttons in the master window.
         /// </summary>
-        private static void ToggleAllVisible()
+        private void ToggleAllVisible()
         {
-            DebugStatic.s_allWindowsVisible = !DebugStatic.s_allWindowsVisible;
-            foreach (var window in DebugStatic.WindowList)
+            if (MasterWindow != null)
             {
-                if (DebugStatic.s_allWindowsVisible  && window.userData is StyleEnum<DisplayStyle> previous)
+                var debugWindows = MasterWindow.GetAllDebugWindows();
+                if (debugWindows.Count == 0)
                 {
-                    window.style.display = previous;
+                    return;
                 }
-                else
+
+                var isAnyVisibleEnable = false;
+
+                foreach (var window in debugWindows)
                 {
-                    window.userData = window.style.display;
-                    window.style.display = DisplayStyle.None;
+                    if (window.style.display == DisplayStyle.Flex)
+                    {
+                        isAnyVisibleEnable = true;
+                        break;
+                    }
+                }
+
+                foreach (var window in debugWindows)
+                {
+                    switch (isAnyVisibleEnable)
+                    {
+                        case true:
+                            ((DebugWindow)window).VisibilityToggleButton.value = false;
+                            window.style.display = DisplayStyle.None;
+                            break;
+                        case false:
+                            if (((DebugWindow)window).IsLastOperated ||
+                                window.ClassListContains(DebugConst.ClassName + "__master-window") ||
+                                window.VisibilityToggleButton.parent.parent.parent.ClassListContains(DebugConst.ClassName + "__master-window"))
+                            {
+                                ((DebugWindow)window).VisibilityToggleButton.value = true;
+                                window.style.display = DisplayStyle.Flex;
+                            }
+                            break;
+                    }
                 }
             }
         }

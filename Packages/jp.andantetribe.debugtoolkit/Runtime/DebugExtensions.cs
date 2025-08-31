@@ -1,6 +1,7 @@
 ﻿#nullable enable
 
 using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine.UIElements;
 using UnityEngine;
@@ -64,7 +65,7 @@ namespace DebugToolkit
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static VisualElement AddWindow(this VisualElement root, string windowName = "")
         {
-            var window = new VisualElement(){name = windowName};
+            var window = new DebugWindow(){name = windowName};
             root.GetSafeAreaContainer().Add(window);
 
             window.AddToClassList(DebugConst.ClassName + "__master");
@@ -91,9 +92,15 @@ namespace DebugToolkit
             {
                 window.BringToFront();
                 window.GetSafeAreaContainer().parent.BringToFront();
+                if (!window.ClassListContains(DebugConst.ClassName + "__master-window"))
+                {
+                    foreach (var debugWindow in window.GetAllDebugWindows())
+                    {
+                        debugWindow.IsLastOperated = false;
+                    }
+                    ((DebugWindow)window).IsLastOperated = true;
+                }
             }, window, TrickleDown.TrickleDown);
-
-            DebugStatic.WindowList.Add(window);
 
             var windowNum = 1;
             windowNum += root.GetSafeAreaContainer().Query<VisualElement>(
@@ -126,10 +133,9 @@ namespace DebugToolkit
             listItem.style.flexDirection = FlexDirection.Row;
             listItem.style.marginBottom = 5;
 
-            var toggle = new Toggle()
-            {
-                text = windowName,
-            };
+            var toggle = ((DebugWindow)window).VisibilityToggleButton;
+
+            toggle.text = windowName;
 
             toggle.AddToClassList(DebugConst.ToggleWindowDisplayClassName);
 
@@ -194,15 +200,10 @@ namespace DebugToolkit
             {
                 root.style.display = DisplayStyle.None;
 
-                var windowList = addedElement;
-
-                foreach (var windowItem in windowList.Children())
+                var toggle = ((DebugWindow)root).VisibilityToggleButton;
+                if (toggle != null && toggle.text == windowName)
                 {
-                    var toggle = windowItem.Q<Toggle>();
-                    if (toggle != null && toggle.text == windowName)
-                    {
-                        toggle.value = false;
-                    }
+                    toggle.value = false;
                 }
             };
             windowHeader.Add(deleteButton);
@@ -210,7 +211,7 @@ namespace DebugToolkit
             return windowHeader;
         }
 
-        private static VisualElement GetSafeAreaContainer(this VisualElement root)
+        internal static VisualElement GetSafeAreaContainer(this VisualElement root)
         {
             var element = root;
             while (true)
@@ -223,6 +224,9 @@ namespace DebugToolkit
                 element = element.parent;
             }
         }
+
+        internal static List<DebugWindow> GetAllDebugWindows(this VisualElement root)
+            =>root.GetSafeAreaContainer().parent.parent.Query<DebugWindow>().ToList();
 
 #if UNITY_2023_2_OR_NEWER
         /// <summary>
