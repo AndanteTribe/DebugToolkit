@@ -75,7 +75,7 @@ namespace DebugToolkit
             if (root.Query<Button>(className: DebugConst.ClassName + "__toggle-all-button").ToList().Count == 0)
             {
                 var toggleAllButton = new Button();
-                toggleAllButton.RegisterCallback<ClickEvent>((evt)
+                toggleAllButton.RegisterCallback<ClickEvent>((_)
                     => ToggleAllVisible());
                 toggleAllButton.AddToClassList(DebugConst.ClassName + "__toggle-all-button");
                 safeAreaContainer.Add(toggleAllButton);
