@@ -42,14 +42,12 @@ namespace DebugToolkit.Tests
         public async Task UssWindow_AllElementsTest()
         {
             var window = _debugViewUssTest.Root.AddWindow("UssWindowTest");
-            window.parent.style.display = DisplayStyle.Flex;
-            window.BringToFront();
             var scrollview = new ScrollView();
             window.Add(scrollview);
             AddAllUIElements(scrollview);
 
             var mouse = InputSystem.AddDevice<Mouse>();
-            await ClickAtPositionAsync(mouse, new Vector2(110, 930));
+            await ClickAtPositionAsync(mouse, new Vector2(133, 865));
 
             await CaptureScreenAsync(nameof(UssWindow_AllElementsTest) + "_scroll-before");
 
@@ -64,13 +62,11 @@ namespace DebugToolkit.Tests
         public async Task UssTab_AllElementsTest()
         {
             var window = _debugViewUssTest.Root.AddWindow("UssTabTest");
-            window.parent.style.display = DisplayStyle.Flex;
-            window.BringToFront();
             var (tabRoot, tab1) = window.AddTab("Test");
             AddAllUIElements(tab1);
 
             var mouse = InputSystem.AddDevice<Mouse>();
-            await ClickAtPositionAsync(mouse, new Vector2(110, 930));
+            await ClickAtPositionAsync(mouse, new Vector2(133, 865));
 
             await CaptureScreenAsync(nameof(UssTab_AllElementsTest) + "_scroll-before");
 
