@@ -73,11 +73,13 @@ namespace DebugToolkit
             if (isMasterWindow)
             {
                 window.AddToClassList(DebugConst.ClassName + "__master-window");
+                window.style.display = DisplayStyle.Flex;
             }
             else
             {
                 window.AddToClassList(DebugConst.ClassName + "__normal-window");
                 root.AddWindowToggle(window, windowName);
+                window.style.display = DisplayStyle.None;
             }
             window.AddWindowHeader(root, windowName, isMasterWindow);
 
@@ -93,9 +95,7 @@ namespace DebugToolkit
 
             DebugStatic.WindowList.Add(window);
 
-            window.style.display = DisplayStyle.Flex;
-
-            var windowNum = 0;
+            var windowNum = 1;
             windowNum += root.GetSafeAreaContainer().Query<VisualElement>(
                 className: DebugConst.ClassName + "__master-window").ToList().Count;
             windowNum += root.GetSafeAreaContainer().Query<VisualElement>(

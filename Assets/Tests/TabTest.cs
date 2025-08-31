@@ -33,7 +33,7 @@ namespace DebugToolkit.Tests
         [Test]
         public void ScrollView_IsCorrectlyAddedAtTab()
         {
-            var tab = _debugViewTabTest.Root.Q<Tab>();
+            var tab = _debugViewTabTest.Root.parent.parent.Q<Tab>();
             Assert.That(tab.Q<ScrollView>(), Is.Not.Null, "ScrollView should be added to Tab.");
         }
 

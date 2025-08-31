@@ -67,24 +67,20 @@ namespace DebugToolkit
 
             MasterWindow = safeAreaContainer.AddWindow("Debug Toolkit");
 
-            var windowList = new ScrollView();
-            windowList.AddToClassList(DebugConst.WindowListClassName);
-            MasterWindow.Add(windowList);
             var label = new Label("Debug Window List");
-            windowList.Add(label);
+            MasterWindow.Add(label);
 
             // 全表示非表示ボタンは1つだけ作成
-            if(DebugStatic.ToggleAllButton == null)
+            if (root.Query<Button>(className: DebugConst.ClassName + "__toggle-all-button").ToList().Count == 0)
             {
                 var toggleAllButton = new Button();
                 toggleAllButton.RegisterCallback<ClickEvent>((evt)
                     => ToggleAllVisible());
                 toggleAllButton.AddToClassList(DebugConst.ClassName + "__toggle-all-button");
                 safeAreaContainer.Add(toggleAllButton);
-                DebugStatic.ToggleAllButton = toggleAllButton;
             }
 
-            return MasterWindow;
+        return MasterWindow;
         }
 
         /// <summary>

@@ -5,7 +5,6 @@ namespace DebugToolkit
 {
     internal static class DebugStatic
     {
-        internal static VisualElement ToggleAllButton { get; set; }
         internal static bool s_allWindowsVisible = true;
         internal static List<VisualElement> WindowList { get; } = new List<VisualElement>();
     }
