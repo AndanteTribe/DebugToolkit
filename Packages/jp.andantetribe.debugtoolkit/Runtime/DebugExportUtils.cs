@@ -186,16 +186,42 @@ namespace DebugToolkit
                 return $"{elementType}_{element.name}";
 
             // Try to get label text for labeled elements
-            if (element is INotifyValueChanged<string> textElement && element is BaseField<string> field)
+            try
             {
-                if (!string.IsNullOrEmpty(field.label))
-                    return $"{elementType}_{field.label.Replace(" ", "_")}";
+                // Use reflection to check if element has a label property
+                var labelProperty = element.GetType().GetProperty("label");
+                if (labelProperty != null)
+                {
+                    var labelValue = labelProperty.GetValue(element) as string;
+                    if (!string.IsNullOrEmpty(labelValue))
+                        return $"{elementType}_{labelValue.Replace(" ", "_").Replace(":", "")}";
+                }
+            }
+            catch
+            {
+                // Ignore reflection errors
             }
 
-            // For other elements, try to find label or text
+            // Try to find child label elements
             var label = element.Q<Label>();
             if (label != null && !string.IsNullOrEmpty(label.text))
-                return $"{elementType}_{label.text.Replace(" ", "_")}";
+                return $"{elementType}_{label.text.Replace(" ", "_").Replace(":", "")}";
+
+            // Try to get text from the element itself if it has text
+            try
+            {
+                var textProperty = element.GetType().GetProperty("text");
+                if (textProperty != null)
+                {
+                    var textValue = textProperty.GetValue(element) as string;
+                    if (!string.IsNullOrEmpty(textValue))
+                        return $"{elementType}_{textValue.Replace(" ", "_").Replace(":", "")}";
+                }
+            }
+            catch
+            {
+                // Ignore reflection errors
+            }
 
             // Fall back to a generated name
             return $"{elementType}_{element.GetHashCode()}";
