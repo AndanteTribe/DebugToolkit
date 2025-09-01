@@ -133,12 +133,11 @@ namespace DebugToolkit
             listItem.style.flexDirection = FlexDirection.Row;
             listItem.style.marginBottom = 5;
 
-            var toggle = ((DebugWindow)window).VisibilityToggleButton;
-
+            var toggle = new Toggle();
+            ((DebugWindow)window).VisibilityToggleButton = toggle;
             toggle.text = windowName;
-
             toggle.AddToClassList(DebugConst.ToggleWindowDisplayClassName);
-
+            
             toggle.RegisterCallback<ChangeEvent<bool>, (VisualElement window, Toggle toggle)>(static (evt,args) =>
             {
                 args.window.style.display = evt.newValue

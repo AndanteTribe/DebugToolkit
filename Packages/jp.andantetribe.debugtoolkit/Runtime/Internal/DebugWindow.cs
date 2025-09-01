@@ -2,10 +2,10 @@
 
 namespace DebugToolkit
 {
-#if UNITY_2023_2_OR_NEWER
     /// <summary>
     ///  <see cref="VisualElement"/> for debug window
     /// </summary>
+#if UNITY_2023_2_OR_NEWER
     [UxmlElement]
     internal sealed partial class DebugWindow : VisualElement
     {
@@ -20,14 +20,14 @@ namespace DebugToolkit
         }
 #endif
         /// <summary>
-        /// this is the last operated window.
+        ///  is this window last operated?
         ///  </summary>
         public bool IsLastOperated { get; set; } = false;
 
         /// <summary>
-        ///   has a Enable/Disable toggle button at parent window.
+        ///  has an Enable/Disable toggle button at parent window.
         ///  master-window does not use this.
         /// </summary>
-        public Toggle VisibilityToggleButton { get; private set; } = new Toggle();
+        public Toggle VisibilityToggleButton { get; set; }
     }
 }
