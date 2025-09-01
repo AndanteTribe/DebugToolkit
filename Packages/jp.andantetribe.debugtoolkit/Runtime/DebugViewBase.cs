@@ -141,7 +141,8 @@ namespace DebugToolkit
         /// <param name="visible">True to show the window, false to hide it.</param>
         private static void SetVisibility(DebugWindow window, bool visible)
         {
-            window.VisibilityToggleButton.value = visible;
+            if(window.VisibilityToggleButton != null)
+                window.VisibilityToggleButton.value = visible;
             window.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
         }
     }
