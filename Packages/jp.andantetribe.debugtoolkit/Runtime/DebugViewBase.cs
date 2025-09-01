@@ -11,11 +11,6 @@ namespace DebugToolkit
     /// </summary>
     public abstract class DebugViewerBase
     {
-        /// <summary>
-        /// Static collection that maintains references to all debug windows in the application.
-        /// Used for global operations such as toggling visibility of all windows at once.
-        /// </summary>
-        protected internal static readonly List<VisualElement> DebugWindowList = new();
 
         /// <summary>
         /// Custom <see cref="UnityEngine.UIElements.PanelSettings"/>.
@@ -28,21 +23,14 @@ namespace DebugToolkit
         public ThemeStyleSheet? ThemeStyleSheet { get; set; }
 
         /// <summary>
-        /// Reference to the main window that contains controls for managing all other debug windows.
-        /// Provides functionality for toggling visibility and accessing the list of all debug windows.
-        /// </summary>
-        protected internal static VisualElement? MasterWindow { get; set; }
-
-        /// <summary>
-        /// Flag that controls the visibility of all windows.
-        /// When true, all windows are displayed; when false, all windows are hidden.
-        /// </summary>
-        private static bool s_allWindowsVisible = true;
-
-        /// <summary>
         /// EntryPoint.
         /// </summary>
         public void Start() => CreateViewGUI();
+
+        /// <summary>
+        /// The main window
+        /// </summary>
+        public VisualElement? MasterWindow { get; private set; }
 
         /// <summary>
         /// Implement this method to make a custom UIElements viewer.
@@ -73,26 +61,27 @@ namespace DebugToolkit
             var root = uiDocument.rootVisualElement;
             var safeAreaContainer = new SafeAreaContainer();
             safeAreaContainer.pickingMode = PickingMode.Ignore;
+            // Store instance reference for use by extension methods
+            safeAreaContainer.userData = this;
+            safeAreaContainer.AddToClassList(DebugConst.SafeAreaContainerClassName);
             root.Add(safeAreaContainer);
 
-            if (MasterWindow == null)
+            MasterWindow = safeAreaContainer.AddWindow("Debug Toolkit");
+
+            var label = new Label("Debug Window List");
+            MasterWindow.Add(label);
+
+            // 全表示非表示ボタンは1つだけ作成
+            if (root.Query<Button>(className: DebugConst.ClassName + "__toggle-all-button").ToList().Count == 0)
             {
-                var masterWindow = safeAreaContainer.AddWindow("Debug Toolkit");
-
-                var windowList = new ScrollView();
-                windowList.AddToClassList(DebugConst.WindowListClassName);
-                masterWindow.Add(windowList);
-                var label = new Label("Debug Window List");
-                windowList.Add(label);
-                MasterWindow = masterWindow;
-
                 var toggleAllButton = new Button();
-                toggleAllButton.clicked += ToggleAllVisible;
+                toggleAllButton.RegisterCallback<ClickEvent>((_)
+                    => ToggleAllVisible());
                 toggleAllButton.AddToClassList(DebugConst.ClassName + "__toggle-all-button");
                 safeAreaContainer.Add(toggleAllButton);
             }
 
-            return safeAreaContainer;
+            return MasterWindow;
         }
 
         /// <summary>
@@ -100,21 +89,61 @@ namespace DebugToolkit
         /// Based on the current visibility state, shows or hides all windows.
         /// Also synchronizes the state of toggle buttons in the master window.
         /// </summary>
-        private static void ToggleAllVisible()
+        private void ToggleAllVisible()
         {
-            s_allWindowsVisible = !s_allWindowsVisible;
-            foreach (var window in DebugWindowList)
+            if (MasterWindow != null)
             {
-                if (s_allWindowsVisible  && window.userData is StyleEnum<DisplayStyle> previous)
+                var debugWindows = MasterWindow.GetAllDebugWindows();
+                if (debugWindows.Count == 0)
                 {
-                    window.style.display = previous;
+                    return;
                 }
-                else
+
+                var isAnyVisibleEnable = false;
+
+                foreach (var window in debugWindows)
                 {
-                    window.userData = window.style.display;
-                    window.style.display = DisplayStyle.None;
+                    if (window.style.display == DisplayStyle.Flex)
+                    {
+                        isAnyVisibleEnable = true;
+                        break;
+                    }
+                }
+
+                foreach (var window in debugWindows)
+                {
+                    if (isAnyVisibleEnable)
+                    {
+                        SetVisibility(window, false);
+                    }else if (ShouldBeVisibleByDefault(window))
+                    {
+                        SetVisibility(window, true);
+                    }
                 }
             }
+        }
+
+        /// <summary>
+        /// Should the window be visible by default?
+        /// The last operated window and windows with the master window class name are visible by default.
+        /// </summary>
+        /// <param name="window"></param>
+        /// <returns></returns>
+        private static bool ShouldBeVisibleByDefault(DebugWindow window) =>
+                window.IsLastOperated ||
+                window.ClassListContains(DebugConst.MasterWindowClassName) ||
+                window.GetDebugWindowParent().ClassListContains(DebugConst.MasterWindowClassName);
+
+        /// <summary>
+        /// Sets the visibility of the specified debug window and updates the state of its toggle button.
+        /// </summary>
+        /// <param name="window">The debug window to update.</param>
+        /// <param name="visible">True to show the window, false to hide it.</param>
+        private static void SetVisibility(DebugWindow window, bool visible)
+        {
+            if(window.VisibilityToggleButton != null)
+                window.VisibilityToggleButton.value = visible;
+            window.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
         }
     }
 }

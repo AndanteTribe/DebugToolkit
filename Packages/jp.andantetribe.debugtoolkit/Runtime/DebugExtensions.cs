@@ -1,6 +1,7 @@
 ﻿#nullable enable
 
 using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine.UIElements;
 using UnityEngine;
@@ -64,21 +65,24 @@ namespace DebugToolkit
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static VisualElement AddWindow(this VisualElement root, string windowName = "")
         {
-            var window = new VisualElement(){name = windowName};
-            root.Add(window);
+            var window = new DebugWindow(){name = windowName};
+            root.GetSafeAreaContainer().Add(window);
 
             window.AddToClassList(DebugConst.ClassName + "__master");
 
-            var isMasterWindow = DebugViewerBase.MasterWindow == null;
+            var isMasterWindow = root.ClassListContains(DebugConst.SafeAreaContainerClassName);
             if (isMasterWindow)
             {
-                window.AddToClassList(DebugConst.ClassName + "__master-window");
+                window.AddToClassList(DebugConst.MasterWindowClassName);
+                window.style.display = DisplayStyle.Flex;
             }
             else
             {
-                window.AddToClassList(DebugConst.ClassName + "__normal-window");
+                window.AddToClassList(DebugConst.NormalWindowClassName);
+                root.AddWindowToggle(window, windowName);
+                window.style.display = DisplayStyle.None;
             }
-            window.AddWindowHeader(windowName, isMasterWindow);
+            window.AddWindowHeader(windowName);
 
             var windowContent = new VisualElement();
             windowContent.AddToClassList(DebugConst.WindowContentClassName);
@@ -87,21 +91,28 @@ namespace DebugToolkit
             window.RegisterCallback<PointerDownEvent, VisualElement>(static (_, window) =>
             {
                 window.BringToFront();
+                window.GetSafeAreaContainer().parent.BringToFront();
+                if (!window.ClassListContains(DebugConst.MasterWindowClassName))
+                {
+                    foreach (var debugWindow in window.GetAllDebugWindows())
+                    {
+                        debugWindow.IsLastOperated = false;
+                    }
+                    ((DebugWindow)window).IsLastOperated = true;
+                }
             }, window, TrickleDown.TrickleDown);
 
-            DebugViewerBase.DebugWindowList.Add(window);
-
-            window.style.display = DisplayStyle.Flex;
-
             var windowNum = 1;
-            if (!isMasterWindow)
-            {
-                AddWindowListItem(window, windowName);
-                windowNum += DebugViewerBase.MasterWindow.Q<ScrollView>(className: DebugConst.WindowListClassName).childCount;
-            }
+            windowNum += root.GetSafeAreaContainer().Query<VisualElement>(
+                className: DebugConst.MasterWindowClassName).ToList().Count;
+            windowNum += root.GetSafeAreaContainer().Query<VisualElement>(
+                className: DebugConst.NormalWindowClassName).ToList().Count;
+
+            var instanceNum = root.GetSafeAreaContainer().parent.parent.Query<VisualElement>(
+                className: DebugConst.SafeAreaContainerClassName).ToList().Count;
 
             window.style.position = Position.Absolute;
-            window.style.left = 50 * windowNum;
+            window.style.left = 50 * windowNum + 400 * (instanceNum - 1);
             window.style.top = 50 * windowNum;
 
             return windowContent;
@@ -111,24 +122,22 @@ namespace DebugToolkit
         /// Adds a window list item to the master window.
         /// Includes a toggle for controlling visibility and a label with the window name.
         /// </summary>
+        /// <param name="root">The parent element to which the window list item will be added</param>
         /// <param name="window">The window element to add to the list</param>
         /// <param name="windowName">The name of the window</param>
-        private static void AddWindowListItem(VisualElement window, string windowName)
+        private static void AddWindowToggle(this VisualElement root, VisualElement window, string windowName)
         {
-            var windowList = DebugViewerBase.MasterWindow.Q<ScrollView>(className: DebugConst.WindowListClassName);
-            if (windowList == null) return;
+            var windowList = root;
 
             var listItem = new VisualElement();
             listItem.style.flexDirection = FlexDirection.Row;
             listItem.style.marginBottom = 5;
 
-            var toggle = new Toggle()
-            {
-                text = windowName,
-            };
-
+            var toggle = new Toggle();
+            ((DebugWindow)window).VisibilityToggleButton = toggle;
+            toggle.text = windowName;
             toggle.AddToClassList(DebugConst.ToggleWindowDisplayClassName);
-
+            
             toggle.RegisterCallback<ChangeEvent<bool>, (VisualElement window, Toggle toggle)>(static (evt,args) =>
             {
                 args.window.style.display = evt.newValue
@@ -136,9 +145,9 @@ namespace DebugToolkit
                     : DisplayStyle.None;
                 args.toggle.style.backgroundColor = GetWindowStateColor(args.window);
                 args.window.BringToFront();
+                args.window.GetSafeAreaContainer().parent.BringToFront();
             }, (window, toggle));
 
-            window.style.display = DisplayStyle.None;
             listItem.Add(toggle);
             windowList.Add(listItem);
             toggle.style.backgroundColor = GetWindowStateColor(window);
@@ -166,9 +175,8 @@ namespace DebugToolkit
         /// </summary>
         /// <param name="root">The parent element to which the header will be added</param>
         /// <param name="windowName">The name of the window</param>
-        ///  <param name="isMasterWindow">Indicates if this is the master window</param>
         /// <returns>The created header element</returns>
-        public static VisualElement AddWindowHeader(this VisualElement root, string windowName = "", bool isMasterWindow = false)
+        private static VisualElement AddWindowHeader(this VisualElement root, string windowName = "")
         {
             var windowHeader = new VisualElement(){name = "window-header"};
             windowHeader.AddToClassList(DebugConst.WindowHeaderClassName);
@@ -183,54 +191,51 @@ namespace DebugToolkit
             windowLabel.AddToClassList(DebugConst.WindowLabelClassName);
             dragArea.Add(windowLabel);
 
-            if (isMasterWindow)
+            var deleteButton = new Button() { text = "X" };
+            deleteButton.AddToClassList(DebugConst.ClassName + "__delete-button");
+            deleteButton.clicked += () =>
             {
-                var minimizeButton = new Button() { text = "-" };
-                minimizeButton.AddToClassList(DebugConst.ClassName + "__minimize-button");
+                root.style.display = DisplayStyle.None;
+                ((DebugWindow)root).IsLastOperated = false;
 
-                var isMinimized = false;
-
-                minimizeButton.clicked += () =>
+                var toggle = ((DebugWindow)root).VisibilityToggleButton;
+                if (toggle != null && toggle.text == windowName)
                 {
-                    isMinimized = !isMinimized;
-                    var windowContent = root.Q<VisualElement>(className: DebugConst.WindowContentClassName);
-                    if (windowContent != null)
-                    {
-                        windowContent.style.display = isMinimized ? DisplayStyle.None : DisplayStyle.Flex;
-                    }
-                    minimizeButton.text = isMinimized ? "^" : "-";
-                };
-
-                windowHeader.Add(minimizeButton);
-            }
-            else
-            {
-                var deleteButton = new Button() { text = "X" };
-                deleteButton.AddToClassList(DebugConst.ClassName + "__delete-button");
-                deleteButton.clicked += () =>
-                {
-                    root.style.display = DisplayStyle.None;
-
-                    var windowList = DebugViewerBase.MasterWindow.Q<ScrollView>(
-                        className: DebugConst.WindowListClassName);
-
-                    if (windowList != null)
-                    {
-                        foreach (var windowItem in windowList.Children())
-                        {
-                            var toggle = windowItem.Q<Toggle>();
-                            if (toggle != null && toggle.text == windowName)
-                            {
-                                toggle.value = false;
-                            }
-                        }
-                    }
-                };
-                windowHeader.Add(deleteButton);
-            }
+                    toggle.value = false;
+                }
+            };
+            windowHeader.Add(deleteButton);
             root.Add(windowHeader);
             return windowHeader;
         }
+
+        internal static VisualElement GetSafeAreaContainer(this VisualElement element)
+        {
+            for (var current = element; current != null; current = current.parent)
+            {
+                if (current.ClassListContains(DebugConst.SafeAreaContainerClassName))
+                {
+                    return current;
+                }
+            }
+            throw new InvalidOperationException("SafeAreaContainer not found in the hierarchy.");
+        }
+
+        internal static VisualElement GetDebugWindowParent(this DebugWindow element)
+        {
+            for (VisualElement current = element.VisibilityToggleButton; current != null; current = current.parent)
+            {
+                if (current.ClassListContains(DebugConst.MasterWindowClassName) ||
+                    current.ClassListContains(DebugConst.NormalWindowClassName))
+                {
+                    return current;
+                }
+            }
+            throw new InvalidOperationException("DebugWindow parent not found in the hierarchy.");
+        }
+
+        internal static List<DebugWindow> GetAllDebugWindows(this VisualElement root)
+            => root.GetSafeAreaContainer().parent.parent.Query<DebugWindow>().ToList();
 
 #if UNITY_2023_2_OR_NEWER
         /// <summary>

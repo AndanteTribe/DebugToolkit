@@ -32,12 +32,11 @@ namespace DebugToolkit.Tests
         }
 
         // Test if the master window is correctly generated
-        //  This will need to be changed when the master window is no longer static
         [Test]
         public void MasterWindow_IsCorrectlyGenerated()
         {
-            Assert.That(DebugViewerBase.MasterWindow, Is.Not.Null, "MasterWindow should be generated.");
-            Assert.That(DebugViewerBase.MasterWindow.parent.Q<Label>(
+            Assert.That( _debugViewWindowTest.MasterWindow, Is.Not.Null, "MasterWindow should be generated.");
+            Assert.That( _debugViewWindowTest.MasterWindow.parent.Q<Label>(
                     name: "window-label",
                     className: DebugConst.WindowLabelClassName)
                 .text, Is.EqualTo("Debug Toolkit"), "MasterWindow title is incorrect.");
@@ -47,11 +46,7 @@ namespace DebugToolkit.Tests
         [Test]
         public void MasterWindow_ContainsWindowListButtonsForOtherWindows()
         {
-            var windowListScrollView =
-                DebugViewerBase.MasterWindow.Q<ScrollView>(className: DebugConst.WindowListClassName);
-            Assert.That(windowListScrollView, Is.Not.Null, "WindowList ScrollView not found in MasterWindow.");
-
-            var toggles = windowListScrollView.Query<Toggle>(className: DebugConst.ToggleWindowDisplayClassName)
+            var toggles =  _debugViewWindowTest.MasterWindow.Query<Toggle>(className: DebugConst.ToggleWindowDisplayClassName)
                 .ToList();
             Assert.That(toggles.Count, Is.EqualTo(2), "Incorrect number of window display toggles in MasterWindow.");
             Assert.That(toggles.Any(t => t.text == "TestWindow1"), Is.True, "Toggle for TestWindow1 not found.");
@@ -60,16 +55,16 @@ namespace DebugToolkit.Tests
 
         // Test if the window display buttons in the master window work correctly
         [Test]
-        [TestCase("TestWindow1", 110, 930)]
-        [TestCase("TestWindow2", 112, 872)]
+        [TestCase("TestWindow1", 133, 864)]
+        [TestCase("TestWindow2", 161, 815)]
         public async Task MasterWindow_WindowListButton_TogglesWindowVisibility(string windowName, float screenPosX,
             float screenPosY)
         {
-            var toggle = DebugViewerBase.MasterWindow.Q<ScrollView>(className: DebugConst.WindowListClassName)
+            var toggle =  _debugViewWindowTest.MasterWindow
                 .Query<Toggle>(className: DebugConst.ToggleWindowDisplayClassName)
                 .Where(t => t.text == windowName).First();
 
-            var testWindow = _debugViewWindowTest.Root.Q<VisualElement>(name: windowName);
+            var testWindow = _debugViewWindowTest.Root.parent.parent.Q<VisualElement>(name: windowName);
 
             Assert.That(testWindow.style.display.value, Is.EqualTo(DisplayStyle.None),
                 "Window should be visible first time.");
@@ -93,40 +88,12 @@ namespace DebugToolkit.Tests
                 "Toggle color for hidden window is incorrect.");
         }
 
-        // Test if the master window can be minimized
-        [Test]
-        public async Task MasterWindow_CanBeMinimized()
-        {
-            var masterWindow = DebugViewerBase.MasterWindow.parent;
-            var minimizeButton = masterWindow.Q<Button>(className: DebugConst.ClassName + "__minimize-button");
-            var windowContent = DebugViewerBase.MasterWindow;
-
-            Assert.That(minimizeButton, Is.Not.Null, "Minimize button not found in MasterWindow.");
-            Assert.That(windowContent.style.display.value, Is.EqualTo(DisplayStyle.Flex),
-                "Window content should be visible initially.");
-
-            var mouse = InputSystem.AddDevice<Mouse>();
-            await ClickAtPositionAsync(mouse,  new Vector2(422, 995));
-
-            Assert.That(windowContent.style.display.value, Is.EqualTo(DisplayStyle.None),
-                "Window content should be hidden after minimizing.");
-            Assert.That(minimizeButton.text, Is.EqualTo("^"),
-                "Minimize button text should change to '^' when minimized.");
-
-            await ClickAtPositionAsync(mouse,  new Vector2(422, 995));
-
-            Assert.That(windowContent.style.display.value, Is.EqualTo(DisplayStyle.Flex),
-                "Window content should be visible after maximizing.");
-            Assert.That(minimizeButton.text, Is.EqualTo("-"),
-                "Minimize button text should change to '-' when maximized.");
-        }
-
         // Test if there is only one master window
         [Test]
         public void MasterWindow_OnlyOneExists()
         {
-            var masterWindows = _debugViewWindowTest.Root
-                .Query<VisualElement>(className: DebugConst.ClassName + "__master-window").ToList();
+            var masterWindows = _debugViewWindowTest.Root.parent.parent
+                .Query<VisualElement>(className: DebugConst.MasterWindowClassName).ToList();
             Assert.That(masterWindows.Count, Is.EqualTo(1), "There should be exactly one master window.");
         }
 
@@ -135,7 +102,7 @@ namespace DebugToolkit.Tests
         public void ToggleAllButton_IsVisible()
         {
             var toggleAllButton =
-                _debugViewWindowTest.Root.Q<Button>(className: DebugConst.ClassName + "__toggle-all-button");
+                _debugViewWindowTest.Root.parent.parent.Q<Button>(className: DebugConst.ClassName + "__toggle-all-button");
             Assert.That(toggleAllButton, Is.Not.Null, "Toggle all button should be visible.");
         }
 
@@ -143,7 +110,7 @@ namespace DebugToolkit.Tests
         [Test]
         public async Task ToggleAllButton_TogglesAllWindowsVisibility()
         {
-            foreach (var window in DebugViewerBase.DebugWindowList)
+            foreach (var window in _debugViewWindowTest.Root.GetAllDebugWindows())
             {
                 window.style.display = DisplayStyle.Flex;
             }
@@ -151,7 +118,7 @@ namespace DebugToolkit.Tests
             var mouse = InputSystem.AddDevice<Mouse>();
             await ClickAtPositionAsync(mouse, new Vector2(15, 20));
 
-            foreach (var window in DebugViewerBase.DebugWindowList)
+            foreach (var window in _debugViewWindowTest.Root.GetAllDebugWindows())
             {
                 Assert.That(window.style.display.value, Is.EqualTo(DisplayStyle.None),
                     "Window should be hidden after toggle all.");
@@ -159,7 +126,7 @@ namespace DebugToolkit.Tests
 
             await ClickAtPositionAsync(mouse, new Vector2(15, 20));
 
-            foreach (var window in DebugViewerBase.DebugWindowList)
+            foreach (var window in _debugViewWindowTest.Root.GetAllDebugWindows())
             {
                 Assert.That(window.style.display.value, Is.Not.EqualTo(DisplayStyle.None),
                     "Window should be visible after toggling back.");
@@ -170,7 +137,7 @@ namespace DebugToolkit.Tests
         [Test]
         public void ToggleAllButton_OnlyOneExists()
         {
-            var toggleAllButtons = _debugViewWindowTest.Root
+            var toggleAllButtons = _debugViewWindowTest.Root.parent.parent
                 .Query<Button>(className: DebugConst.ClassName + "__toggle-all-button").ToList();
             Assert.That(toggleAllButtons.Count, Is.EqualTo(1), "There should be exactly one toggle all button.");
         }
@@ -179,7 +146,7 @@ namespace DebugToolkit.Tests
         [Test]
         public void AddWindow_ReturnsCorrectRoot()
         {
-            var newWindowContent = _debugViewWindowTest.Root.AddWindow("TestNewWindow");
+            var newWindowContent = _debugViewWindowTest.Root.parent.parent.AddWindow("TestNewWindow");
             Assert.That(newWindowContent, Is.Not.Null, "AddWindow should return a valid VisualElement.");
             Assert.That(newWindowContent.ClassListContains(DebugConst.WindowContentClassName), Is.True,
                 "Returned element should have the window content class.");
@@ -202,7 +169,7 @@ namespace DebugToolkit.Tests
         [Test]
         public async Task Window_BringsToFrontWhenClicked()
         {
-            var windows = DebugViewerBase.DebugWindowList;
+            var windows = _debugViewWindowTest.Root.GetAllDebugWindows();
             foreach (var window in windows)
             {
                 window.style.display = DisplayStyle.Flex;
@@ -230,9 +197,9 @@ namespace DebugToolkit.Tests
             var window = windowContent.parent;
 
             Assert.That(window, Is.Not.Null, "Window should be added to the DOM.");
-            Assert.That(window.ClassListContains(DebugConst.ClassName + "__normal-window"), Is.True,
+            Assert.That(window.ClassListContains(DebugConst.NormalWindowClassName), Is.True,
                 "Added window should have the normal window class.");
-            Assert.That(DebugViewerBase.DebugWindowList.Contains(window), Is.True,
+            Assert.That(_debugViewWindowTest.Root.GetAllDebugWindows().Contains(window), Is.True,
                 "Window should be added to the debug window list.");
         }
 
@@ -255,16 +222,16 @@ namespace DebugToolkit.Tests
 
         // Test if the window can be hidden using the X button & if the display button state changes correctly in the master window
         [Test]
-        [TestCase("TestWindow1", 110, 930)]
-        [TestCase("TestWindow2", 112, 872)]
+        [TestCase("TestWindow1", 133, 864)]
+        [TestCase("TestWindow2", 161, 815)]
         public async Task WindowCloseButton_HidesWindowAndUpdatesToggle(string windowName, float screenPosX,
             float screenPosY)
         {
-            var toggle = DebugViewerBase.MasterWindow.Q<ScrollView>(className: DebugConst.WindowListClassName)
+            var toggle =  _debugViewWindowTest.MasterWindow
                 .Query<Toggle>(className: DebugConst.ToggleWindowDisplayClassName)
                 .Where(t => t.text == windowName).First();
 
-            var window = _debugViewWindowTest.Root.Q<VisualElement>(name: windowName);
+            var window = _debugViewWindowTest.Root.parent.parent.Q<VisualElement>(name: windowName);
 
             var mouse = InputSystem.AddDevice<Mouse>();
             await ClickAtPositionAsync(mouse, new Vector2(screenPosX, screenPosY));

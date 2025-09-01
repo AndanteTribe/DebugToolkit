@@ -43,8 +43,6 @@ namespace DebugToolkit.Tests
             {
                 await SceneManager.UnloadSceneAsync(testScene);
             }
-            DebugViewerBase.MasterWindow = null;
-            DebugViewerBase.DebugWindowList.Clear();
         }
 
         [Test]

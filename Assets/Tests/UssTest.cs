@@ -47,7 +47,7 @@ namespace DebugToolkit.Tests
             AddAllUIElements(scrollview);
 
             var mouse = InputSystem.AddDevice<Mouse>();
-            await ClickAtPositionAsync(mouse, new Vector2(110, 930));
+            await ClickAtPositionAsync(mouse, new Vector2(133, 865));
 
             await CaptureScreenAsync(nameof(UssWindow_AllElementsTest) + "_scroll-before");
 
@@ -66,7 +66,7 @@ namespace DebugToolkit.Tests
             AddAllUIElements(tab1);
 
             var mouse = InputSystem.AddDevice<Mouse>();
-            await ClickAtPositionAsync(mouse, new Vector2(110, 930));
+            await ClickAtPositionAsync(mouse, new Vector2(133, 865));
 
             await CaptureScreenAsync(nameof(UssTab_AllElementsTest) + "_scroll-before");
 
