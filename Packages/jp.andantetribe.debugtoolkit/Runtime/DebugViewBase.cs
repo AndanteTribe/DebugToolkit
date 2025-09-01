@@ -112,24 +112,37 @@ namespace DebugToolkit
 
                 foreach (var window in debugWindows)
                 {
-                    switch (isAnyVisibleEnable)
+                    if (isAnyVisibleEnable)
                     {
-                        case true:
-                            window.VisibilityToggleButton.value = false;
-                            window.style.display = DisplayStyle.None;
-                            break;
-                        case false:
-                            if (window.IsLastOperated ||
-                                window.ClassListContains(DebugConst.MasterWindowClassName) ||
-                                window.GetDebugWindowParent().ClassListContains(DebugConst.MasterWindowClassName))
-                            {
-                                window.VisibilityToggleButton.value = true;
-                                window.style.display = DisplayStyle.Flex;
-                            }
-                            break;
+                        SetVisibility(window, false);
+                    }else if (ShouldBeVisibleByDefault(window))
+                    {
+                        SetVisibility(window, true);
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Should the window be visible by default?
+        /// The last operated window and windows with the master window class name are visible by default.
+        /// </summary>
+        /// <param name="window"></param>
+        /// <returns></returns>
+        private static bool ShouldBeVisibleByDefault(DebugWindow window) =>
+                window.IsLastOperated ||
+                window.ClassListContains(DebugConst.MasterWindowClassName) ||
+                window.GetDebugWindowParent().ClassListContains(DebugConst.MasterWindowClassName);
+
+        /// <summary>
+        /// Sets the visibility of the specified debug window and updates the state of its toggle button.
+        /// </summary>
+        /// <param name="window">The debug window to update.</param>
+        /// <param name="visible">True to show the window, false to hide it.</param>
+        private static void SetVisibility(DebugWindow window, bool visible)
+        {
+            window.VisibilityToggleButton.value = visible;
+            window.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
         }
     }
 }
