@@ -82,7 +82,7 @@ namespace DebugToolkit
                 root.AddWindowToggle(window, windowName);
                 window.style.display = DisplayStyle.None;
             }
-            window.AddWindowHeader(windowName, isMasterWindow);
+            window.AddWindowHeader(windowName);
 
             var windowContent = new VisualElement();
             windowContent.AddToClassList(DebugConst.WindowContentClassName);
@@ -176,9 +176,8 @@ namespace DebugToolkit
         /// </summary>
         /// <param name="root">The parent element to which the header will be added</param>
         /// <param name="windowName">The name of the window</param>
-        /// <param name="isMasterWindow">Indicates if this is the master window</param>
         /// <returns>The created header element</returns>
-        private static VisualElement AddWindowHeader(this VisualElement root, string windowName = "", bool isMasterWindow = false)
+        private static VisualElement AddWindowHeader(this VisualElement root, string windowName = "")
         {
             var windowHeader = new VisualElement(){name = "window-header"};
             windowHeader.AddToClassList(DebugConst.WindowHeaderClassName);
@@ -211,33 +210,29 @@ namespace DebugToolkit
             return windowHeader;
         }
 
-        internal static VisualElement GetSafeAreaContainer(this VisualElement root)
+        internal static VisualElement GetSafeAreaContainer(this VisualElement element)
         {
-            var element = root;
-            while (true)
+            for (var current = element; current != null; current = current.parent)
             {
-                if (element.ClassListContains(DebugConst.SafeAreaContainerClassName))
+                if (current.ClassListContains(DebugConst.SafeAreaContainerClassName))
                 {
-                    return element;
+                    return current;
                 }
-                if (element.parent == null) return element;
-                element = element.parent;
             }
+            throw new InvalidOperationException("SafeAreaContainer not found in the hierarchy.");
         }
 
-        internal static VisualElement GetDebugWindowParent(this DebugWindow root)
+        internal static VisualElement GetDebugWindowParent(this DebugWindow element)
         {
-            VisualElement element = root.VisibilityToggleButton;
-            while (true)
+            for (VisualElement current = element.VisibilityToggleButton; current != null; current = current.parent)
             {
-                if (element.ClassListContains(DebugConst.MasterWindowClassName) ||
-                    element.ClassListContains(DebugConst.NormalWindowClassName))
+                if (current.ClassListContains(DebugConst.MasterWindowClassName) ||
+                    current.ClassListContains(DebugConst.NormalWindowClassName))
                 {
-                    return element;
+                    return current;
                 }
-                if (element.parent == null) return element;
-                element = element.parent;
             }
+            throw new InvalidOperationException("DebugWindow parent not found in the hierarchy.");
         }
 
         internal static List<DebugWindow> GetAllDebugWindows(this VisualElement root)
