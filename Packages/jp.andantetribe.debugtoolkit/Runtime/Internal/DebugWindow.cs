@@ -20,13 +20,15 @@ namespace DebugToolkit
         }
 #endif
         /// <summary>
-        ///  is this window last operated?
-        ///  </summary>
+        /// Indicates whether this debug window was the most recently interacted with window.
+        /// Used to determine focus and input priority among multiple debug windows.
+        /// </summary>
         public bool IsLastOperated { get; set; } = false;
 
         /// <summary>
-        ///  has an Enable/Disable toggle button at parent window.
-        ///  master-window does not use this.
+        /// Reference to the toggle button that controls this window's visibility state.
+        /// This toggle is typically located in the parent window's UI.
+        /// Note: The master window does not utilize this toggle button.
         /// </summary>
         public Toggle VisibilityToggleButton { get; set; }
     }
