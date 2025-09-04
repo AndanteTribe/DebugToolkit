@@ -227,6 +227,9 @@ namespace DebugToolkit
             var tab3 = tabRoot.AddTab(label:"Tab3");
             var tab3Label = new Label() { text = "This is Tab3." };
             tab3.Add(tab3Label);
+            
+            // Add export functionality to tab3
+            tab3.AddExportButtons();
 
             var window2 = root.AddWindow("TestWindow2");
             window2.AddConsoleView();
@@ -234,6 +237,9 @@ namespace DebugToolkit
             var window3 = root.AddWindow("TestWindow3");
             var window3Label = new Label() { text = "This is Window3." };
             window3.Add(window3Label);
+            
+            // Add export functionality to window3
+            window3.AddExportButtons();
 
             return root;
         }
