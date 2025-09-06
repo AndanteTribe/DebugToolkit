@@ -56,7 +56,7 @@ namespace DebugToolkit.Tests
         // Test if the window display buttons in the master window work correctly
         [Test]
         [TestCase("TestWindow1", 133, 910)]
-        [TestCase("TestWindow2", 161, 860)]
+        [TestCase("TestWindow2", 133, 850)]
         public async Task MasterWindow_WindowListButton_TogglesWindowVisibility(string windowName, float screenPosX,
             float screenPosY)
         {
@@ -223,7 +223,7 @@ namespace DebugToolkit.Tests
         // Test if the window can be hidden using the X button & if the display button state changes correctly in the master window
         [Test]
         [TestCase("TestWindow1", 133, 910)]
-        [TestCase("TestWindow2", 161, 860)]
+        [TestCase("TestWindow2", 133, 850)]
         public async Task WindowCloseButton_HidesWindowAndUpdatesToggle(string windowName, float screenPosX,
             float screenPosY)
         {
