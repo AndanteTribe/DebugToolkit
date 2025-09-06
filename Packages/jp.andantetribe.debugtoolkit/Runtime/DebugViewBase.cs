@@ -68,9 +68,6 @@ namespace DebugToolkit
 
             MasterWindow = safeAreaContainer.AddWindow("Debug Toolkit");
 
-            var label = new Label("Debug Window List");
-            MasterWindow.Add(label);
-
             // 全表示非表示ボタンは1つだけ作成
             if (root.Query<Button>(className: DebugConst.ClassName + "__toggle-all-button").ToList().Count == 0)
             {
