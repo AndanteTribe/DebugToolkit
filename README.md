@@ -92,7 +92,6 @@ While using DebugToolkit, a toggle button is shown at the bottom of the screen. 
 
 You can import `Samples` from Package Manager to try sample scenes and scripts.
 
-
 ## Extension Methods
 
 ### `VisualElement AddWindow(this VisualElement root, string windowName)`
