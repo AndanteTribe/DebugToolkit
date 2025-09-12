@@ -1,46 +1,46 @@
 [![Run the Unity Test](https://github.com/AndanteTribe/DebugToolkit/actions/workflows/unity-test.yml/badge.svg)](https://github.com/AndanteTribe/DebugToolkit/actions/workflows/unity-test.yml)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/AndanteTribe/DebugToolkit)
-[![Readme_JP](https://img.shields.io/badge/DebugToolkit-Japanese-red)](README_JP.md)
+[![Readme_EN](https://img.shields.io/badge/DebugToolkit-English-red)](README.md)
 # DebugToolkit
 
-DebugToolkit is a library that makes it easy to build runtime debug menus.
+DebugToolkitはランタイム上のデバッグメニューを簡単に実装できるライブラリです。
 
 ![img.png](Documentation/debugtoolkit.png)
 
-## Overview
+## 概要
 
-DebugToolkit helps you quickly create runtime debug UIs using Unity UIToolkit without writing USS styles. You can build and operate everything with C# scripts only. It provides useful features for development and debugging such as creating draggable debug windows, showing performance information, viewing console logs, and a text field with undo/redo history.
+DebugToolkitは、Unity UIToolkitを使用してランタイム上でデバッグメニューを簡単に実装できるライブラリです。
+各UI要素のUSSを記述することなく、C#スクリプトのみで迅速にデバッグUIを構築できます。
+また、デバッグウィンドウの作成、パフォーマンス情報の表示、コンソールログの表示、履歴機能付きテキストフィールドなど、開発・デバッグに便利な機能を提供します。
 
-### Concept
-DebugToolkit is designed based on the following concepts:
+### コンセプト
+DebugToolkitは以下のコンセプトに基づいて設計されています。
 
-1. Add debug features using C# code only
-2. Engineers don’t need to worry about layout and styling
-3. Minimal and low dependency
+1. C#コードのみでデバッグ機能を追加できる
+2. エンジニアはUIのレイアウトやスタイルを考慮しなくてよい
+3. ミニマルで依存関係が少ない
 
-## Quick Start
+## クイックスタート
 
-### Install
+### インストール
 
-Download a Unity package from [Releases](https://github.com/AndanteTribe/DebugToolkit/releases), or add via Package Manager using the following URL:
+[このURL](https://github.com/AndanteTribe/DebugToolkit/releases)からUnity Packageをダウンロード、もしくはPackage Managerから以下のURLを使用してインストール
 
 ```
 https://github.com/AndanteTribe/DebugToolkit.git?path=Packages/jp.andantetribe.debugtoolkit
 ```
 
-### Setup
-Add the following to Project Settings > Player > Other Settings > Script Compilation > Scripting Define Symbols: `ENABLE_DEBUGTOOLKIT`.
+### セットアップ
+Project Settings > Player > Other Settings > Script Compilation > Scripting Define Symbolsに``ENABLE_DEBUGTOOLKIT``を追加![ScriptDefine.png](Documentation/ScriptDefine.png)
 
-![ScriptDefine.png](Documentation/ScriptDefine.png)
+### 基本的な使用方法
 
-### Basic Usage
+1. `DebugViewerBase`を継承したクラスを作成
+2. `CreateViewGUI()`メソッドをオーバーライド
+3. `CreateViewGUI()`内でデバッグメニューを実装
+4. Runtimeで`Start()`を呼び出す
 
-1. Create a class that inherits `DebugViewerBase`
-2. Override `CreateViewGUI()`
-3. Implement your debug menu inside `CreateViewGUI()`
-4. Call `Start()` at runtime
-
-### Example
+### 例
 
 ```csharp
 using DebugToolkit;
@@ -53,10 +53,10 @@ public class MyDebugView : DebugViewerBase
     {
         var root = base.CreateViewGUI();
 
-        // Add performance info label
+        // パフォーマンス情報を追加
         root.AddProfileInfoLabel();
 
-        // Add a button
+        // ボタンを追加
         var button = new Button() { text = "Hoge" };
         button.RegisterCallback<ClickEvent>(_ => Debug.Log("Hoge"));
         root.Add(button);
@@ -76,26 +76,27 @@ public class DebugInitializer : MonoBehaviour
     void Start()
     {
         _debugView = new MyDebugView();
-        // Build the debug menu
+        // デバッグメニューを構築
         _debugView.Start();
     }
 }
 ```
-
 ![quick-start-example1.png](Documentation/quick-start-example1.png)
 ![quick-start-example2.png](Documentation/quick-start-example2.png)
 
-### Toggle All Visibility
-While using DebugToolkit, a toggle button is shown at the bottom of the screen. Pressing it toggles visibility of all debug windows. You can also restore windows that you’ve hidden.
+### 全表示非表示
+DebugToolkitを使用中、画面下に全表示非表示ボタンが表示されます。
+全表示非表示ボタンを押すことで、すべてのデバッグメニューの表示非表示を切り替えることができます。
+また、消してしまったウィンドウも再表示することができます。
 
-## Samples
+## サンプル
 
-You can import `Samples` from Package Manager to try sample scenes and scripts.
+Package Managerから`Samples`をインポートすることで、サンプルをダウンロードすることができます。
 
-## Extension Methods
+## 拡張メソッド
 
-### `VisualElement AddWindow(this VisualElement root, string windowName)`
-Adds a new debug window.
+### ``VisualElement AddWindow(this VisualElement root, string windowName)``
+新しいデバッグウィンドウを追加します。
 ```csharp
 public class MyDebugView : DebugViewerBase
 {
@@ -114,7 +115,8 @@ public class MyDebugView : DebugViewerBase
 ![window-open.png](Documentation/window-open.png)
 
 ### `void AddConsoleView(this VisualElement root)`
-Adds a console log viewer. You can check Unity’s console logs at runtime.
+コンソールログビューを追加します。
+ランタイム上でUnityのコンソールログを確認できます。
 ```csharp
 public class MyDebugView : DebugViewerBase
 {
@@ -131,7 +133,7 @@ public class MyDebugView : DebugViewerBase
 ![console.png](Documentation/console.png)
 
 ### `void AddProfileInfoLabel(this VisualElement root)`
-Adds a label that shows performance information.
+パフォーマンスを確認できるラベルを追加します。
 ```csharp
 public class MyDebugView : DebugViewerBase
 {
@@ -147,13 +149,14 @@ public class MyDebugView : DebugViewerBase
 ```
 ![profile-info-label.png](Documentation/profile-info-label.png)
 
-### Unity 2023.2 or newer
+### Unity 2023.2以降
+
 
 ### `ScrollView AddTab(this TabView tabView, string label = "")`
-Adds a new tab to an existing TabView.
+TabViewに新しいタブを追加
 
-### `(TabView, ScrollView) AddTab(this VisualElement root, string label = "")`
-Adds a TabView and a tab to the target VisualElement.
+### `(TabView,  ScrollView) AddTab(this VisualElement root, string label = "")`
+VisualElementにTabViewとタブを追加
 
 ```csharp
 public class MyDebugView : DebugViewerBase
@@ -172,12 +175,11 @@ public class MyDebugView : DebugViewerBase
 ```
 ![tab.png](Documentation/tab.png)
 
-## Custom UI Elements
+## カスタムUI要素
 
 ### `HistoryTextField`
-A TextField with undo/redo history.
-- Undo: `Ctrl or Cmd + Z`
-- Redo: `Ctrl or Cmd + Y` or `Ctrl or Cmd + Shift + Z`
+履歴機能付きテキストフィールドです。
+`Ctrl or Cmd + Z`でUndo, `Ctrl or Cmd + Y`もしくは`Ctrl or Cmd + Shift + Z`でRedoに対応しています。
 ```csharp
 public class MyDebugView : DebugViewerBase
 {
@@ -192,11 +194,11 @@ public class MyDebugView : DebugViewerBase
 }
 ```
 
-## Requirements
+## システム要件
 
-- Unity 2021.3 or newer
+- Unity 2021.3以降
 - UIElements (UIToolkit)
 
-## License
+## ライセンス
 
-This library is under the MIT License.
+このライブラリはMITライセンスの下で提供されています。
