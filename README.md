@@ -146,7 +146,7 @@ public class MyDebugView : DebugViewerBase
     }
 }
 ```
-![profile-info-lable.png](Documentation/profile-info-lable.png)
+![profile-info-lable.png](Documentation/profile-info-label.png)
 
 ### Unity 2023.2 or newer
 
