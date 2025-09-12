@@ -3,7 +3,7 @@
 [![Readme_EN](https://img.shields.io/badge/DebugToolkit-English-red)](README.md)
 # DebugToolkit
 
-DebugToolkitはランタイム上のデバックメニューを簡単に実装できるライブラリです。
+DebugToolkitはランタイム上のデバッグメニューを簡単に実装できるライブラリです。
 
 ![img.png](Documentation/debugtoolkit.png)
 
@@ -16,7 +16,7 @@ DebugToolkitは、Unity UIToolkitを使用してランタイム上でデバッ�
 ### コンセプト
 DebugToolkitは以下のコンセプトに基づいて設計されています。
 
-1. C#コードのみでデバック機能を追加できる
+1. C#コードのみでデバッグ機能を追加できる
 2. エンジニアはUIのレイアウトやスタイルを考慮しなくてよい
 3. ミニマルで依存関係が少ない
 
@@ -86,7 +86,7 @@ public class DebugInitializer : MonoBehaviour
 
 ### 全表示非表示
 DebugToolkitを使用中、画面下に全表示非表示ボタンが表示されます。
-全表示非表示ボタンを押すことで、すべてのデバックメニューの表示非表示を切り替えることができます。
+全表示非表示ボタンを押すことで、すべてのデバッグメニューの表示非表示を切り替えることができます。
 また、消してしまったウィンドウも再表示することができます。
 
 ## サンプル
