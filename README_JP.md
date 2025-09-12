@@ -93,8 +93,6 @@ DebugToolkitを使用中、画面下に全表示非表示ボタンが表示さ�
 
 Package Managerから`Samples`をインポートすることで、サンプルをダウンロードすることができます。
 
-
-
 ## 拡張メソッド
 
 ### ``VisualElement AddWindow(this VisualElement root, string windowName)``
