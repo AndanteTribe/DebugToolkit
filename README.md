@@ -201,7 +201,3 @@ public class MyDebugView : DebugViewerBase
 ## License
 
 This library is under the MIT License.
-
-```
-https://github.com/AndanteTribe/DebugToolkit.git?path=Packages/jp.andantetribe.debugtoolkit
-```
