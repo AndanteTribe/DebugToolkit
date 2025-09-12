@@ -3,7 +3,7 @@
 [![Readme_EN](https://img.shields.io/badge/DebugToolkit-English-red)](README.md)
 # DebugToolkit
 
-DebugToolkitはランタイム上のデバックメニューを簡単に実装できるライブラリです。
+DebugToolkitはランタイム上のデバッグメニューを簡単に実装できるライブラリです。
 
 ![img.png](Documentation/debugtoolkit.png)
 
