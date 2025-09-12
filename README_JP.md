@@ -3,17 +3,11 @@
 [![Readme_EN](https://img.shields.io/badge/DebugToolkit-English-red)](README.md)
 # DebugToolkit
 
----
-
 DebugToolkitはランタイム上のデバックメニューを簡単に実装できるライブラリです。
 
 ![img.png](Documentation/debugtoolkit.png)
 
----
-
 ## 概要
-
----
 
 DebugToolkitは、Unity UIToolkitを使用してランタイム上でデバッグメニューを簡単に実装できるライブラリです。
 各UI要素のUSSを記述することなく、C#スクリプトのみで迅速にデバッグUIを構築できます。
@@ -27,8 +21,6 @@ DebugToolkitは以下のコンセプトに基づいて設計されています�
 3. ミニマルで依存関係が少ない
 
 ## クイックスタート
-
----
 
 ### インストール
 
@@ -99,15 +91,11 @@ DebugToolkitを使用中、画面下に全表示非表示ボタンが表示さ�
 
 ## サンプル
 
----
-
 Package Managerから`Samples`をインポートすることで、サンプルをダウンロードすることができます。
 
 
 
 ## 拡張メソッド
-
----
 
 ### ``VisualElement AddWindow(this VisualElement root, string windowName)``
 新しいデバッグウィンドウを追加します。
@@ -191,8 +179,6 @@ public class MyDebugView : DebugViewerBase
 
 ## カスタムUI要素
 
----
-
 ### `HistoryTextField`
 履歴機能付きテキストフィールドです。
 `Ctrl or Cmd + Z`でUndo, `Ctrl or Cmd + Y`もしくは`Ctrl or Cmd + Shift + Z`でRedoに対応しています。
@@ -212,14 +198,10 @@ public class MyDebugView : DebugViewerBase
 
 ## システム要件
 
----
-
 - Unity 2021.3以降
 - UIElements (UIToolkit)
 
 ## ライセンス
-
----
 
 このライブラリはMITライセンスの下で提供されています。
 

@@ -3,17 +3,11 @@
 [![Readme_JP](https://img.shields.io/badge/DebugToolkit-Japanese-red)](README_JP.md)
 # DebugToolkit
 
----
-
 DebugToolkit is a library that makes it easy to build runtime debug menus.
 
 ![img.png](Documentation/debugtoolkit.png)
 
----
-
 ## Overview
-
----
 
 DebugToolkit helps you quickly create runtime debug UIs using Unity UIToolkit without writing USS styles. You can build and operate everything with C# scripts only. It provides useful features for development and debugging such as creating draggable debug windows, showing performance information, viewing console logs, and a text field with undo/redo history.
 
@@ -25,8 +19,6 @@ DebugToolkit is designed based on the following concepts:
 3. Minimal and low dependency
 
 ## Quick Start
-
----
 
 ### Install
 
@@ -98,14 +90,10 @@ While using DebugToolkit, a toggle button is shown at the bottom of the screen. 
 
 ## Samples
 
----
-
 You can import `Samples` from Package Manager to try sample scenes and scripts.
 
 
 ## Extension Methods
-
----
 
 ### `VisualElement AddWindow(this VisualElement root, string windowName)`
 Adds a new debug window.
@@ -187,8 +175,6 @@ public class MyDebugView : DebugViewerBase
 
 ## Custom UI Elements
 
----
-
 ### `HistoryTextField`
 A TextField with undo/redo history.
 - Undo: `Ctrl or Cmd + Z`
@@ -209,14 +195,10 @@ public class MyDebugView : DebugViewerBase
 
 ## Requirements
 
----
-
 - Unity 2021.3 or newer
 - UIElements (UIToolkit)
 
 ## License
-
----
 
 This library is under the MIT License.
 
