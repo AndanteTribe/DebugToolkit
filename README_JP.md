@@ -5,9 +5,9 @@
 
 ---
 
-UIToolkitを使ってランタイム上のデバックメニューを簡単に実装できるライブラリです。
+DebugToolkitはランタイム上のデバックメニューを簡単に実装できるライブラリです。
 
-![img.png](Documentation/img.png)
+![img.png](Documentation/debugtoolkit.png)
 
 ---
 
@@ -20,7 +20,11 @@ DebugToolkitは、Unity UIToolkitを使用してランタイム上でデバッ�
 また、デバッグウィンドウの作成、パフォーマンス情報の表示、コンソールログの表示、履歴機能付きテキストフィールドなど、開発・デバッグに便利な機能を提供します。
 
 ### コンセプト
-Unityでランタイム上のデバックメニューを作成する際、エンジニアは
+DebugToolkitは以下のコンセプトに基づいて設計されています。
+
+1. C#コードのみでデバック機能を追加できる
+2. エンジニアはUIのレイアウトやスタイルを考慮しなくてよい
+3. ミニマルで依存関係が少ない
 
 ## クイックスタート
 
@@ -34,12 +38,17 @@ Unityでランタイム上のデバックメニューを作成する際、エン
 https://github.com/AndanteTribe/DebugToolkit.git?path=Packages/jp.andantetribe.debugtoolkit
 ```
 
+### セットアップ
+Project Settings > Player > Other Settings > Script Compilation > Scripting Define Symbolsに``ENABLE_DEBUGTOOLKIT``を追加![ScriptDefine.png](Documentation/ScriptDefine.png)
+
 ### 基本的な使用方法
 
 1. `DebugViewerBase`を継承したクラスを作成
 2. `CreateViewGUI()`メソッドをオーバーライド
 3. `CreateViewGUI()`内でデバッグメニューを実装
 4. Runtimeで`Start()`を呼び出す
+
+### 例
 
 ```csharp
 using DebugToolkit;
@@ -58,6 +67,7 @@ public class MyDebugView : DebugViewerBase
         // ボタンを追加
         var button = new Button() { text = "Hoge" };
         button.RegisterCallback<ClickEvent>(_ => Debug.Log("Hoge"));
+        root.Add(button);
 
         return root;
     }
@@ -69,16 +79,23 @@ using UnityEngine;
 
 public class DebugInitializer : MonoBehaviour
 {
-    private MyDebugView debugView;
+    private MyDebugView _debugView;
 
     void Start()
     {
-        debugView = new MyDebugView();
+        _debugView = new MyDebugView();
         // デバッグメニューを構築
-        debugView.Start();
+        _debugView.Start();
     }
 }
 ```
+![quick-start-example1.png](Documentation/quick-start-example1.png)
+![quick-start-example2.png](Documentation/quick-start-example2.png)
+
+### 全表示非表示
+DebugToolkitを使用中、画面下に全表示非表示ボタンが表示されます。
+全表示非表示ボタンを押すことで、すべてのデバックメニューの表示非表示を切り替えることができます。
+また、消してしまったウィンドウも再表示することができます。
 
 ## サンプル
 
@@ -90,62 +107,115 @@ Package Managerから`Samples`をインポートすることで、サンプル�
 
 ## 拡張メソッド
 
-### ウィンドウ関連
-- `AddWindow(string windowName)`: 新しいデバッグウィンドウを作成
-- `AddConsoleView()`: コンソールログビューを追加
-- `AddProfileInfoLabel()`: パフォーマンス情報ラベルを追加
+---
 
-### タブ関連（Unity 2023.2以降）
-- `AddTab(string label)`: TabViewに新しいタブを追加
-- `AddTab(this VisualElement root, string label)`: VisualElementにTabViewとタブを追加
+### ``VisualElement AddWindow(this VisualElement root, string windowName)``
+新しいデバッグウィンドウを追加します。
+```csharp
+public class MyDebugView : DebugViewerBase
+{
+    protected override VisualElement CreateViewGUI()
+    {
+        var root = base.CreateViewGUI();
 
-### ユーティリティ
-- `GetSafeAreaContainer()`: セーフエリアコンテナを取得
-- `GetAllDebugWindows()`: 全てのデバッグウィンドウを取得
+        var window = root.AddWindow("Window1");
+        window.Add(new Label("This is New Window"));
 
-## 基本的な機能
+        return root;
+    }
+}
+```
+![window.png](Documentation/window.png)
+![window-open.png](Documentation/window-open.png)
 
-### ウィンドウ管理
-- **ドラッグ移動**: ウィンドウヘッダーをドラッグして移動可能
-- **表示/非表示切り替え**: マスターウィンドウからの一括制御
-- **最前面表示**: クリックしたウィンドウが最前面に
-- **削除ボタン**: Xボタンでウィンドウを非表示
+### `void AddConsoleView(this VisualElement root)`
+コンソールログビューを追加します。
+ランタイム上でUnityのコンソールログを確認できます。
+```csharp
+public class MyDebugView : DebugViewerBase
+{
+    protected override VisualElement CreateViewGUI()
+    {
+        var root = base.CreateViewGUI();
 
-### パフォーマンス監視
-- **CPU/GPU フレームレート**: リアルタイムでのfps表示
-- **メモリ使用量**: GB単位でのメモリ使用量表示
-- **更新間隔設定**: 表示更新の間隔をカスタマイズ可能
+        root.AddConsoleView();
 
-### コンソール機能
-- **ログレベルフィルタ**: Log/Warning/Error別の表示切り替え
-- **検索機能**: ログメッセージの検索
-- **スタックトレース**: 詳細なエラー情報の表示
-- **ログクリア**: ログ履歴のクリア機能
+        return root;
+    }
+}
+```
+![console.png](Documentation/console.png)
 
-## 対応済みVisualElement要素
+### `void AddProfileInfoLabel(this VisualElement root)`
+パフォーマンスを確認できるラベルを追加します。
+```csharp
+public class MyDebugView : DebugViewerBase
+{
+    protected override VisualElement CreateViewGUI()
+    {
+        var root = base.CreateViewGUI();
 
-### 基本要素
-- `VisualElement`: 基本コンテナ
-- `Button`: ボタン
-- `Label`: テキスト表示
-- `TextField`: テキスト入力
-- `Toggle`: チェックボックス
-- `ListView`: リスト表示
-- `ScrollView`: スクロール可能エリア
+        root.AddProfileInfoLabel();
 
-### 専用要素
-- `DebugWindow`: ドラッグ可能なウィンドウ
-- `SafeAreaContainer`: セーフエリア対応コンテナ
-- `HistoryTextField`: Undo/Redo機能付きテキストフィールド
+        return root;
+    }
+}
+```
+![profile-info-lable.png](Documentation/profile-info-lable.png)
 
 ### Unity 2023.2以降
-- `TabView`: タブビュー
-- `Tab`: 個別タブ
+
+
+### `ScrollView AddTab(this TabView tabView, string label = "")`
+TabViewに新しいタブを追加
+
+### `(TabView,  ScrollView) AddTab(this VisualElement root, string label = "")`
+VisualElementにTabViewとタブを追加
+
+```csharp
+public class MyDebugView : DebugViewerBase
+{
+    protected override VisualElement CreateViewGUI()
+    {
+        var root = base.CreateViewGUI();
+
+        var (tabView, scrollView) = root.AddTab("Tab1");
+        tabView.AddTab("Tab2");
+        scrollView.Add(new Button(() => { Debug.Log("Button Clicked!"); }) { text = "Click Me" });
+
+        return root;
+    }
+}
+```
+![tab.png](Documentation/tab.png)
+
+## カスタムUI要素
+
+---
+
+### `HistoryTextField`
+履歴機能付きテキストフィールドです。
+`Ctrl or Cmd + Z`でUndo, `Ctrl or Cmd + Y`もしくは`Ctrl or Cmd + Shift + Z`でRedoに対応しています。
+```csharp
+public class MyDebugView : DebugViewerBase
+{
+    protected override VisualElement CreateViewGUI()
+    {
+        var root = base.CreateViewGUI();
+        var historyTextField = new HistoryTextField("Input");
+        historyTextField.RegisterValueChangedCallback(evt => Debug.Log(evt.newValue));
+        root.Add(historyTextField);
+        return root;
+    }
+}
+```
 
 ## システム要件
 
+---
+
 - Unity 2021.3以降
-- UIElements モジュール
+- UIElements (UIToolkit)
 
 ## ライセンス
 
