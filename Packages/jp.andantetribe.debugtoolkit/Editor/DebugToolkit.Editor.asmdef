@@ -13,7 +13,7 @@
     "precompiledReferences": [],
     "autoReferenced": false,
     "defineConstraints": [
-        "ENABLE_DEBUGTOOLKIT"
+        "!DISABLE_DEBUGTOOLKIT"
     ],
     "versionDefines": [],
     "noEngineReferences": false
