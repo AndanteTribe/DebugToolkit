@@ -31,7 +31,10 @@ https://github.com/AndanteTribe/DebugToolkit.git?path=Packages/jp.andantetribe.d
 ```
 
 ### セットアップ
-Project Settings > Player > Other Settings > Script Compilation > Scripting Define Symbolsに``ENABLE_DEBUGTOOLKIT``を追加![ScriptDefine.png](Documentation/ScriptDefine.png)
+
+DebugToolkitはインストール後、デフォルトで有効になります。追加のセットアップは不要です。
+
+**オプション:** DebugToolkitを完全に無効にしたい場合は、Project Settings > Player > Other Settings > Script Compilation > Scripting Define Symbolsに`DISABLE_DEBUGTOOLKIT`を追加してください。
 
 ### 基本的な使用方法
 
