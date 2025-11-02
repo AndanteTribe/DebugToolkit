@@ -1,15 +1,17 @@
 {
-  "name": "jp.andantetribe.debugtoolkit",
-  "version": "0.1.2",
-  "displayName": "Debug Toolkit",
-  "description": "A toolkit for debugging and profiling Unity applications.",
-  "unity": "2021.3",
-  "dependencies": {
-    "com.unity.modules.uielements": "1.0.0"
-  },
-  "author": {
-    "name": "AndanteTribe",
-    "url": "https://github.com/AndanteTribe"
-  },
-  "licence": "MIT"
+    "name": "jp.andantetribe.debugtoolkit",
+    "version": "0.1.3",
+    "displayName": "Debug Toolkit",
+    "description": "A toolkit for debugging and profiling Unity applications.",
+    "unity": "2021.3",
+    "documentationUrl": "https://github.com/AndanteTribe/DebugToolkit/blob/main/README.md",
+    "changelogUrl": "https://github.com/AndanteTribe/DebugToolkit/compare/0.1.2...0.1.3",
+    "licensesUrl": "https://github.com/AndanteTribe/DebugToolkit?tab=MIT-1-ov-file",
+    "dependencies": {
+        "com.unity.modules.uielements": "1.0.0"
+    },
+    "author": {
+        "name": "AndanteTribe",
+        "url": "https://github.com/AndanteTribe"
+    }
 }
