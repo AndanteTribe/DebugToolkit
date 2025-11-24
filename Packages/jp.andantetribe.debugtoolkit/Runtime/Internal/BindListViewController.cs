@@ -23,7 +23,7 @@ namespace DebugToolkit
         {
             base.BindItem(element, index);
 
-            if (listView?.itemsSource is IReadOnlyList<TItem> source && 0 < index && index < source.Count)
+            if (listView?.itemsSource is IReadOnlyList<TItem> source && 0 <= index && index < source.Count)
             {
                 _onBindItem(_state, element, source[index]);
                 return;

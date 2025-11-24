@@ -22,7 +22,7 @@ namespace DebugToolkit
     internal sealed class ConsoleView : VisualElement
     {
         /// <summary>
-        /// UIBuilderのLibraryに登録するためのUXML要素のファクトリクラス.
+        /// Factory class for UXML elements to register in UIBuilder's Library.
         /// </summary>
         public class ConsoleViewFactory : UxmlFactory<ConsoleView, UxmlTraits>
         {

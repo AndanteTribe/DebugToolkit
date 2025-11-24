@@ -62,8 +62,9 @@ namespace DebugToolkit
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static VisualElement AddConsoleView(this VisualElement root)
         {
-            root.Add(new ConsoleView());
-            return root;
+            var consoleView = new ConsoleView();
+            root.Add(consoleView);
+            return consoleView;
         }
 
         /// <summary>
