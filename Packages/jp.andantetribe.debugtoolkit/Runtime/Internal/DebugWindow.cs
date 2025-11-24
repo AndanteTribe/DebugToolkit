@@ -1,4 +1,6 @@
-﻿using UnityEngine.UIElements;
+﻿#nullable enable
+
+using UnityEngine.UIElements;
 
 namespace DebugToolkit
 {
@@ -30,6 +32,6 @@ namespace DebugToolkit
         /// This toggle is typically located in the parent window's UI.
         /// Note: The master window does not utilize this toggle button.
         /// </summary>
-        public Toggle VisibilityToggleButton { get; set; }
+        public Toggle? VisibilityToggleButton { get; set; }
     }
 }
