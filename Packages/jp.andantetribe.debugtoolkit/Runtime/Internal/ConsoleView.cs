@@ -48,8 +48,6 @@ namespace DebugToolkit
 
         public ConsoleView()
         {
-            // every per frame update _filterLogs from s_logs
-            schedule.Execute(() => UpdateFilteredLogs(true));
             AddToClassList(DebugConst.ClassName + "__console-view");
             CreateViewGUI(this);
         }
@@ -111,16 +109,27 @@ namespace DebugToolkit
             label.text = sb.ToString();
         }
 
-        private static void CreateViewGUI(ConsoleView root)
+        private static void CreateViewGUI(ConsoleView self)
         {
-            var listView = new ListView(root._filteredLogs, 20, static () => new Label());
+            var listView = new ListView(self._filteredLogs, 20, static () => new Label());
             listView.SetViewController(new BindListViewController<LogEntry, ConsoleView>(
-                root, static (view, element, arg3) => OnBindItem(view, element, arg3)));
+                self, static (view, element, arg3) => OnBindItem(view, element, arg3)));
+            listView.itemsSource = self._filteredLogs;
+
+            // every per frame update _filterLogs from s_logs
+            self.schedule.Execute(() =>
+            {
+                if (self._version != s_logVersion)
+                {
+                    self.UpdateFilteredLogs(true);
+                    listView.Rebuild();
+                }
+            });
 
             var menubar = new VisualElement() { style = { flexDirection = FlexDirection.Row } };
-            root.Add(menubar);
+            self.Add(menubar);
 
-            var logToggle = new Toggle("Log") { value = root._showLog };
+            var logToggle = new Toggle(nameof(LogType.Log)) { value = self._showLog };
             logToggle.RegisterCallback<ChangeEvent<bool>, (ConsoleView self, ListView listview)>(static (evt, args) =>
             {
                 if (evt.previousValue != evt.newValue)
@@ -129,10 +138,10 @@ namespace DebugToolkit
                     args.self.UpdateFilteredLogs();
                     args.listview.Rebuild();
                 }
-            }, (root, listView));
+            }, (self, listView));
             menubar.Add(logToggle);
 
-            var warningToggle = new Toggle("Warning") { value = root._showWarning };
+            var warningToggle = new Toggle(nameof(LogType.Warning)) { value = self._showWarning };
             warningToggle.RegisterCallback<ChangeEvent<bool>, (ConsoleView self, ListView listview)>(static (evt, args) =>
             {
                 if (evt.previousValue != evt.newValue)
@@ -141,10 +150,10 @@ namespace DebugToolkit
                     args.self.UpdateFilteredLogs();
                     args.listview.Rebuild();
                 }
-            }, (root, listView));
+            }, (self, listView));
             menubar.Add(warningToggle);
 
-            var errorToggle = new Toggle("Error") { value = root._showError };
+            var errorToggle = new Toggle(nameof(LogType.Error)) { value = self._showError };
             errorToggle.RegisterCallback<ChangeEvent<bool>, (ConsoleView self, ListView listview)>(static (evt, args) =>
             {
                 if (evt.previousValue != evt.newValue)
@@ -153,10 +162,10 @@ namespace DebugToolkit
                     args.self.UpdateFilteredLogs();
                     args.listview.Rebuild();
                 }
-            }, (root, listView));
+            }, (self, listView));
             menubar.Add(errorToggle);
 
-            var stackTraceToggle = new Toggle("StackTrace") { value = root._showStackTrace };
+            var stackTraceToggle = new Toggle("StackTrace") { value = self._showStackTrace };
             stackTraceToggle.RegisterCallback<ChangeEvent<bool>, (ConsoleView self, ListView listview)>(static (evt, args) =>
             {
                 if (evt.previousValue != evt.newValue)
@@ -164,10 +173,10 @@ namespace DebugToolkit
                     args.self._showStackTrace = evt.newValue;
                     args.listview.Rebuild();
                 }
-            }, (root, listView));
+            }, (self, listView));
             menubar.Add(stackTraceToggle);
 
-            var timestampToggle = new Toggle("Timestamp") { value = root._showTimestamp };
+            var timestampToggle = new Toggle("Timestamp") { value = self._showTimestamp };
             timestampToggle.RegisterCallback<ChangeEvent<bool>, (ConsoleView self, ListView listview)>(static (evt, args) =>
             {
                 if (evt.previousValue != evt.newValue)
@@ -175,7 +184,7 @@ namespace DebugToolkit
                     args.self._showTimestamp = evt.newValue;
                     args.listview.Rebuild();
                 }
-            }, (root, listView));
+            }, (self, listView));
             menubar.Add(timestampToggle);
 
             var searchField = new TextField();
@@ -187,8 +196,8 @@ namespace DebugToolkit
                     args.self.UpdateFilteredLogs();
                     args.listview.Rebuild();
                 }
-            }, (root, listView));
-            root.Add(searchField);
+            }, (self, listView));
+            self.Add(searchField);
 
             var clearBtn = new Button() { text = "Clear" };
             clearBtn.RegisterCallback<ClickEvent, (ConsoleView self, ListView listview)>(static (_, args) =>
@@ -196,10 +205,10 @@ namespace DebugToolkit
                 args.self._startTime = GetCurrentTimestamp();
                 args.self.UpdateFilteredLogs();
                 args.listview.Rebuild();
-            }, (root, listView));
-            root.Add(clearBtn);
+            }, (self, listView));
+            self.Add(clearBtn);
 
-            root.Add(listView);
+            self.Add(listView);
         }
 
         private void UpdateFilteredLogs(bool onlyDiff = false)
@@ -207,10 +216,6 @@ namespace DebugToolkit
             var logs = (IEnumerable<LogEntry>)s_logs;
             if (onlyDiff)
             {
-                if (_version >= s_logVersion)
-                {
-                    return;
-                }
                 logs = s_logs.Skip(_version);
             }
             else
