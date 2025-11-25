@@ -124,7 +124,7 @@ namespace DebugToolkit
                     self.UpdateFilteredLogs(true);
                     listView.Rebuild();
                 }
-            });
+            }).Every(0);
 
             var menubar = new VisualElement() { style = { flexDirection = FlexDirection.Row } };
             self.Add(menubar);
