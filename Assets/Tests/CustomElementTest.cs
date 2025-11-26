@@ -70,6 +70,8 @@ namespace DebugToolkit.Tests
         public async Task ConsoleView_SearchAndCategorizeMessages_WorksCorrectly(
             int positionX0, int positionX1, int positionX2, LogType type)
         {
+            ConsoleView.Initialize();
+
             var window = _debugViewCustomElementTest.Root.AddWindow("TestWindow");
             window.parent.style.display = DisplayStyle.Flex;
             var consoleView = window.AddConsoleView();
