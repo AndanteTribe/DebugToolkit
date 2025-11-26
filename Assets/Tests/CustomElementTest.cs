@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using UnityEngine;
@@ -69,6 +70,8 @@ namespace DebugToolkit.Tests
         public async Task ConsoleView_SearchAndCategorizeMessages_WorksCorrectly(
             int positionX0, int positionX1, int positionX2, LogType type)
         {
+            ConsoleView.Initialize();
+
             var window = _debugViewCustomElementTest.Root.AddWindow("TestWindow");
             window.parent.style.display = DisplayStyle.Flex;
             var consoleView = window.AddConsoleView();
@@ -79,28 +82,32 @@ namespace DebugToolkit.Tests
             LogAssert.Expect("Test error message");
             Debug.LogError("Test error message");
 
+            await Awaitable.NextFrameAsync();
+
             var listView = consoleView.Q<ListView>();
             Assert.That(listView, Is.Not.Null, "The ListView does not exist.");
-            var items = listView.itemsSource as List<(string message, string stackTrace, LogType type)>;
-            Assert.That(items, Is.Not.Null.And.Count.GreaterThanOrEqualTo(3), "There are fewer than 3 items in the ListView.");
+            var items = listView.itemsSource;
+            Assert.That(items, Is.Not.Null, "The list items are not created.");
+            Assert.That(items.Count, Is.GreaterThanOrEqualTo(3), "There are fewer than 3 items in the ListView.");
 
             var mouse = InputSystem.AddDevice<Mouse>();
             await ClickAtPositionAsync(mouse, new Vector2(positionX0, 824));
 
-            var filteredItems = listView.itemsSource as List<(string message, string stackTrace, LogType type)>;
+            var filteredItems = listView.itemsSource;
             Assert.That(filteredItems, Is.Not.Null, "1: The type of the filter result is incorrect.");
             Assert.That(filteredItems.Count, Is.EqualTo(2), "1: The search results are not filtered correctly.");
 
             await ClickAtPositionAsync(mouse, new Vector2(positionX1, 824));
 
-            filteredItems = listView.itemsSource as List<(string message, string stackTrace, LogType type)>;
+            filteredItems = listView.itemsSource;
             Assert.That(filteredItems, Is.Not.Null, "2: The type of the filter result is incorrect.");
             Assert.That(filteredItems.Count, Is.EqualTo(1), "2: The search results are not filtered correctly.");
-            Assert.That(filteredItems[0].type, Is.EqualTo(type), "2: The log type of the filter result is not a warning.");
+            var logEntry = filteredItems[0] as (string, string, LogType, DateTime)?;
+            Assert.That(logEntry?.Item3, Is.EqualTo(type), "2: The log type of the filter result is not a warning.");
 
             await ClickAtPositionAsync(mouse, new Vector2(positionX2, 824));
 
-            filteredItems = listView.itemsSource as List<(string message, string stackTrace, LogType type)>;
+            filteredItems = listView.itemsSource;
             Assert.That(filteredItems, Is.Not.Null, "3: The type of the filter result is incorrect.");
             Assert.That(filteredItems.Count, Is.EqualTo(0), "3: The search results are not filtered correctly.");
         }

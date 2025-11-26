@@ -55,6 +55,19 @@ namespace DebugToolkit
         }
 
         /// <summary>
+        /// Adds a ConsoleView to the specified root element.
+        /// </summary>
+        /// <param name="root">The root element to which the ConsoleView will be added.</param>
+        /// <returns>The content area of the created ConsoleView.</returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static VisualElement AddConsoleView(this VisualElement root)
+        {
+            var consoleView = new ConsoleView();
+            root.Add(consoleView);
+            return consoleView;
+        }
+
+        /// <summary>
         /// Adds a new window to the specified root element.
         /// Creates a window with a header and content area, registers it for drag functionality,
         /// and adds it to the debug window list. If a master window exists, also adds this window to the window list.
@@ -137,7 +150,7 @@ namespace DebugToolkit
             ((DebugWindow)window).VisibilityToggleButton = toggle;
             toggle.text = windowName;
             toggle.AddToClassList(DebugConst.ToggleWindowDisplayClassName);
-            
+
             toggle.RegisterCallback<ChangeEvent<bool>, (VisualElement window, Toggle toggle)>(static (evt,args) =>
             {
                 args.window.style.display = evt.newValue
