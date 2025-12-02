@@ -127,7 +127,7 @@ namespace DebugToolkit
                 }
             }).Every(0);
 
-            var menubar = new VisualElement() { style = { flexDirection = FlexDirection.Row } };
+            var menubar = new VisualElement() { style = { flexDirection = FlexDirection.Row, minHeight = 60} };
             self.Add(menubar);
 
             var logToggle = new Toggle(nameof(LogType.Log)) { value = self._showLog };
