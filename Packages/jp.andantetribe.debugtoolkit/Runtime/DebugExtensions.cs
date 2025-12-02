@@ -23,31 +23,45 @@ namespace DebugToolkit
             {
                 // Format Example:
                 // <b>Performance</b>
+                // Frame: 12345
+                // GC: 12
                 // CPU: 60fps (16.7ms)
                 // GPU: 60fps (16.7ms)
                 // Memory: 0.52GB
-                var sb = new ValueStringBuilder(stackalloc char[128]);
-                sb.Append(stackalloc char[]{ '<', 'b', '>', 'P', 'e', 'r', 'f', 'o', 'r', 'm', 'a', 'n', 'c', 'e', '<', '/', 'b', '>' });
+                var sb = new ValueStringBuilder(stackalloc char[256]);
+                sb.Append("<b>Performance</b>");
                 sb.AppendLine();
 
+                // frame count
+                sb.Append("Frame: ");
+                sb.Append(Time.frameCount);
+                sb.AppendLine();
+
+                // gc collection count
+                sb.Append("GC: ");
+                sb.Append(GC.CollectionCount(0));
+                sb.AppendLine();
+
+                // frame timing
                 var latest = ProfileUtils.GetLatestFrameTiming();
-                sb.Append(stackalloc char[]{ 'C', 'P', 'U', ':', ' ' });
-                sb.Append(1000 / latest.cpuFrameTime, stackalloc char[]{ 'F', '0' });
-                sb.Append(stackalloc char[]{ 'f', 'p', 's', ' ', '(', ' ' });
-                sb.Append(latest.cpuFrameTime, stackalloc char[]{ 'F', '1' });
-                sb.Append(stackalloc char[]{ 'm', 's', ')' });
+                sb.Append("CPU: ");
+                sb.Append(1000 / latest.cpuFrameTime, "F0");
+                sb.Append("fps ( ");
+                sb.Append(latest.cpuFrameTime, "F1");
+                sb.Append("ms)");
                 sb.AppendLine();
-                sb.Append(stackalloc char[]{ 'G', 'P', 'U', ':', ' ' });
-                sb.Append(1000 / latest.gpuFrameTime, stackalloc char[]{ 'F', '0' });
-                sb.Append(stackalloc char[]{ 'f', 'p', 's', ' ', '(', ' ' });
-                sb.Append(latest.gpuFrameTime, stackalloc char[]{ 'F', '1' });
-                sb.Append(stackalloc char[]{ 'm', 's', ')' });
+                sb.Append("GPU: ");
+                sb.Append(1000 / latest.gpuFrameTime, "F0");
+                sb.Append("fps ( ");
+                sb.Append(latest.gpuFrameTime, "F1");
+                sb.Append("ms)");
                 sb.AppendLine();
 
+                // memory
                 var memory = ProfileUtils.GetTotalMemoryGB();
-                sb.Append(stackalloc char[]{ 'M', 'e', 'm', 'o', 'r', 'y', ':', ' ' });
-                sb.Append(memory, stackalloc char[]{ 'F', '2' });
-                sb.Append(stackalloc char[]{ 'G', 'B' });
+                sb.Append("Memory: ");
+                sb.Append(memory, "F2");
+                sb.Append("GB");
                 sb.AppendLine();
 
                 label.text = sb.ToString();
