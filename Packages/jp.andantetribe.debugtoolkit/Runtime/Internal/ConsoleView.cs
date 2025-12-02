@@ -111,7 +111,8 @@ namespace DebugToolkit
 
         private static void CreateViewGUI(ConsoleView self)
         {
-            var listView = new ListView(self._filteredLogs, 20, static () => new Label(), static (_, _) => { });
+            var listView = new ListView(self._filteredLogs, makeItem: static () => new Label(), bindItem: static (_, _) => { });
+            listView.virtualizationMethod = CollectionVirtualizationMethod.DynamicHeight;
             listView.SetViewController(new BindListViewController<LogEntry, ConsoleView>(
                 self, static (view, element, arg3) => OnBindItem(view, element, arg3)));
             listView.itemsSource = self._filteredLogs;
