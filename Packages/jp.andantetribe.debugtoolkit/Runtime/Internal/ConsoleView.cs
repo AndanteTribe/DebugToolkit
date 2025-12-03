@@ -124,6 +124,10 @@ namespace DebugToolkit
                 {
                     self.UpdateFilteredLogs(true);
                     listView.Rebuild();
+                    if (self._filteredLogs.Count > 0)
+                    {
+                        listView.ScrollToItem(self._filteredLogs.Count - 1);
+                    }
                 }
             }).Every(0);
 
