@@ -21,13 +21,19 @@ namespace DebugToolkit
             _written += value.Length;
         }
 
-        public void Append(in double value, in ReadOnlySpan<char> format)
+        public void Append(in double value, in ReadOnlySpan<char> format = default)
         {
             value.TryFormat(_buffer[_written..], out var written, format);
             _written += written;
         }
 
-        public void Append(in float value, in ReadOnlySpan<char> format)
+        public void Append(in float value, in ReadOnlySpan<char> format = default)
+        {
+            value.TryFormat(_buffer[_written..], out var written, format);
+            _written += written;
+        }
+
+        public void Append(in int value, in ReadOnlySpan<char> format = default)
         {
             value.TryFormat(_buffer[_written..], out var written, format);
             _written += written;
