@@ -431,7 +431,18 @@
 .debug-toolkit__master .unity-radio-button__text {
     margin-left: var(--debug-toolkit-px-space-small);
 }
- /*--- ラジオボタングループ -----------------------------------------------*/
+ /*--- ListView設定 -----------------------------------------------*/
+.debug-toolkit__master .unity-collection-view__item {
+    color: var(--debug-toolkit-color-black);
+    padding: var(--debug-toolkit-px-space-small);
+    margin: var(--debug-toolkit-px-space-small);
+}
+
+.debug-toolkit__master .unity-collection-view:focus:enabled  .unity-collection-view__item--selected {
+    color: var(--debug-toolkit-color-black);
+    padding: var(--debug-toolkit-px-space-small);
+    margin: var(--debug-toolkit-px-space-small);
+}
 
 /*--- 一般設定 -----------------------------------------------*/
 .debug-toolkit__master .unity-base-field__label{
@@ -480,9 +491,6 @@
     color: var(--debug-toolkit-color-highlight);
 }
 
-.debug-toolkit__master .debug-toolkit__window-label {
-}
-
 .debug-toolkit__toggle-all-button {
     position: absolute;
     bottom: 0;
@@ -510,12 +518,4 @@ debug-toolkit__toggle-all-button:hover {
     border-width: var(--debug-toolkit-px-space-xsmall);
     border-color: gray;
     margin : 5px;
-}
-
-.debug-toolkit__master .debug-toolkit__log-label {
-
-}
-
-.debug-toolkit__master .debug-toolkit__console-toggle-log-show {
-
 }
