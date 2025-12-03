@@ -117,6 +117,24 @@ namespace DebugToolkit
                 self, static (view, element, arg3) => OnBindItem(view, element, arg3)));
             listView.itemsSource = self._filteredLogs;
 
+            var scrollView = listView.Q<ScrollView>();
+            var isAtBottom = true;
+            // Threshold to handle floating point precision issues in scroll position calculations
+            const float scrollThreshold = 10f;
+
+            // Track when user scrolls away from bottom
+            void UpdateIsAtBottom()
+            {
+                if (scrollView == null) return;
+                var scrollOffset = scrollView.scrollOffset;
+                var contentHeight = scrollView.contentContainer.layout.height;
+                var viewportHeight = scrollView.contentViewport.layout.height;
+                isAtBottom = contentHeight <= viewportHeight || scrollOffset.y >= contentHeight - viewportHeight - scrollThreshold;
+            }
+
+            scrollView?.RegisterCallback<GeometryChangedEvent>(_ => UpdateIsAtBottom());
+            scrollView?.RegisterCallback<WheelEvent>(_ => UpdateIsAtBottom());
+
             // every per frame update _filterLogs from s_logs
             self.schedule.Execute(() =>
             {
@@ -124,7 +142,7 @@ namespace DebugToolkit
                 {
                     self.UpdateFilteredLogs(true);
                     listView.Rebuild();
-                    if (self._filteredLogs.Count > 0)
+                    if (isAtBottom && self._filteredLogs.Count > 0)
                     {
                         listView.ScrollToItem(self._filteredLogs.Count - 1);
                     }
