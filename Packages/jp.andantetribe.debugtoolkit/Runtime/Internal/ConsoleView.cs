@@ -135,7 +135,7 @@ namespace DebugToolkit
                 }
             }).Every(0);
 
-            var menubar = new VisualElement() { style = { flexDirection = FlexDirection.Row, minHeight = 60} };
+            var menubar = new VisualElement() { style = { flexDirection = FlexDirection.Row, minHeight = 60 } };
             self.Add(menubar);
 
             var logToggle = new Toggle(nameof(LogType.Log)) { value = self._showLog };
@@ -208,9 +208,9 @@ namespace DebugToolkit
             }, (self, listView));
             self.Add(searchField);
 
-            var secondbar = new VisualElement() { style = { flexDirection = FlexDirection.Row, minHeight = 60} };
+            var secondbar = new VisualElement() { style = { flexDirection = FlexDirection.Row, minHeight = 60 } };
 
-            var clearBtn = new Button() { text = "Clear", style = { flexGrow = 1} };
+            var clearBtn = new Button() { text = "Clear", style = { flexGrow = 1 } };
             clearBtn.RegisterCallback<ClickEvent, (ConsoleView self, ListView listview)>(static (_, args) =>
             {
                 args.self._startTime = GetCurrentTimestamp();
@@ -219,7 +219,7 @@ namespace DebugToolkit
             }, (self, listView));
             secondbar.Add(clearBtn);
 
-            var autoScrollToggle = new Toggle("Auto Scroll") { value = self._autoScrollToBottom, style = { flexGrow = 1} };
+            var autoScrollToggle = new Toggle("Auto Scroll") { value = self._autoScrollToBottom, style = { flexGrow = 1 } };
             autoScrollToggle.RegisterCallback<ChangeEvent<bool>, ConsoleView>(static (evt, view) =>
             {
                 view._autoScrollToBottom = evt.newValue;
