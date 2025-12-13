@@ -20,12 +20,10 @@ jobs:
         - name: Set outputs
           id: vars
           run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-        - uses: actions/cache@v4
+        - name: Unity Cache
+          uses: AndanteTribe/Actions/actions/unity-cache@feature/unity-cloud-cache
           with:
-            path: Library
-            key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
-            restore-keys: |
-              Library-
+            unity-project-path: .
         - name: Free disk space
           run:  |
             chmod +x ./.github/workflows/scripts/free_disk_space.sh
