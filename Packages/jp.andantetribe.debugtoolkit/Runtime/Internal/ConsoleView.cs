@@ -38,6 +38,7 @@ namespace DebugToolkit
         private readonly List<LogEntry> _filteredLogs = s_logs.ToList();
         private int _version = s_logVersion;
         private DateTime _startTime = s_startTime;
+        private bool _autoScrollToBottom = true;
 
         private string _searchQuery = "";
         private bool _showLog = true;
@@ -111,8 +112,10 @@ namespace DebugToolkit
 
         private static void CreateViewGUI(ConsoleView self)
         {
-            var listView = new ListView(self._filteredLogs, makeItem: static () => new Label(), bindItem: static (_, _) => { });
-            listView.virtualizationMethod = CollectionVirtualizationMethod.DynamicHeight;
+            var listView = new ListView(self._filteredLogs, makeItem: static () => new Label(), bindItem: static (_, _) => { })
+            {
+                virtualizationMethod = CollectionVirtualizationMethod.DynamicHeight
+            };
             listView.SetViewController(new BindListViewController<LogEntry, ConsoleView>(
                 self, static (view, element, arg3) => OnBindItem(view, element, arg3)));
             listView.itemsSource = self._filteredLogs;
@@ -124,10 +127,15 @@ namespace DebugToolkit
                 {
                     self.UpdateFilteredLogs(true);
                     listView.Rebuild();
+                    // auto scroll to bottom
+                    if (self._filteredLogs.Count > 0 && self._autoScrollToBottom)
+                    {
+                        listView.ScrollToItem(self._filteredLogs.Count - 1);
+                    }
                 }
             }).Every(0);
 
-            var menubar = new VisualElement() { style = { flexDirection = FlexDirection.Row, minHeight = 60} };
+            var menubar = new VisualElement() { style = { flexDirection = FlexDirection.Row, minHeight = 60 } };
             self.Add(menubar);
 
             var logToggle = new Toggle(nameof(LogType.Log)) { value = self._showLog };
@@ -200,15 +208,25 @@ namespace DebugToolkit
             }, (self, listView));
             self.Add(searchField);
 
-            var clearBtn = new Button() { text = "Clear" };
+            var secondbar = new VisualElement() { style = { flexDirection = FlexDirection.Row, minHeight = 60 } };
+
+            var clearBtn = new Button() { text = "Clear", style = { flexGrow = 1 } };
             clearBtn.RegisterCallback<ClickEvent, (ConsoleView self, ListView listview)>(static (_, args) =>
             {
                 args.self._startTime = GetCurrentTimestamp();
                 args.self.UpdateFilteredLogs();
                 args.listview.Rebuild();
             }, (self, listView));
-            self.Add(clearBtn);
+            secondbar.Add(clearBtn);
 
+            var autoScrollToggle = new Toggle("Auto Scroll") { value = self._autoScrollToBottom, style = { flexGrow = 1 } };
+            autoScrollToggle.RegisterCallback<ChangeEvent<bool>, ConsoleView>(static (evt, view) =>
+            {
+                view._autoScrollToBottom = evt.newValue;
+            }, self);
+            secondbar.Add(autoScrollToggle);
+
+            self.Add(secondbar);
             self.Add(listView);
         }
 
