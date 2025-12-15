@@ -21,7 +21,7 @@ jobs:
           id: vars
           run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
         - name: Unity Cache
-          uses: AndanteTribe/Actions/actions/unity-cache@feature/unity-cloud-cache-fixed
+          uses: AndanteTribe/Actions/actions/unity-cache@main
           with:
             unity-project-path: .
         - name: Free disk space
