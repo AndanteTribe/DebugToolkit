@@ -30,6 +30,7 @@ jobs:
           with:
             unity-project-path: .
         - name: Free disk space
+          if: runner.os == 'Linux' && runner.environment == 'github-hosted'
           run:  |
             chmod +x ./.github/workflows/scripts/free_disk_space.sh
             .github/workflows/scripts/free_disk_space.sh
