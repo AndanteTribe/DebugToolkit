@@ -1,0 +1,58 @@
+name: Copilot Setup Steps
+
+on: push
+
+jobs:
+  copilot-setup-steps:
+    runs-on: ubuntu-latest
+    container:
+      image: unityci/editor:ubuntu-6000.0.23f1-base-3
+    env:
+      UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+      UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+      UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+    steps:
+      - name: Set up machine-id
+        run: |
+          dbus-uuidgen > /etc/machine-id
+          mkdir -p /var/lib/dbus
+          ln -sf /etc/machine-id /var/lib/dbus/machine-id
+
+      - uses: actions/checkout@v4
+
+      - name: Restore Unity Library cache
+        uses: actions/cache@v4
+        with:
+          path: Library
+          key: unity-cache-DebugToolkit-${{ hashFiles('Packages/manifest.json') }}
+          restore-keys: |
+            unity-cache-DebugToolkit-
+
+      - name: Get Unity Serial
+        id: get-serial
+        run: |
+          # Uses the same algorithm as game-ci/unity-test-runner (getSerialFromLicenseFile).
+          # Buffer.from().toString('binary') correctly handles binary garbage bytes in positions 1-4
+          # that bash's `cut -b5-` cannot handle when the garbage bytes include a newline (0x0A).
+          UNITY_SERIAL=$(node -e "
+            const license = require('fs').readFileSync('/dev/stdin', 'utf8');
+            const startKey = '<DeveloperData Value=\"';
+            const endKey = '\"/>';
+            const si = license.indexOf(startKey) + startKey.length;
+            const ei = license.indexOf(endKey, si);
+            const serial = Buffer.from(license.slice(si, ei), 'base64').toString('binary').slice(4);
+            process.stdout.write(serial);
+          " <<< "$UNITY_LICENSE")
+          if [[ -z "$UNITY_SERIAL" ]]; then
+            echo "::error::Failed to extract Unity serial from UNITY_LICENSE. Check that UNITY_LICENSE secret is set correctly."
+            exit 1
+          fi
+          echo "serial=$UNITY_SERIAL" >> "$GITHUB_OUTPUT"
+
+      - name: Activate Unity License
+        run: |
+          unity-editor -quit -batchmode -logFile /dev/stdout \
+            -serial "${{ steps.get-serial.outputs.serial }}" \
+            -username "$UNITY_EMAIL" \
+            -password "$UNITY_PASSWORD" \
+            -projectPath .
