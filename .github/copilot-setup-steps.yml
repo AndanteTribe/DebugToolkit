@@ -56,3 +56,8 @@ jobs:
             -username "$UNITY_EMAIL" \
             -password "$UNITY_PASSWORD" \
             -projectPath .
+
+      - name: Import and compile Unity project
+        run: |
+          unity-editor -quit -batchmode -logFile /dev/stdout \
+            -projectPath .
