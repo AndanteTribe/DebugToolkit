@@ -1,6 +1,6 @@
 name: Run the Unity Test
 on:
-  pull_request_target:
+  pull_request:
     types:
       - labeled
   push:
@@ -17,7 +17,7 @@ jobs:
   build:
       name: Run the Unity Test
       runs-on: ${{ format('{0}', github.event.inputs.use_self_hosted) == 'true' && 'self-hosted' || 'ubuntu-latest' }}
-      if: ${{ github.event_name == 'pull_request_target' && github.event.label.name == 'request-ci' || github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
+      if: ${{ github.event_name == 'pull_request' && github.event.label.name == 'request-ci' || github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
       steps:
         - uses: actions/checkout@v4
           with:
