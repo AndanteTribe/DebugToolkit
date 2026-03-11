@@ -30,6 +30,7 @@ jobs:
 
       - name: Get Unity Serial
         id: get-serial
+        shell: bash
         run: |
           # Uses the same algorithm as game-ci/unity-test-runner (getSerialFromLicenseFile).
           # Buffer.from().toString('binary') correctly handles binary garbage bytes in positions 1-4

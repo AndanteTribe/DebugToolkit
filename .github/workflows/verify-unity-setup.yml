@@ -38,6 +38,7 @@ jobs:
 
       - name: Get Unity Serial
         id: get-serial
+        shell: bash
         run: |
           # Uses the same algorithm as game-ci/unity-test-runner (getSerialFromLicenseFile).
           # Buffer.from().toString('binary') correctly handles binary garbage bytes in positions 1-4
@@ -69,6 +70,18 @@ jobs:
         run: |
           unity-editor -quit -batchmode -logFile /dev/stdout \
             -projectPath .
+
+      - name: Show compiled Unity assemblies
+        if: always()
+        run: |
+          echo "## Compiled Unity assemblies" >> "$GITHUB_STEP_SUMMARY"
+          if [ -d Library/ScriptAssemblies ]; then
+            for f in Library/ScriptAssemblies/*.dll; do
+              echo "- \`$(basename "$f")\` ($(du -sh "$f" | cut -f1))" >> "$GITHUB_STEP_SUMMARY"
+            done
+          else
+            echo "_Library/ScriptAssemblies not found — compilation may not have completed._" >> "$GITHUB_STEP_SUMMARY"
+          fi
 
       - name: Report result in job summary
         if: always()
