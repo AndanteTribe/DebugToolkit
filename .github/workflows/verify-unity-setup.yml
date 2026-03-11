@@ -41,17 +41,8 @@ jobs:
         shell: bash
         run: |
           # Uses the same algorithm as game-ci/unity-test-runner (getSerialFromLicenseFile).
-          # Buffer.from().toString('binary') correctly handles binary garbage bytes in positions 1-4
-          # that bash's `cut -b5-` cannot handle when the garbage bytes include a newline (0x0A).
-          UNITY_SERIAL=$(node -e "
-            const license = require('fs').readFileSync('/dev/stdin', 'utf8');
-            const startKey = '<DeveloperData Value=\"';
-            const endKey = '\"/>';
-            const si = license.indexOf(startKey) + startKey.length;
-            const ei = license.indexOf(endKey, si);
-            const serial = Buffer.from(license.slice(si, ei), 'base64').toString('binary').slice(4);
-            process.stdout.write(serial);
-          " <<< "$UNITY_LICENSE")
+          # Python3 b64decode()[4:] correctly handles binary garbage bytes in positions 1-4.
+          UNITY_SERIAL=$(python3 -c "import base64,re,os,sys;lic=os.environ.get('UNITY_LICENSE','');m=re.search('<DeveloperData Value=\"([^\"]+)\"',lic);sys.stdout.buffer.write(base64.b64decode(m.group(1))[4:] if m else b'')")
           if [[ -z "$UNITY_SERIAL" ]]; then
             echo "::error::Failed to extract Unity serial from UNITY_LICENSE. Check that UNITY_LICENSE secret is set correctly."
             exit 1
