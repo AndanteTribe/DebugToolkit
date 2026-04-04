@@ -46,6 +46,7 @@ DebugToolkitはインストール後、デフォルトで有効になります�
 ### 例
 
 ```csharp
+#if !DISABLE_DEBUGTOOLKIT
 using DebugToolkit;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -67,9 +68,11 @@ public class MyDebugView : DebugViewerBase
         return root;
     }
 }
+#endif
 ```
 
 ```csharp
+#if !DISABLE_DEBUGTOOLKIT
 using UnityEngine;
 
 public class DebugInitializer : MonoBehaviour
@@ -83,6 +86,7 @@ public class DebugInitializer : MonoBehaviour
         _debugView.Start();
     }
 }
+#endif
 ```
 ![quick-start-example1.png](Documentation/quick-start-example1.png)
 ![quick-start-example2.png](Documentation/quick-start-example2.png)
@@ -101,6 +105,7 @@ Package Managerから`Samples`をインポートすることで、サンプル�
 ### ``VisualElement AddWindow(this VisualElement root, string windowName)``
 新しいデバッグウィンドウを追加します。
 ```csharp
+#if !DISABLE_DEBUGTOOLKIT
 public class MyDebugView : DebugViewerBase
 {
     protected override VisualElement CreateViewGUI()
@@ -113,6 +118,7 @@ public class MyDebugView : DebugViewerBase
         return root;
     }
 }
+#endif
 ```
 ![window.png](Documentation/window.png)
 ![window-open.png](Documentation/window-open.png)
@@ -121,6 +127,7 @@ public class MyDebugView : DebugViewerBase
 コンソールログビューを追加します。
 ランタイム上でUnityのコンソールログを確認できます。
 ```csharp
+#if !DISABLE_DEBUGTOOLKIT
 public class MyDebugView : DebugViewerBase
 {
     protected override VisualElement CreateViewGUI()
@@ -132,12 +139,14 @@ public class MyDebugView : DebugViewerBase
         return root;
     }
 }
+#endif
 ```
 ![console.png](Documentation/console.png)
 
 ### `void AddProfileInfoLabel(this VisualElement root)`
 パフォーマンスを確認できるラベルを追加します。
 ```csharp
+#if !DISABLE_DEBUGTOOLKIT
 public class MyDebugView : DebugViewerBase
 {
     protected override VisualElement CreateViewGUI()
@@ -149,6 +158,7 @@ public class MyDebugView : DebugViewerBase
         return root;
     }
 }
+#endif
 ```
 ![profile-info-label.png](Documentation/profile-info-label.png)
 
@@ -162,6 +172,7 @@ TabViewに新しいタブを追加
 VisualElementにTabViewとタブを追加
 
 ```csharp
+#if !DISABLE_DEBUGTOOLKIT
 public class MyDebugView : DebugViewerBase
 {
     protected override VisualElement CreateViewGUI()
@@ -175,6 +186,7 @@ public class MyDebugView : DebugViewerBase
         return root;
     }
 }
+#endif
 ```
 ![tab.png](Documentation/tab.png)
 
@@ -184,6 +196,7 @@ public class MyDebugView : DebugViewerBase
 履歴機能付きテキストフィールドです。
 `Ctrl or Cmd + Z`でUndo, `Ctrl or Cmd + Y`もしくは`Ctrl or Cmd + Shift + Z`でRedoに対応しています。
 ```csharp
+#if !DISABLE_DEBUGTOOLKIT
 public class MyDebugView : DebugViewerBase
 {
     protected override VisualElement CreateViewGUI()
@@ -195,6 +208,7 @@ public class MyDebugView : DebugViewerBase
         return root;
     }
 }
+#endif
 ```
 
 ## システム要件
