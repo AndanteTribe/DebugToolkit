@@ -44,6 +44,7 @@ DebugToolkit is enabled by default after installation. No additional setup is re
 ### Example
 
 ```csharp
+#if !DISABLE_DEBUGTOOLKIT
 using DebugToolkit;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -65,9 +66,11 @@ public class MyDebugView : DebugViewerBase
         return root;
     }
 }
+#endif
 ```
 
 ```csharp
+#if !DISABLE_DEBUGTOOLKIT
 using UnityEngine;
 
 public class DebugInitializer : MonoBehaviour
@@ -81,6 +84,7 @@ public class DebugInitializer : MonoBehaviour
         _debugView.Start();
     }
 }
+#endif
 ```
 
 ![quick-start-example1.png](Documentation/quick-start-example1.png)
@@ -98,6 +102,7 @@ You can import `Samples` from Package Manager to try sample scenes and scripts.
 ### `VisualElement AddWindow(this VisualElement root, string windowName)`
 Adds a new debug window.
 ```csharp
+#if !DISABLE_DEBUGTOOLKIT
 public class MyDebugView : DebugViewerBase
 {
     protected override VisualElement CreateViewGUI()
@@ -110,6 +115,7 @@ public class MyDebugView : DebugViewerBase
         return root;
     }
 }
+#endif
 ```
 ![window.png](Documentation/window.png)
 ![window-open.png](Documentation/window-open.png)
@@ -117,6 +123,7 @@ public class MyDebugView : DebugViewerBase
 ### `void AddConsoleView(this VisualElement root)`
 Adds a console log viewer. You can check Unity’s console logs at runtime.
 ```csharp
+#if !DISABLE_DEBUGTOOLKIT
 public class MyDebugView : DebugViewerBase
 {
     protected override VisualElement CreateViewGUI()
@@ -128,12 +135,14 @@ public class MyDebugView : DebugViewerBase
         return root;
     }
 }
+#endif
 ```
 ![console.png](Documentation/console.png)
 
 ### `void AddProfileInfoLabel(this VisualElement root)`
 Adds a label that shows performance information.
 ```csharp
+#if !DISABLE_DEBUGTOOLKIT
 public class MyDebugView : DebugViewerBase
 {
     protected override VisualElement CreateViewGUI()
@@ -145,6 +154,7 @@ public class MyDebugView : DebugViewerBase
         return root;
     }
 }
+#endif
 ```
 ![profile-info-label.png](Documentation/profile-info-label.png)
 
@@ -157,6 +167,7 @@ Adds a new tab to an existing TabView.
 Adds a TabView and a tab to the target VisualElement.
 
 ```csharp
+#if !DISABLE_DEBUGTOOLKIT
 public class MyDebugView : DebugViewerBase
 {
     protected override VisualElement CreateViewGUI()
@@ -170,6 +181,7 @@ public class MyDebugView : DebugViewerBase
         return root;
     }
 }
+#endif
 ```
 ![tab.png](Documentation/tab.png)
 
@@ -180,6 +192,7 @@ A TextField with undo/redo history.
 - Undo: `Ctrl or Cmd + Z`
 - Redo: `Ctrl or Cmd + Y` or `Ctrl or Cmd + Shift + Z`
 ```csharp
+#if !DISABLE_DEBUGTOOLKIT
 public class MyDebugView : DebugViewerBase
 {
     protected override VisualElement CreateViewGUI()
@@ -191,6 +204,7 @@ public class MyDebugView : DebugViewerBase
         return root;
     }
 }
+#endif
 ```
 
 ## Requirements
