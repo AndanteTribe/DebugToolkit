@@ -23,7 +23,7 @@ jobs:
           with:
             ref: ${{ github.event.pull_request.head.sha || github.sha }}
         - name: Unity Cache
-          uses: AndanteTribe/Actions/actions/unity-cache@main
+          uses: AndanteTribe/Actions/actions/unity-cache@feature/actions-local
           with:
             unity-project-path: .
         - name: Free disk space
