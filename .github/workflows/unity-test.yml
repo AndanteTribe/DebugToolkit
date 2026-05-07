@@ -59,7 +59,7 @@ jobs:
           if: runner.os == 'Linux' && runner.environment == 'github-hosted'
           uses: AndanteTribe/Actions/actions/code-coverage-report-update@feature/code-coverage
           with:
-            path: CodeCoverage
+            coverage-report-path: CodeCoverage
         - name: Upload images via curl
           if: runner.os == 'Linux' && runner.environment == 'github-hosted'
           env:
