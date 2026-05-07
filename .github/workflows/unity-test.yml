@@ -57,12 +57,9 @@ jobs:
             retention-days: 2
         - name: Upload Coverage Report
           if: runner.os == 'Linux' && runner.environment == 'github-hosted'
-          run: |
-            for file in CodeCoverage/**/Summary.md; do
-              if [ -f "$file" ]; then
-                cat "$file" >> $GITHUB_STEP_SUMMARY
-              fi
-            done
+          uses: AndanteTribe/Actions/actions/coverage-summary@feature/code-coverage
+          with:
+            path: CodeCoverage
         - name: Upload images via curl
           if: runner.os == 'Linux' && runner.environment == 'github-hosted'
           env:
