@@ -12,7 +12,7 @@ jobs:
       run: |
         version=$(jq -r '.version' Packages/jp.andantetribe.debugtoolkit/package.json)
         echo "PACKAGE_VERSION=${version}" >> $GITHUB_ENV
-    - uses: actions/build-unitypackage@featture/unity-package
+    - uses: AndanteTribe/Actions/actions/build-unitypackage@featture/unity-package
       with:
         package-path: .
         output-path: "a/DebugToolkit.${{ env.PACKAGE_VERSION }}.unitypackage"
