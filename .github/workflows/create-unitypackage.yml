@@ -14,7 +14,7 @@ jobs:
         echo "PACKAGE_VERSION=${version}" >> $GITHUB_ENV
     - uses: AndanteTribe/Actions/actions/build-unitypackage@feature/unity-package
       with:
-        package-path: Packages/jp.andantetribe.debugtoolkit
+        package-path: Packages
         output-path: "a/DebugToolkit.${{ env.PACKAGE_VERSION }}.unitypackage"
     - uses: actions/upload-artifact@master
       with:
