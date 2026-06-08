@@ -20,9 +20,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout this repository
-        uses: actions/checkout@v4.2.2
+        # ghasec-ignore: unpinned-action
+        uses: AndanteTribe/Actions/actions/checkout@main # zizmor: ignore[unpinned-uses] repository-local action reference is intentionally tracked on @main
         with:
           submodules: false
           lfs: true
       - name: Unity meta files check (github-hosted ubuntu-latest)
-        uses: DeNA/unity-meta-check@v4.0.0
+        # ghasec-ignore: unpinned-action
+        uses: AndanteTribe/Actions/actions/unity-meta-check@main # zizmor: ignore[unpinned-uses] repository-local action reference is intentionally tracked on @main
