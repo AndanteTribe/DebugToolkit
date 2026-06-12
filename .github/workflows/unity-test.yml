@@ -22,11 +22,13 @@ jobs:
       runs-on: ${{ format('{0}', github.event.inputs.use_self_hosted) == 'true' && 'self-hosted' || 'ubuntu-latest' }}
       if: ${{ github.event_name == 'pull_request' && github.event.label.name == 'request-ci' || github.event_name == 'push' || github.event_name == 'workflow_dispatch' }}
       steps:
-        - uses: actions/checkout@v4
+        # ghasec-ignore: unpinned-action
+        - uses: AndanteTribe/Actions/actions/checkout@main # zizmor: ignore[unpinned-uses] repository-local action reference is intentionally tracked on @main
           with:
             ref: ${{ github.event.pull_request.head.sha || github.sha }}
         - name: Unity Cache
-          uses: AndanteTribe/Actions/actions/unity-cache@main
+          # ghasec-ignore: unpinned-action
+          uses: AndanteTribe/Actions/actions/unity-cache@main # zizmor: ignore[unpinned-uses] repository-local action reference is intentionally tracked on @main
           with:
             unity-project-path: .
         - name: Free disk space
@@ -35,7 +37,8 @@ jobs:
             chmod +x ./.github/workflows/scripts/free_disk_space.sh
             .github/workflows/scripts/free_disk_space.sh
             git checkout -- ./.github/workflows/scripts/free_disk_space.sh
-        - uses: game-ci/unity-test-runner@v4
+        # ghasec-ignore: unpinned-action
+        - uses: AndanteTribe/Actions/actions/unity-test-runner@main # zizmor: ignore[unpinned-uses] repository-local action reference is intentionally tracked on @main
           id: tests
           env:
             UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
@@ -46,13 +49,15 @@ jobs:
             unityVersion: auto
             testMode: playmode
             coverageOptions: 'generateHtmlReport;generateAdditionalReports;assemblyFilters:+DebugToolkit.Tests'
-        - uses: actions/upload-artifact@v4
+        # ghasec-ignore: unpinned-action
+        - uses: AndanteTribe/Actions/actions/upload-artifact@main # zizmor: ignore[unpinned-uses] repository-local action reference is intentionally tracked on @main
           if: always()
           with:
             name: Test results
             path: artifacts
             retention-days: 2
-        - uses: actions/upload-artifact@v4
+        # ghasec-ignore: unpinned-action
+        - uses: AndanteTribe/Actions/actions/upload-artifact@main # zizmor: ignore[unpinned-uses] repository-local action reference is intentionally tracked on @main
           if: always()
           with:
             name: Coverage Results
