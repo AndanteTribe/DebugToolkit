@@ -7,16 +7,19 @@ jobs:
   echo:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    # ghasec-ignore: unpinned-action
+    - uses: AndanteTribe/Actions/actions/checkout@main # zizmor: ignore[unpinned-uses] repository-local action reference is intentionally tracked on @main
     - name: Extract version from package.json
       run: |
         version=$(jq -r '.version' Packages/jp.andantetribe.debugtoolkit/package.json)
         echo "PACKAGE_VERSION=${version}" >> $GITHUB_ENV
-    - uses: AndanteTribe/Actions/actions/build-unitypackage@feature/unity-package
+      # ghasec-ignore: unpinned-action
+    - uses: AndanteTribe/Actions/actions/build-unitypackage@feature/unity-package　# zizmor: ignore[unpinned-uses] repository-local action reference is intentionally tracked on @main
       with:
         package-path: Packages
         output-path: "a/DebugToolkit.${{ env.PACKAGE_VERSION }}.unitypackage"
-    - uses: actions/upload-artifact@master
+    # ghasec-ignore: unpinned-action
+    - uses: AndanteTribe/Actions/actions/upload-artifact@main # zizmor: ignore[unpinned-uses] repository-local action reference is intentionally tracked on @main
       with:
         path: a
         name: package
