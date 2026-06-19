@@ -13,15 +13,11 @@ jobs:
       run: |
         version=$(jq -r '.version' Packages/jp.andantetribe.debugtoolkit/package.json)
         echo "PACKAGE_VERSION=${version}" >> $GITHUB_ENV
-    - run: |
-        echo -e "fileFormatVersion: 2\nguid: bc2e69da977b459b85eea7d1202e6303\nfolderAsset: yes\nDefaultImporter:\n  externalObjects: {}\n  userData: \n  assetBundleName: \n  assetBundleVariant: " > Packages/jp.andantetribe.debugtoolkit.meta
-        echo "Packages/jp.andantetribe.debugtoolkit.meta" > metaList
-        find Packages/jp.andantetribe.debugtoolkit/ -name \*.meta >> metaList
-        mkdir a
-    - uses: pCYSl5EDgo/create-unitypackage@master
+      # ghasec-ignore: unpinned-action
+    - uses: AndanteTribe/Actions/actions/build-unitypackage@feature/unity-package　# zizmor: ignore[unpinned-uses] repository-local action reference is intentionally tracked on @main
       with:
-        package-path: "a/DebugToolkit.${{ env.PACKAGE_VERSION }}.unitypackage"
-        include-files: metaList
+        package-path: Packages
+        output-path: "a/DebugToolkit.${{ env.PACKAGE_VERSION }}.unitypackage"
     # ghasec-ignore: unpinned-action
     - uses: AndanteTribe/Actions/actions/upload-artifact@main # zizmor: ignore[unpinned-uses] repository-local action reference is intentionally tracked on @main
       with:
