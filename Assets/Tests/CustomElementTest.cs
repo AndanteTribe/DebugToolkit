@@ -111,5 +111,41 @@ namespace DebugToolkit.Tests
             Assert.That(filteredItems, Is.Not.Null, "3: The type of the filter result is incorrect.");
             Assert.That(filteredItems.Count, Is.EqualTo(0), "3: The search results are not filtered correctly.");
         }
+
+        [Test]
+        public async Task ConsoleView_ClickLogEntry_CopiesPressedLogText()
+        {
+            ConsoleView.Initialize();
+            GUIUtility.systemCopyBuffer = "";
+
+            var window = _debugViewCustomElementTest.Root.AddWindow("TestWindow");
+            window.parent.style.display = DisplayStyle.Flex;
+            var consoleView = window.AddConsoleView();
+
+            Debug.Log("Pressed log message");
+            Debug.LogWarning("Other warning message");
+
+            await Awaitable.NextFrameAsync();
+
+            var listView = consoleView.Q<ListView>();
+            Assert.That(listView, Is.Not.Null, "The ListView does not exist.");
+            Assert.That(listView.itemsSource.Count, Is.GreaterThanOrEqualTo(2), "The ListView should contain test logs.");
+
+            var buttons = consoleView.Query<Button>().ToList();
+            Assert.That(buttons.Exists(button => button.text == "Copy"), Is.False, "Bulk copy button should not exist.");
+
+            var labels = consoleView.Query<Label>().ToList();
+            var logLabel = labels.Find(label => label.text.Contains("Pressed log message"));
+            Assert.That(logLabel, Is.Not.Null, "The log entry label should exist.");
+
+            using var clickEvent = ClickEvent.GetPooled();
+            clickEvent.target = logLabel;
+            logLabel.SendEvent(clickEvent);
+
+            Assert.That(GUIUtility.systemCopyBuffer, Does.Contain("Pressed log message"));
+            Assert.That(GUIUtility.systemCopyBuffer, Does.Not.Contain("Other warning message"));
+            Assert.That(logLabel.style.borderLeftWidth.value, Is.GreaterThan(0f));
+            Assert.That(logLabel.style.unityFontStyleAndWeight.value, Is.EqualTo(FontStyle.Bold));
+        }
     }
 }
