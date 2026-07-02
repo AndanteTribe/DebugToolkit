@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using NUnit.Framework;
@@ -30,7 +30,7 @@ namespace DebugToolkit.Tests
             await base.TearDown();
 
             // Destroy the instance. In some cases, it might be better not to do this.
-            _debugViewCustomElementTest= null;
+            _debugViewCustomElementTest = null;
         }
 
         [Test]
@@ -48,10 +48,10 @@ namespace DebugToolkit.Tests
             var expectedMemory = ProfileUtils.GetTotalMemoryGB();
             var frameTiming = ProfileUtils.GetLatestFrameTiming();
             var expectedMemoryString = expectedMemory.ToString("F2");
-            var expectedCpuFpsString =  (1000 / frameTiming.cpuFrameTime).ToString("F0");
+            var expectedCpuFpsString = (1000 / frameTiming.cpuFrameTime).ToString("F0");
             var expectedCpuFrameTimeString = frameTiming.cpuFrameTime.ToString("F1");
             var expectedGpuFpsString = (1000 / frameTiming.gpuFrameTime).ToString("F0");
-            var expectedGpuFrameTimeString =  frameTiming.gpuFrameTime.ToString("F1");
+            var expectedGpuFrameTimeString = frameTiming.gpuFrameTime.ToString("F1");
 
             Assert.That(label.text, Does.Contain(expectedMemoryString), "memory value should be contained in label.");
             Assert.That(label.text, Does.Contain(expectedCpuFpsString), "cpu fps value should be contained in label.");
@@ -61,7 +61,7 @@ namespace DebugToolkit.Tests
         }
 
         [Test]
-        [TestCase (220, 332, 441, LogType.Error)]
+        [TestCase(220, 332, 441, LogType.Error)]
         [TestCase(220, 441, 332, LogType.Warning)]
         [TestCase(332, 441, 220, LogType.Log)]
         [TestCase(332, 220, 441, LogType.Error)]

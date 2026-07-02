@@ -1,4 +1,4 @@
-﻿#nullable enable
+#nullable enable
 using UnityEngine;
 
 [assembly: UnityEngine.Scripting.AlwaysLinkAssembly]
