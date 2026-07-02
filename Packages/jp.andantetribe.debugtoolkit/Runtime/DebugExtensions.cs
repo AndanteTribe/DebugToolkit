@@ -250,7 +250,7 @@ namespace DebugToolkit
 
         internal static VisualElement GetDebugWindowParent(this DebugWindow element)
         {
-            for (VisualElement current = element.VisibilityToggleButton; current != null; current = current.parent)
+            for (VisualElement? current = element.VisibilityToggleButton; current != null; current = current.parent)
             {
                 if (current.ClassListContains(DebugConst.MasterWindowClassName) ||
                     current.ClassListContains(DebugConst.NormalWindowClassName))
