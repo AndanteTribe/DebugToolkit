@@ -1,10 +1,10 @@
+using System.Threading.Tasks;
 using NUnit.Framework;
-using UnityEngine;
 using UnityEditor;
+using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
-using UnityEngine.InputSystem;
-using System.Threading.Tasks;
 
 namespace DebugToolkit.Tests
 {

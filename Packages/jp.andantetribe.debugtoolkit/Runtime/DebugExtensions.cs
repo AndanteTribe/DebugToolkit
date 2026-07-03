@@ -1,10 +1,10 @@
-﻿#nullable enable
+#nullable enable
 
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using UnityEngine.UIElements;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace DebugToolkit
 {
@@ -17,7 +17,7 @@ namespace DebugToolkit
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void AddProfileInfoLabel(this VisualElement visualElement, in TimeSpan interval)
         {
-            var label = new Label{ enableRichText = true };
+            var label = new Label { enableRichText = true };
             visualElement.Add(label);
             label.schedule.Execute(() =>
             {
@@ -92,7 +92,7 @@ namespace DebugToolkit
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static VisualElement AddWindow(this VisualElement root, string windowName = "")
         {
-            var window = new DebugWindow(){name = windowName};
+            var window = new DebugWindow() { name = windowName };
             root.GetSafeAreaContainer().Add(window);
 
             window.AddToClassList(DebugConst.ClassName + "__master");
@@ -165,7 +165,7 @@ namespace DebugToolkit
             toggle.text = windowName;
             toggle.AddToClassList(DebugConst.ToggleWindowDisplayClassName);
 
-            toggle.RegisterCallback<ChangeEvent<bool>, (VisualElement window, Toggle toggle)>(static (evt,args) =>
+            toggle.RegisterCallback<ChangeEvent<bool>, (VisualElement window, Toggle toggle)>(static (evt, args) =>
             {
                 args.window.style.display = evt.newValue
                     ? DisplayStyle.Flex
@@ -205,16 +205,16 @@ namespace DebugToolkit
         /// <returns>The created header element</returns>
         private static VisualElement AddWindowHeader(this VisualElement root, string windowName = "")
         {
-            var windowHeader = new VisualElement(){name = "window-header"};
+            var windowHeader = new VisualElement() { name = "window-header" };
             windowHeader.AddToClassList(DebugConst.WindowHeaderClassName);
 
             var manipulator = new DragManipulator(root);
-            var dragArea = new VisualElement(){ name = "drag-area" };
+            var dragArea = new VisualElement() { name = "drag-area" };
             dragArea.AddToClassList(DebugConst.ClassName + "__drag-area");
             dragArea.AddManipulator(manipulator);
             windowHeader.Add(dragArea);
 
-            var windowLabel = new Label(){ name = "window-label",text = windowName };
+            var windowLabel = new Label() { name = "window-label", text = windowName };
             windowLabel.AddToClassList(DebugConst.WindowLabelClassName);
             dragArea.Add(windowLabel);
 
@@ -250,7 +250,7 @@ namespace DebugToolkit
 
         internal static VisualElement GetDebugWindowParent(this DebugWindow element)
         {
-            for (VisualElement current = element.VisibilityToggleButton; current != null; current = current.parent)
+            for (VisualElement? current = element.VisibilityToggleButton; current != null; current = current.parent)
             {
                 if (current.ClassListContains(DebugConst.MasterWindowClassName) ||
                     current.ClassListContains(DebugConst.NormalWindowClassName))
@@ -288,7 +288,7 @@ namespace DebugToolkit
         /// <param name="label">The label for the tab</param>
         /// <returns>A tuple containing the added TabView and ScrollView</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static (TabView,  ScrollView) AddTab(this VisualElement root, string label = "")
+        public static (TabView, ScrollView) AddTab(this VisualElement root, string label = "")
         {
             var tabView = new TabView();
             root.Add(tabView);

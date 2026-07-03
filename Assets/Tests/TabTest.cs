@@ -1,4 +1,4 @@
-﻿#if UNITY_2023_2_OR_NEWER
+#if UNITY_2023_2_OR_NEWER
 using System.Threading.Tasks;
 using NUnit.Framework;
 using UnityEngine.UIElements;

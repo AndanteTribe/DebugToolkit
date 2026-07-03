@@ -1,4 +1,4 @@
-﻿#nullable enable
+#nullable enable
 
 using System;
 using System.Collections.Concurrent;
@@ -32,6 +32,7 @@ namespace DebugToolkit
         private static readonly DateTime s_startTime = DateTime.Now;
         private static readonly Stopwatch s_stopwatch = Stopwatch.StartNew();
         private static readonly ConcurrentQueue<LogEntry> s_logs = new();
+        private const int CopyFeedbackDurationMs = 400;
         private static int s_logVersion;
 
         private readonly StringBuilder _stringBuilderCache = new();
@@ -73,7 +74,7 @@ namespace DebugToolkit
 
         private static void OnBindItem(ConsoleView self, VisualElement element, LogEntry entry)
         {
-            var (message, stackTrace, type, timeStamp) = entry;
+            var (_, _, type, _) = entry;
             element.style.backgroundColor = type switch
             {
                 LogType.Warning => DebugConst.StyleColor.Warning,
@@ -82,7 +83,46 @@ namespace DebugToolkit
             };
 
             var label = (Label)element;
+            ResetCopyFeedback(label);
             var sb = self._stringBuilderCache.Clear();
+            AppendFormattedLogEntry(sb, entry, self._showTimestamp, self._showStackTrace);
+            label.text = sb.ToString();
+        }
+
+        private static Label CreateLogLabel()
+        {
+            var label = new Label();
+            label.RegisterCallback<ClickEvent>(static evt =>
+            {
+                var label = (Label)evt.currentTarget;
+                GUIUtility.systemCopyBuffer = label.text;
+                ShowCopyFeedback(label);
+            });
+            return label;
+        }
+
+        private static void ShowCopyFeedback(Label label)
+        {
+            label.style.borderLeftWidth = 6;
+            label.style.borderLeftColor = new Color(0f, 0.68f, 0.71f);
+            label.style.unityFontStyleAndWeight = FontStyle.Bold;
+            label.schedule.Execute(() => ResetCopyFeedback(label)).StartingIn(CopyFeedbackDurationMs);
+        }
+
+        private static void ResetCopyFeedback(Label label)
+        {
+            label.style.borderLeftWidth = 0;
+            label.style.borderLeftColor = Color.clear;
+            label.style.unityFontStyleAndWeight = FontStyle.Normal;
+        }
+
+        private static void AppendFormattedLogEntry(
+            StringBuilder sb,
+            LogEntry entry,
+            bool showTimestamp,
+            bool showStackTrace)
+        {
+            var (message, stackTrace, type, timeStamp) = entry;
             sb.Append(type switch
             {
                 LogType.Error => "[Error] ",
@@ -91,7 +131,7 @@ namespace DebugToolkit
                 LogType.Exception => "[Exception] ",
                 _ => "[Log] ",
             });
-            if (self._showTimestamp)
+            if (showTimestamp)
             {
                 sb.Append('[');
                 var buffer = (Span<char>)stackalloc char[12];
@@ -101,18 +141,16 @@ namespace DebugToolkit
             }
 
             sb.Append(message);
-            if (self._showStackTrace)
+            if (showStackTrace)
             {
                 sb.AppendLine();
                 sb.Append(stackTrace);
             }
-
-            label.text = sb.ToString();
         }
 
         private static void CreateViewGUI(ConsoleView self)
         {
-            var listView = new ListView(self._filteredLogs, makeItem: static () => new Label(), bindItem: static (_, _) => { })
+            var listView = new ListView(self._filteredLogs, makeItem: static () => CreateLogLabel(), bindItem: static (_, _) => { })
             {
                 virtualizationMethod = CollectionVirtualizationMethod.DynamicHeight
             };

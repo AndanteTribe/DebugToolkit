@@ -1,10 +1,10 @@
-﻿using NUnit.Framework;
-using UnityEngine;
-using UnityEngine.UIElements;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using NUnit.Framework;
+using UnityEngine;
 using UnityEngine.InputSystem;
-using System.Collections.Generic;
+using UnityEngine.UIElements;
 
 namespace DebugToolkit.Tests
 {
@@ -182,4 +182,3 @@ namespace DebugToolkit.Tests
         }
     }
 }
-

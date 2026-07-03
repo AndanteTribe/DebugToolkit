@@ -1,9 +1,9 @@
-﻿using NUnit.Framework;
-using UnityEngine;
-using UnityEngine.UIElements;
-using UnityEngine.InputSystem;
-using System.Threading.Tasks;
 using System.Linq;
+using System.Threading.Tasks;
+using NUnit.Framework;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 namespace DebugToolkit.Tests
 {
@@ -35,8 +35,8 @@ namespace DebugToolkit.Tests
         [Test]
         public void MasterWindow_IsCorrectlyGenerated()
         {
-            Assert.That( _debugViewWindowTest.MasterWindow, Is.Not.Null, "MasterWindow should be generated.");
-            Assert.That( _debugViewWindowTest.MasterWindow.parent.Q<Label>(
+            Assert.That(_debugViewWindowTest.MasterWindow, Is.Not.Null, "MasterWindow should be generated.");
+            Assert.That(_debugViewWindowTest.MasterWindow.parent.Q<Label>(
                     name: "window-label",
                     className: DebugConst.WindowLabelClassName)
                 .text, Is.EqualTo("Debug Toolkit"), "MasterWindow title is incorrect.");
@@ -46,7 +46,7 @@ namespace DebugToolkit.Tests
         [Test]
         public void MasterWindow_ContainsWindowListButtonsForOtherWindows()
         {
-            var toggles =  _debugViewWindowTest.MasterWindow.Query<Toggle>(className: DebugConst.ToggleWindowDisplayClassName)
+            var toggles = _debugViewWindowTest.MasterWindow.Query<Toggle>(className: DebugConst.ToggleWindowDisplayClassName)
                 .ToList();
             Assert.That(toggles.Count, Is.EqualTo(2), "Incorrect number of window display toggles in MasterWindow.");
             Assert.That(toggles.Any(t => t.text == "TestWindow1"), Is.True, "Toggle for TestWindow1 not found.");
@@ -60,7 +60,7 @@ namespace DebugToolkit.Tests
         public async Task MasterWindow_WindowListButton_TogglesWindowVisibility(string windowName, float screenPosX,
             float screenPosY)
         {
-            var toggle =  _debugViewWindowTest.MasterWindow
+            var toggle = _debugViewWindowTest.MasterWindow
                 .Query<Toggle>(className: DebugConst.ToggleWindowDisplayClassName)
                 .Where(t => t.text == windowName).First();
 
@@ -80,7 +80,7 @@ namespace DebugToolkit.Tests
             Assert.That(toggle.style.backgroundColor.value, Is.EqualTo(new Color(0.4f, 0.8f, 0.4f)),
                 "Toggle color for visible window is incorrect.");
 
-            await ClickAtPositionAsync(mouse,  new Vector2(screenPosX, screenPosY));
+            await ClickAtPositionAsync(mouse, new Vector2(screenPosX, screenPosY));
 
             Assert.That(testWindow.style.display.value, Is.EqualTo(DisplayStyle.None),
                 "Window should be hidden after toggle.");
@@ -227,7 +227,7 @@ namespace DebugToolkit.Tests
         public async Task WindowCloseButton_HidesWindowAndUpdatesToggle(string windowName, float screenPosX,
             float screenPosY)
         {
-            var toggle =  _debugViewWindowTest.MasterWindow
+            var toggle = _debugViewWindowTest.MasterWindow
                 .Query<Toggle>(className: DebugConst.ToggleWindowDisplayClassName)
                 .Where(t => t.text == windowName).First();
 
@@ -241,7 +241,7 @@ namespace DebugToolkit.Tests
             Assert.That(toggle.style.backgroundColor.value, Is.EqualTo(new Color(0.4f, 0.8f, 0.4f)),
                 "Toggle color should indicate visible window.");
 
-            await ClickAtPositionAsync(mouse,new Vector2(screenPosX, screenPosY));
+            await ClickAtPositionAsync(mouse, new Vector2(screenPosX, screenPosY));
 
             Assert.That(window.style.display.value, Is.EqualTo(DisplayStyle.None),
                 "Window should be hidden after clicking close button.");

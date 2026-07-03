@@ -1,4 +1,4 @@
-﻿using UnityEngine.UIElements;
+using UnityEngine.UIElements;
 
 namespace DebugToolkit.Tests
 {
@@ -11,7 +11,7 @@ namespace DebugToolkit.Tests
             var root = base.CreateViewGUI();
             Root = root;
             var window0 = root.AddWindow("TestWindow1");
-            window0.Add(new Button(){text = "TestButton"});
+            window0.Add(new Button() { text = "TestButton" });
             var window1 = root.AddWindow("TestWindow2");
             window1.AddProfileInfoLabel();
             return root;
