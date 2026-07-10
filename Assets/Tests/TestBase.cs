@@ -10,7 +10,7 @@ namespace DebugToolkit.Tests
 {
     public abstract class TestBase
     {
-        protected readonly InputTestFixture Input = new();
+        private readonly InputTestFixture _input = new();
 
         public virtual void OneTimeSetUp()
         {
@@ -29,14 +29,14 @@ namespace DebugToolkit.Tests
                 Object.DestroyImmediate(document.gameObject);
             }
 
-            Input.Setup();
+            _input.Setup();
             InputSystem.settings.backgroundBehavior = InputSettings.BackgroundBehavior.IgnoreFocus;
             await SceneManager.LoadSceneAsync("DefaultTests", LoadSceneMode.Additive);
         }
 
         public virtual async Task TearDown()
         {
-            Input.TearDown();
+            _input.TearDown();
             InputSystem.settings.backgroundBehavior = InputSettings.BackgroundBehavior.ResetAndDisableNonBackgroundDevices;
             var testScene = SceneManager.GetSceneByName("DefaultTests");
             if (testScene.isLoaded)
@@ -46,28 +46,24 @@ namespace DebugToolkit.Tests
         }
 
         [Test]
-        public void InputNullTest()
-        {
-            Assert.That(Input, Is.Not.Null);
-        }
+        public void InputNullTest() => Assert.That(_input, Is.Not.Null);
 
         private static EditorWindow GetGameView()
             => EditorWindow.GetWindow(System.Type.GetType("UnityEditor.GameView,UnityEditor"));
 
         protected async Awaitable ClickAtPositionAsync(Mouse mouse, Vector2 position)
         {
-            Input.Set(mouse.position, position);
-            Input.Click(mouse.leftButton);
-            // Wait for two frames to ensure InputSystem events are processed
-            await Awaitable.NextFrameAsync();
-            await Awaitable.NextFrameAsync();
+            _input.Set(mouse.position, position);
+            _input.Click(mouse.leftButton);
+            // Wait for ensure InputSystem events are processed
+            await Awaitable.WaitForSecondsAsync(0.1f);
         }
 
         protected async Awaitable ScrollAtPositionAsync(Mouse mouse, Vector2 position, Vector2 scrollDelta)
         {
-            Input.Set(mouse.position, position);
-            Input.Set(mouse.scroll, scrollDelta);
-            await Awaitable.NextFrameAsync();
+            _input.Set(mouse.position, position);
+            _input.Set(mouse.scroll, scrollDelta);
+            await Awaitable.WaitForSecondsAsync(0.1f);
         }
     }
 }
