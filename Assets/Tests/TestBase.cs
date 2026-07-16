@@ -56,14 +56,14 @@ namespace DebugToolkit.Tests
             _input.Set(mouse.position, position);
             _input.Click(mouse.leftButton);
             // Wait for ensure InputSystem events are processed
-            await Awaitable.WaitForSecondsAsync(0.1f);
+            await Awaitable.NextFrameAsync();
         }
 
         protected async Awaitable ScrollAtPositionAsync(Mouse mouse, Vector2 position, Vector2 scrollDelta)
         {
             _input.Set(mouse.position, position);
             _input.Set(mouse.scroll, scrollDelta);
-            await Awaitable.WaitForSecondsAsync(0.1f);
+            await Awaitable.NextFrameAsync();
         }
     }
 }
