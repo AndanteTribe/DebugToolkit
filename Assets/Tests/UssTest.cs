@@ -48,11 +48,11 @@ namespace DebugToolkit.Tests
 
             var mouse = InputSystem.AddDevice<Mouse>();
 
-            var toggle = _debugViewUssTest.Root.GetFirstOfType<Toggle>();
+            var toggle = _debugViewUssTest.Root.Query<Toggle>().First();
             Assert.That(toggle, Is.Not.Null);
             Assert.That(toggle.value, Is.False, "Toggle should be false initially");
 
-            await ClickAtPositionAsync(mouse, new Vector2(133, 865));
+            await ClickAtPositionAsync(mouse, new Vector2(133, 910));
 
             // ここで実際にボタンが押せたかアサート
             Assert.That(toggle.value, Is.True, "Not Push the Button");
@@ -74,7 +74,15 @@ namespace DebugToolkit.Tests
             AddAllUIElements(tab1);
 
             var mouse = InputSystem.AddDevice<Mouse>();
-            await ClickAtPositionAsync(mouse, new Vector2(133, 865));
+            var toggle = _debugViewUssTest.Root.Query<Toggle>().First();
+
+            Assert.That(toggle, Is.Not.Null);
+            Assert.That(toggle.value, Is.False, "Toggle should be false initially");
+
+            await ClickAtPositionAsync(mouse, new Vector2(133, 910));
+
+            // ここで実際にボタンが押せたかアサート
+            Assert.That(toggle.value, Is.True, "Not Push the Button");
 
             await CaptureScreenAsync(nameof(UssTab_AllElementsTest) + "_scroll-before");
 
