@@ -42,12 +42,20 @@ namespace DebugToolkit.Tests
         public async Task UssWindow_AllElementsTest()
         {
             var window = _debugViewUssTest.Root.AddWindow("UssWindowTest");
-            var scrollview = new ScrollView();
-            window.Add(scrollview);
-            AddAllUIElements(scrollview);
+            var scrollView = new ScrollView();
+            window.Add(scrollView);
+            AddAllUIElements(scrollView);
 
             var mouse = InputSystem.AddDevice<Mouse>();
-            await ClickAtPositionAsync(mouse, new Vector2(133, 865));
+
+            var toggle = _debugViewUssTest.Root.Query<Toggle>().First();
+            Assert.That(toggle, Is.Not.Null);
+            Assert.That(toggle.value, Is.False, "Toggle should be false initially");
+
+            await ClickAtPositionAsync(mouse, new Vector2(133, 910));
+
+            // ここで実際にボタンが押せたかアサート
+            Assert.That(toggle.value, Is.True, "Not Push the Button");
 
             await CaptureScreenAsync(nameof(UssWindow_AllElementsTest) + "_scroll-before");
 
@@ -66,7 +74,15 @@ namespace DebugToolkit.Tests
             AddAllUIElements(tab1);
 
             var mouse = InputSystem.AddDevice<Mouse>();
-            await ClickAtPositionAsync(mouse, new Vector2(133, 865));
+            var toggle = _debugViewUssTest.Root.Query<Toggle>().First();
+
+            Assert.That(toggle, Is.Not.Null);
+            Assert.That(toggle.value, Is.False, "Toggle should be false initially");
+
+            await ClickAtPositionAsync(mouse, new Vector2(133, 910));
+
+            // ここで実際にボタンが押せたかアサート
+            Assert.That(toggle.value, Is.True, "Not Push the Button");
 
             await CaptureScreenAsync(nameof(UssTab_AllElementsTest) + "_scroll-before");
 
@@ -83,6 +99,8 @@ namespace DebugToolkit.Tests
 
             await Awaitable.EndOfFrameAsync();
             var result = Path.Combine(directoryPath, fineName + ".png");
+
+            // スクリーンショット撮影
             ScreenCapture.CaptureScreenshot(result);
             Debug.Log($"Screenshot captured: {result}");
             return result;

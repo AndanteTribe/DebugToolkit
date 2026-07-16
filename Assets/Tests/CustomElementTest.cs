@@ -91,13 +91,13 @@ namespace DebugToolkit.Tests
             Assert.That(items.Count, Is.GreaterThanOrEqualTo(3), "There are fewer than 3 items in the ListView.");
 
             var mouse = InputSystem.AddDevice<Mouse>();
-            await ClickAtPositionAsync(mouse, new Vector2(positionX0, 824));
+            await ClickAtPositionAsync(mouse, new Vector2(positionX0, 852));
 
             var filteredItems = listView.itemsSource;
             Assert.That(filteredItems, Is.Not.Null, "1: The type of the filter result is incorrect.");
             Assert.That(filteredItems.Count, Is.EqualTo(2), "1: The search results are not filtered correctly.");
 
-            await ClickAtPositionAsync(mouse, new Vector2(positionX1, 824));
+            await ClickAtPositionAsync(mouse, new Vector2(positionX1, 852));
 
             filteredItems = listView.itemsSource;
             Assert.That(filteredItems, Is.Not.Null, "2: The type of the filter result is incorrect.");
@@ -105,7 +105,7 @@ namespace DebugToolkit.Tests
             var logEntry = filteredItems[0] as (string, string, LogType, DateTime)?;
             Assert.That(logEntry?.Item3, Is.EqualTo(type), "2: The log type of the filter result is not a warning.");
 
-            await ClickAtPositionAsync(mouse, new Vector2(positionX2, 824));
+            await ClickAtPositionAsync(mouse, new Vector2(positionX2, 852));
 
             filteredItems = listView.itemsSource;
             Assert.That(filteredItems, Is.Not.Null, "3: The type of the filter result is incorrect.");
