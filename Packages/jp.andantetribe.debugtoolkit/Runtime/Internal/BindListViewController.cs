@@ -31,7 +31,7 @@ namespace DebugToolkit
 
             if (_usePlaceholder)
             {
-                element.style.backgroundColor = DebugConst.StyleColor.White;
+                element.style.backgroundColor = DebugConst.StyleColor.Log;
                 if (element is Label label)
                 {
                     label.text = "";

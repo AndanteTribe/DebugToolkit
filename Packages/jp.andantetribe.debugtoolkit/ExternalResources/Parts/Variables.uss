@@ -1,0 +1,100 @@
+/*  DebugToolkit / Variables ---------------------------------------------------
+    すべてのスタイルシートが参照するトークン定義。ここ以外に生の色を書かないこと。
+
+    ■ 配色の方針
+      ・基底色は低彩度（ほぼ無彩色）。どんなゲーム背景の上でも色が喧嘩しない。
+      ・面（surface）は半透明。デバッグメニューの下のゲーム画面が透けて見える。
+      ・彩度のある色は「意味」を持つものだけに使う（選択 / 有効 / 無効 / ログ種別）。
+
+    ■ 状態表現の規約（すべてのインタラクティブ要素で共通）
+      :hover           → *-hover     … 1段明るくする
+      :active          → *-active    … 1段暗くする（押し込み）
+      :focus           → border-color を --debug-toolkit-color-focus に変える
+                         （枠幅は変えない。レイアウトをずらさないため）
+      :checked         → --debug-toolkit-color-selected（選択）
+                         トグルの ON/OFF だけは success / danger
+      :disabled        → *-disabled + --debug-toolkit-color-text-disabled
+
+    ■ C#側との対応
+      DebugConst.StyleColor はここのトークンのミラー。片方を変えたら両方直すこと。
+--------------------------------------------------------------------------- */
+
+:root {
+    /* --- 中性色ランプ（暗い→明るい）。低彩度の基底色。 ------------------- */
+    --debug-toolkit-neutral-00: rgb(10, 11, 13);
+    --debug-toolkit-neutral-01: rgb(20, 22, 25);
+    --debug-toolkit-neutral-02: rgb(31, 34, 38);
+    --debug-toolkit-neutral-03: rgb(44, 48, 53);
+    --debug-toolkit-neutral-04: rgb(59, 64, 70);
+    --debug-toolkit-neutral-05: rgb(78, 84, 91);
+    --debug-toolkit-neutral-06: rgb(102, 109, 117);
+    --debug-toolkit-neutral-07: rgb(134, 141, 149);
+    --debug-toolkit-neutral-08: rgb(170, 177, 184);
+    --debug-toolkit-neutral-09: rgb(206, 211, 216);
+    --debug-toolkit-neutral-10: rgb(236, 238, 240);
+
+    /* --- 面。alpha を上げ下げすると透け具合が変わる。 --------------------- */
+    /* ウィンドウ本体 */
+    --debug-toolkit-color-surface: rgba(20, 22, 25, 0.82);
+    /* ウィンドウ内の区画（ヘッダ・Box・タブ本体など） */
+    --debug-toolkit-color-surface-raised: rgba(44, 48, 53, 0.70);
+    /* 入力欄・溝・トラックなど凹んで見せたい面 */
+    --debug-toolkit-color-surface-sunken: rgba(10, 11, 13, 0.55);
+    /* ドロップダウンなど、背景が透けると読めなくなる面 */
+    --debug-toolkit-color-surface-overlay: rgba(24, 26, 30, 0.97);
+
+    /* --- 文字 ------------------------------------------------------------- */
+    --debug-toolkit-color-text: rgb(236, 238, 240);
+    --debug-toolkit-color-text-dim: rgb(170, 177, 184);
+    --debug-toolkit-color-text-disabled: rgb(102, 109, 117);
+    --debug-toolkit-color-text-on-accent: rgb(10, 11, 13);
+
+    /* --- 境界線 ----------------------------------------------------------- */
+    --debug-toolkit-color-border: rgba(134, 141, 149, 0.45);
+    --debug-toolkit-color-border-strong: rgba(170, 177, 184, 0.75);
+
+    /* --- 操作可能な部品の地色（ボタン・入力欄・タブなど共通） ------------- */
+    --debug-toolkit-color-control: rgba(44, 48, 53, 0.92);
+    --debug-toolkit-color-control-hover: rgba(70, 76, 83, 0.95);
+    --debug-toolkit-color-control-active: rgba(14, 16, 18, 0.95);
+    --debug-toolkit-color-control-disabled: rgba(28, 30, 34, 0.75);
+
+    /* --- アクセント（選択・進捗・つまみ）。低彩度の青灰。 ----------------- */
+    --debug-toolkit-color-accent: rgb(120, 160, 185);
+    --debug-toolkit-color-accent-hover: rgb(146, 184, 208);
+    --debug-toolkit-color-accent-active: rgb(92, 128, 150);
+    --debug-toolkit-color-accent-disabled: rgb(84, 94, 102);
+
+    /* --- 状態色 ----------------------------------------------------------- */
+    --debug-toolkit-color-selected: rgba(52, 84, 105, 0.95);
+    --debug-toolkit-color-selected-hover: rgba(68, 105, 129, 0.95);
+    --debug-toolkit-color-focus: rgb(146, 184, 208);
+
+    /* --- 意味色（低彩度）。ON/OFF とログ種別に限って使う。 ---------------- */
+    --debug-toolkit-color-success: rgb(102, 143, 110);
+    --debug-toolkit-color-success-hover: rgb(122, 166, 130);
+    --debug-toolkit-color-success-active: rgb(74, 108, 82);
+    --debug-toolkit-color-danger: rgb(153, 92, 92);
+    --debug-toolkit-color-danger-hover: rgb(176, 112, 112);
+    --debug-toolkit-color-danger-active: rgb(115, 66, 66);
+    --debug-toolkit-color-warning: rgb(176, 152, 92);
+
+    /* --- ログ行の地色（DebugConst.StyleColor と対応） --------------------- */
+    --debug-toolkit-color-log: rgba(0, 0, 0, 0);
+    --debug-toolkit-color-log-warning: rgba(107, 89, 41, 0.55);
+    --debug-toolkit-color-log-error: rgba(115, 51, 51, 0.60);
+
+    /* --- 余白・寸法（既存の見た目を変えないため値は据え置き） ------------- */
+    --debug-toolkit-px-border: 4px;
+    --debug-toolkit-px-space-xsmall: 2px;
+    --debug-toolkit-px-space-small: 4px;
+    --debug-toolkit-px-space-medium: 8px;
+    --debug-toolkit-px-space-large: 12px;
+    --debug-toolkit-px-radius-small: 4px;
+    --debug-toolkit-px-radius-medium: 8px;
+    --debug-toolkit-px-focus-border: 1px;
+    --debug-toolkit-tab-height: 30px;
+    --debug-toolkit-tab-min-width: 60px;
+    --debug-toolkit-panel-min-width: 400px;
+    --debug-toolkit-panel-max-height: 600px;
+}

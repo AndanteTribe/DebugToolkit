@@ -1,0 +1,138 @@
+/*  DebugToolkit / Collections -------------------------------------------------
+    ListView / TreeView / MultiColumnListView が使う CollectionView 系。
+--------------------------------------------------------------------------- */
+
+/*--- 行 ---------------------------------------------------------------------*/
+.debug-toolkit__master .unity-collection-view {
+    background-color: initial;
+}
+
+.debug-toolkit__master .unity-collection-view--with-border {
+    border-width: var(--debug-toolkit-px-focus-border);
+    border-color: var(--debug-toolkit-color-border);
+    border-radius: var(--debug-toolkit-px-radius-small);
+}
+
+.debug-toolkit__master .unity-collection-view__item {
+    color: var(--debug-toolkit-color-text);
+    padding: var(--debug-toolkit-px-space-small);
+    margin: var(--debug-toolkit-px-space-small);
+}
+
+/* 1行おきの下地。長いログ一覧で行を追いやすくする。 */
+.debug-toolkit__master .unity-collection-view__item--alternative-background {
+    background-color: var(--debug-toolkit-color-surface-sunken);
+}
+
+.debug-toolkit__master .unity-collection-view .unity-collection-view__item:hover {
+    background-color: var(--debug-toolkit-color-control-hover);
+}
+
+.debug-toolkit__master .unity-collection-view .unity-collection-view__item--selected,
+.debug-toolkit__master .unity-collection-view .unity-collection-view__item--selected:hover,
+.debug-toolkit__master .unity-collection-view:focus:enabled .unity-collection-view__item--selected {
+    background-color: var(--debug-toolkit-color-selected);
+    color: var(--debug-toolkit-color-text);
+    padding: var(--debug-toolkit-px-space-small);
+    margin: var(--debug-toolkit-px-space-small);
+}
+
+/* ドラッグ&ドロップ中の行と、挿入位置を示すバー。 */
+.debug-toolkit__master .unity-collection-view .unity-collection-view__item--drag-hover,
+.debug-toolkit__master .unity-collection-view .unity-collection-view__item--drag-hover:hover {
+    background-color: var(--debug-toolkit-color-control-hover);
+}
+
+.debug-toolkit__master .unity-collection-view__drag-hover-bar {
+    background-color: var(--debug-toolkit-color-focus);
+}
+
+/*--- ListView のフッタ（+ / - と件数） --------------------------------------*/
+.debug-toolkit__master .unity-list-view__footer {
+    background-color: var(--debug-toolkit-color-surface-raised);
+    border-color: var(--debug-toolkit-color-border);
+    border-width: var(--debug-toolkit-px-focus-border);
+    border-top-width: 0;
+    border-bottom-left-radius: var(--debug-toolkit-px-radius-small);
+    border-bottom-right-radius: var(--debug-toolkit-px-radius-small);
+}
+
+.debug-toolkit__master .unity-list-view__size-field {
+    width: 60px;
+}
+
+.debug-toolkit__master .unity-list-view__reorderable-handle-bar {
+    background-color: var(--debug-toolkit-color-text-dim);
+}
+
+/*--- MultiColumnListView / MultiColumnTreeView ------------------------------*/
+.debug-toolkit__master .unity-multi-column-view__row-container {
+    padding-left: 0;
+}
+
+.debug-toolkit__master .unity-multi-column-view__cell {
+    padding-left: var(--debug-toolkit-px-space-small);
+}
+
+.debug-toolkit__master .unity-multi-column-view__header-container,
+.debug-toolkit__master .unity-multi-column-header__column {
+    background-color: var(--debug-toolkit-color-surface-raised);
+    border-color: var(--debug-toolkit-color-border);
+    color: var(--debug-toolkit-color-text);
+}
+
+.debug-toolkit__master .unity-multi-column-header .unity-multi-column-header__column:hover {
+    background-color: var(--debug-toolkit-color-control-hover);
+}
+
+.debug-toolkit__master .unity-multi-column-header .unity-multi-column-header__column:active {
+    background-color: var(--debug-toolkit-color-control-active);
+}
+
+.debug-toolkit__master .unity-multi-column-header__column__content {
+    padding-right: 16px;
+}
+
+/* ソート矢印は列名と重ならないよう右端に絶対配置する。 */
+.debug-toolkit__master .unity-multi-column-header__column__sort-indicator {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    height: auto;
+    align-items: center;
+}
+
+.debug-toolkit__master .unity-multi-column-header__column__sort-indicator__arrow,
+.debug-toolkit__master .unity-multi-column-header__column--sorted-ascending .unity-multi-column-header__column__sort-indicator__arrow,
+.debug-toolkit__master .unity-multi-column-header__column--sorted-descending .unity-multi-column-header__column__sort-indicator__arrow {
+    -unity-background-image-tint-color: var(--debug-toolkit-color-text);
+}
+
+/*--- TreeView ---------------------------------------------------------------*/
+.debug-toolkit__master .unity-tree-view__item {
+    color: var(--debug-toolkit-color-text);
+}
+
+/* 開閉の矢印。Foldout と同じく見出し扱いで、ON/OFF の色は付けない。 */
+.debug-toolkit__master .unity-tree-view__item-toggle,
+.debug-toolkit__master .unity-tree-view__item-toggle:checked,
+.debug-toolkit__master .unity-tree-view__item-toggle:hover:enabled,
+.debug-toolkit__master .unity-tree-view__item-toggle:checked:hover:enabled,
+.debug-toolkit__master .unity-tree-view__item-toggle:active:enabled {
+    left: 0;
+    background-color: initial;
+    border-width: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.debug-toolkit__master .unity-tree-view__item-toggle .unity-toggle__checkmark {
+    display: flex;
+    background-color: initial;
+    -unity-background-image-tint-color: var(--debug-toolkit-color-text);
+}
+
+.debug-toolkit__master .unity-tree-view__item-indent {
+    width: 16px;
+}

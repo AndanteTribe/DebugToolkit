@@ -1,0 +1,219 @@
+/*  DebugToolkit / Containers --------------------------------------------------
+    Foldout / Box / HelpBox / GroupBox / PopupWindow / TabView / SplitView。
+--------------------------------------------------------------------------- */
+
+/*--- フォールドアウト -------------------------------------------------------
+    Foldout のヘッダは Toggle なので、放っておくと Fields.uss の ON/OFF 用の
+    赤緑ピル（押し込み表現つき）が当たる。見出しとして扱いたいので、地色・枠・
+    押し込みのマージンをここで打ち消す。ルールの並び順が効くので動かさないこと:
+      base → hover → active → checked（開いている時の下線）。 */
+.debug-toolkit__master .unity-foldout__content {
+    flex-wrap: nowrap;
+    align-items: stretch;
+    margin: 0;
+}
+
+.debug-toolkit__master > .unity-foldout {
+    border-radius: var(--debug-toolkit-px-radius-medium);
+    padding-bottom: var(--debug-toolkit-px-space-medium);
+}
+
+.debug-toolkit__master .unity-foldout--depth-0 {
+    background-color: var(--debug-toolkit-color-surface-raised);
+}
+
+.debug-toolkit__master .unity-foldout__toggle,
+.debug-toolkit__master .unity-foldout__toggle:checked {
+    background-color: initial;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    padding: var(--debug-toolkit-px-space-small);
+    margin-top: var(--debug-toolkit-px-space-small);
+}
+
+.debug-toolkit__master .unity-foldout__toggle:hover:enabled,
+.debug-toolkit__master .unity-foldout__toggle:checked:hover:enabled {
+    background-color: var(--debug-toolkit-color-surface-raised);
+    border-bottom-width: 0;
+    margin-top: var(--debug-toolkit-px-space-small);
+}
+
+.debug-toolkit__master .unity-foldout__toggle:active:enabled,
+.debug-toolkit__master .unity-foldout__toggle:checked:active:enabled {
+    background-color: var(--debug-toolkit-color-control-active);
+    border-bottom-width: 0;
+    margin-top: var(--debug-toolkit-px-space-small);
+}
+
+/* 開いている時だけ、内容との区切りに下線を引く。上の hover/active より後に置く。 */
+.debug-toolkit__master .unity-foldout:checked > .unity-foldout__toggle,
+.debug-toolkit__master .unity-foldout:checked > .unity-foldout__toggle:hover:enabled {
+    border-bottom-width: var(--debug-toolkit-px-border);
+    border-bottom-color: var(--debug-toolkit-color-border);
+    border-radius: 0;
+}
+
+.debug-toolkit__master .unity-foldout__toggle:focus:enabled .unity-foldout__text {
+    color: var(--debug-toolkit-color-focus);
+}
+
+.debug-toolkit__master .unity-foldout__text {
+    color: var(--debug-toolkit-color-text);
+    -unity-font-style: bold;
+}
+
+/* Fields.uss で .unity-toggle__checkmark を display:none にしているが、Foldout の
+   チェックマークは開閉の矢印なので消してはいけない。ここで表示に戻す。 */
+.debug-toolkit__master .unity-foldout__checkmark {
+    display: flex;
+    background-color: initial;
+    border-width: 0;
+    -unity-background-image-tint-color: var(--debug-toolkit-color-text);
+}
+
+/* 入れ子のフォールドアウトは左の罫線で階層を示す。 */
+.debug-toolkit__master .unity-foldout .unity-foldout {
+    padding-right: var(--debug-toolkit-px-space-small);
+    padding-left: var(--debug-toolkit-px-space-small);
+    margin-top: var(--debug-toolkit-px-space-small);
+    margin-bottom: var(--debug-toolkit-px-space-small);
+}
+
+.debug-toolkit__master .unity-foldout .unity-foldout__content {
+    margin-left: var(--debug-toolkit-px-space-small);
+    border-left-width: var(--debug-toolkit-px-space-xsmall);
+    border-left-color: var(--debug-toolkit-color-border);
+}
+
+/*--- Box / HelpBox / GroupBox / PopupWindow ---------------------------------*/
+.debug-toolkit__master .unity-box {
+    background-color: var(--debug-toolkit-color-surface-raised);
+    border-width: var(--debug-toolkit-px-focus-border);
+    border-color: var(--debug-toolkit-color-border);
+    border-radius: var(--debug-toolkit-px-radius-small);
+    padding: var(--debug-toolkit-px-space-medium);
+    margin-top: var(--debug-toolkit-px-space-small);
+    margin-bottom: var(--debug-toolkit-px-space-small);
+}
+
+.debug-toolkit__master .unity-help-box {
+    background-color: var(--debug-toolkit-color-surface-raised);
+    border-width: var(--debug-toolkit-px-focus-border);
+    border-color: var(--debug-toolkit-color-border);
+    border-radius: var(--debug-toolkit-px-radius-small);
+    padding: var(--debug-toolkit-px-space-small);
+    margin-top: var(--debug-toolkit-px-space-small);
+    margin-bottom: var(--debug-toolkit-px-space-small);
+}
+
+.debug-toolkit__master .unity-help-box__label {
+    color: var(--debug-toolkit-color-text);
+    white-space: normal;
+}
+
+.debug-toolkit__master .unity-help-box__icon {
+    -unity-background-image-tint-color: var(--debug-toolkit-color-warning);
+}
+
+.debug-toolkit__master .unity-group-box,
+.debug-toolkit__master .unity-popup-window {
+    background-color: var(--debug-toolkit-color-surface-raised);
+    border-width: var(--debug-toolkit-px-focus-border);
+    border-color: var(--debug-toolkit-color-border);
+    border-radius: var(--debug-toolkit-px-radius-small);
+    padding: var(--debug-toolkit-px-space-small);
+    margin-top: var(--debug-toolkit-px-space-small);
+    margin-bottom: var(--debug-toolkit-px-space-small);
+}
+
+.debug-toolkit__master .unity-group-box__label {
+    -unity-font-style: bold;
+    color: var(--debug-toolkit-color-text);
+}
+
+/*--- タブ -------------------------------------------------------------------*/
+.debug-toolkit__master .unity-tab-view {
+    padding-left: var(--debug-toolkit-px-space-small);
+    padding-right: var(--debug-toolkit-px-space-small);
+}
+
+.debug-toolkit__master .unity-tab-view__header-container {
+    border-bottom-width: var(--debug-toolkit-px-space-xsmall);
+    border-bottom-color: var(--debug-toolkit-color-border-strong);
+    min-height: 34px;
+    align-items: flex-end;
+    padding-right: var(--debug-toolkit-px-space-medium);
+    padding-left: var(--debug-toolkit-px-space-medium);
+}
+
+.debug-toolkit__master .unity-tab-view__content-container {
+    background-color: initial;
+}
+
+.debug-toolkit__master .unity-tab__header {
+    background-color: var(--debug-toolkit-color-control);
+    border-width: var(--debug-toolkit-px-space-xsmall);
+    border-bottom-width: 0;
+    border-color: var(--debug-toolkit-color-border);
+    border-top-right-radius: var(--debug-toolkit-px-radius-medium);
+    border-top-left-radius: var(--debug-toolkit-px-radius-medium);
+    padding: var(--debug-toolkit-px-space-small);
+    padding-right: var(--debug-toolkit-px-space-medium);
+    padding-left: var(--debug-toolkit-px-space-medium);
+    margin: 0;
+    align-self: flex-end;
+    height: var(--debug-toolkit-tab-height);
+    min-width: var(--debug-toolkit-tab-min-width);
+    margin-left: var(--debug-toolkit-px-space-xsmall);
+    margin-right: var(--debug-toolkit-px-space-xsmall);
+}
+
+.debug-toolkit__master .unity-tab__header:hover:enabled {
+    background-color: var(--debug-toolkit-color-control-hover);
+}
+
+.debug-toolkit__master .unity-tab__header:active:enabled {
+    background-color: var(--debug-toolkit-color-control-active);
+}
+
+.debug-toolkit__master .unity-tab__header:checked {
+    background-color: var(--debug-toolkit-color-selected);
+}
+
+.debug-toolkit__master .unity-tab__header:checked:hover:enabled {
+    background-color: var(--debug-toolkit-color-selected-hover);
+}
+
+.debug-toolkit__master .unity-tab__header:focus:enabled {
+    border-color: var(--debug-toolkit-color-focus);
+}
+
+.debug-toolkit__master .unity-tab__header:disabled {
+    background-color: var(--debug-toolkit-color-control-disabled);
+}
+
+.debug-toolkit__master .unity-tab__header:checked .unity-tab__header-underline {
+    border-width: 0;
+    background-color: transparent;
+}
+
+.debug-toolkit__master .unity-tab__header .unity-tab__header-label {
+    margin-bottom: 0;
+    padding-top: 0;
+    color: var(--debug-toolkit-color-text);
+}
+
+.debug-toolkit__master .unity-tab__header:checked .unity-tab__header-label {
+    -unity-font-style: bold;
+}
+
+/*--- TwoPaneSplitView -------------------------------------------------------*/
+.debug-toolkit__master .unity-two-pane-split-view__dragline-anchor {
+    background-color: var(--debug-toolkit-color-border);
+}
+
+.debug-toolkit__master .unity-two-pane-split-view__dragline-anchor:hover {
+    background-color: var(--debug-toolkit-color-focus);
+}

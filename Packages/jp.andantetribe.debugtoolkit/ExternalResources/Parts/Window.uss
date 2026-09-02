@@ -1,0 +1,122 @@
+/*  DebugToolkit / Window ------------------------------------------------------
+    DebugToolkit 自身が付けるクラス（DebugConst と対応）。
+--------------------------------------------------------------------------- */
+
+/*--- ウィンドウの種類 -------------------------------------------------------*/
+/* マスターウィンドウは他のウィンドウより一段強い枠にして見分けられるようにする。 */
+.debug-toolkit__master-window {
+    border-color: var(--debug-toolkit-color-border-strong);
+}
+
+.debug-toolkit__normal-window {
+    border-color: var(--debug-toolkit-color-border);
+}
+
+/*--- ヘッダ -----------------------------------------------------------------*/
+.debug-toolkit__master .debug-toolkit__window-header {
+    flex-direction: row;
+    border-bottom-width: 2px;
+    border-bottom-color: var(--debug-toolkit-color-border-strong);
+    align-items: flex-end;
+    flex-shrink: 0;
+}
+
+.debug-toolkit__master .debug-toolkit__window-label {
+    color: var(--debug-toolkit-color-text);
+    -unity-font-style: bold;
+}
+
+.debug-toolkit__master .debug-toolkit__drag-area {
+    flex-grow: 1;
+}
+
+.debug-toolkit__master .debug-toolkit__window-content {
+    margin-top: var(--debug-toolkit-px-space-medium);
+    margin-bottom: var(--debug-toolkit-px-space-medium);
+}
+
+/*--- ヘッダのアイコンボタン（閉じる / 最小化） ------------------------------
+    20x20 に収めたいので、Buttons.uss の余白と枠は打ち消す。 */
+.debug-toolkit__master .debug-toolkit__delete-button,
+.debug-toolkit__master .debug-toolkit__minimize-button {
+    width: 20px;
+    height: 20px;
+    margin-left: auto;
+    padding: 0;
+    border-width: 0;
+    background-color: initial;
+    color: var(--debug-toolkit-color-text-dim);
+    background-size: 16px;
+}
+
+.debug-toolkit__master .debug-toolkit__minimize-button:hover:enabled {
+    background-color: var(--debug-toolkit-color-control-hover);
+    color: var(--debug-toolkit-color-text);
+}
+
+.debug-toolkit__master .debug-toolkit__minimize-button:active:enabled {
+    background-color: var(--debug-toolkit-color-control-active);
+}
+
+.debug-toolkit__master .debug-toolkit__delete-button:hover:enabled {
+    background-color: var(--debug-toolkit-color-danger);
+    color: var(--debug-toolkit-color-text);
+}
+
+.debug-toolkit__master .debug-toolkit__delete-button:active:enabled {
+    background-color: var(--debug-toolkit-color-danger-active);
+}
+
+.debug-toolkit__master .debug-toolkit__delete-button:focus:enabled,
+.debug-toolkit__master .debug-toolkit__minimize-button:focus:enabled {
+    border-width: var(--debug-toolkit-px-focus-border);
+    border-color: var(--debug-toolkit-color-focus);
+}
+
+/*--- ウィンドウ一覧のトグル -------------------------------------------------
+    地色は表示状態に応じて C# 側（DebugConst.StyleColor）が直接指定する。 */
+.debug-toolkit__master .debug-toolkit__toggle-window-display .unity-toggle__text {
+    color: var(--debug-toolkit-color-text);
+}
+
+/*--- 全表示・非表示ボタン ---------------------------------------------------
+    セーフエリア直下に置かれ、ウィンドウ(.debug-toolkit__master)の外にいるので
+    スコープを付けない。付けると当たらない。 */
+.debug-toolkit__toggle-all-button {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    background-color: var(--debug-toolkit-color-control);
+    border-width: var(--debug-toolkit-px-focus-border);
+    border-color: var(--debug-toolkit-color-border);
+    border-radius: var(--debug-toolkit-px-radius-small);
+    opacity: 0.8;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.debug-toolkit__toggle-all-button:hover:enabled {
+    opacity: 1;
+    background-color: var(--debug-toolkit-color-control-hover);
+}
+
+.debug-toolkit__toggle-all-button:active:enabled {
+    opacity: 1;
+    background-color: var(--debug-toolkit-color-control-active);
+}
+
+.debug-toolkit__toggle-all-button:focus:enabled {
+    opacity: 1;
+    border-color: var(--debug-toolkit-color-focus);
+}
+
+/*--- コンソール -------------------------------------------------------------*/
+.debug-toolkit__master .debug-toolkit__console-view {
+    flex-grow: 1;
+    border-width: var(--debug-toolkit-px-focus-border);
+    border-color: var(--debug-toolkit-color-border);
+    border-radius: var(--debug-toolkit-px-radius-small);
+    margin: 5px;
+}

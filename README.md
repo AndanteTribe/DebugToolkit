@@ -93,6 +93,29 @@ public class DebugInitializer : MonoBehaviour
 ### Toggle All Visibility
 While using DebugToolkit, a toggle button is shown at the bottom of the screen. Pressing it toggles visibility of all debug windows. You can also restore windows that you’ve hidden.
 
+#### Keyboard shortcut
+
+Set `ToggleAllVisibleKey` to do the same from the keyboard. It also brings back the fixed debug menu
+(the master window) once you have hidden it. The default is `KeyCode.None`, which disables the shortcut.
+
+```csharp
+#if !DISABLE_DEBUGTOOLKIT
+_debugView = new MyDebugView
+{
+    // Toggle every debug window with F1.
+    ToggleAllVisibleKey = KeyCode.F1,
+
+    // Modifier keys, if you need them (e.g. Shift + F1).
+    ToggleAllVisibleKeyModifiers = EventModifiers.Shift,
+};
+_debugView.Start();
+#endif
+```
+
+The key is picked up by the panel DebugToolkit renders into. If another UI Toolkit panel holds the
+keyboard focus, the shortcut does not fire there; call `DebugViewerBase.ToggleAllVisible()` from your
+own input handling in that case.
+
 ## Samples
 
 You can import `Samples` from Package Manager to try sample scenes and scripts.
@@ -206,6 +229,72 @@ public class MyDebugView : DebugViewerBase
 }
 #endif
 ```
+
+## Theming
+
+The look of DebugToolkit is defined by the USS under `ExternalResources/`. The base colors are
+low-saturation (close to neutral gray) and the surfaces are translucent, so the menu stays readable
+over any game background while still letting you see the game underneath.
+
+### Layout
+
+The sheets are split by responsibility and pulled together by `DebugToolkitUss.uss` with `@import`.
+The import order matters: rules of equal specificity are resolved last-one-wins.
+
+| File | Contents |
+| --- | --- |
+| `Parts/Variables.uss` | Color and metric tokens. Every other sheet reads these and nothing else |
+| `Parts/Base.uss` | The window shell, Label, BaseField — the foundation |
+| `Parts/Buttons.uss` | Button / ButtonGroup / ToggleButtonGroup |
+| `Parts/Fields.uss` | TextField / Toggle / RadioButton / Popup / Enum / Dropdown / Vector fields / Bounds |
+| `Parts/Sliders.uss` | Slider / MinMaxSlider / Scroller / ScrollView / ProgressBar |
+| `Parts/Containers.uss` | Foldout / Box / HelpBox / GroupBox / TabView / TwoPaneSplitView |
+| `Parts/Collections.uss` | ListView / TreeView / MultiColumnListView |
+| `Parts/Window.uss` | Debug windows, headers, console — the DebugToolkit-specific elements |
+
+### State conventions
+
+Every interactive element shows its state the same way, through the same tokens.
+
+| State | How it is shown |
+| --- | --- |
+| `:hover` | One step lighter (`*-hover`) |
+| `:active` | One step darker (`*-active`) |
+| `:focus` | Border color becomes `--debug-toolkit-color-focus`; the border width never changes, so nothing shifts |
+| `:checked` | `--debug-toolkit-color-selected` (success / danger for the on/off of a Toggle) |
+| `:disabled` | `*-disabled` plus `--debug-toolkit-color-text-disabled` |
+
+### Recoloring
+
+Override the custom properties on `:root` from your own style sheet — no need to fork the package.
+
+```css
+:root {
+    /* Let more of the game through. */
+    --debug-toolkit-color-surface: rgba(20, 22, 25, 0.5);
+    /* Match your project's accent. */
+    --debug-toolkit-color-accent: rgb(200, 140, 60);
+}
+```
+
+The main tokens are below; see `Parts/Variables.uss` for the full set.
+
+| Token | Used for |
+| --- | --- |
+| `--debug-toolkit-neutral-00`–`-10` | The low-saturation base ramp, darkest to lightest |
+| `--debug-toolkit-color-surface` | The window itself (translucent) |
+| `--debug-toolkit-color-surface-raised` / `-sunken` | Sections / inputs and grooves |
+| `--debug-toolkit-color-surface-overlay` | Surfaces that must stay opaque, such as dropdowns |
+| `--debug-toolkit-color-control` / `-hover` / `-active` / `-disabled` | Interactive controls |
+| `--debug-toolkit-color-accent` / `-hover` / `-active` / `-disabled` | Draggers, progress fills |
+| `--debug-toolkit-color-selected` / `-hover` | Selection |
+| `--debug-toolkit-color-focus` | Focus border |
+| `--debug-toolkit-color-success` / `-danger` / `-warning` | On/off and log severity |
+| `--debug-toolkit-color-text` / `-dim` / `-disabled` | Text |
+
+The few colors that depend on runtime state and therefore come from C# (log row backgrounds, the
+window-list toggles) live in `DebugConst.StyleColor`. They mirror the USS tokens: change one and the
+other has to follow.
 
 ## Requirements
 

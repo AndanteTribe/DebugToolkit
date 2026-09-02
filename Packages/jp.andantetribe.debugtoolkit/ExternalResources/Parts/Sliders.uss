@@ -1,0 +1,195 @@
+/*  DebugToolkit / Sliders -----------------------------------------------------
+    Slider / SliderInt / MinMaxSlider / Scroller / ScrollView / ProgressBar。
+    つまみ(dragger)はアクセント、溝(tracker)は沈んだ面、で統一する。
+--------------------------------------------------------------------------- */
+
+/*--- スライダー -------------------------------------------------------------*/
+.debug-toolkit__master .unity-base-slider--horizontal {
+    margin-top: var(--debug-toolkit-px-space-small);
+    margin-bottom: var(--debug-toolkit-px-space-small);
+}
+
+.debug-toolkit__master .unity-base-slider--horizontal .unity-base-slider__dragger {
+    margin-top: -12px;
+    height: 24px;
+    background-color: var(--debug-toolkit-color-accent);
+    border-width: 0;
+    border-radius: var(--debug-toolkit-px-radius-small);
+}
+
+.debug-toolkit__master .unity-base-slider--horizontal .unity-base-slider__tracker {
+    margin-top: -2px;
+    height: 4px;
+    background-color: var(--debug-toolkit-color-surface-sunken);
+    border-width: 0;
+    border-radius: var(--debug-toolkit-px-radius-small);
+}
+
+.debug-toolkit__master .unity-base-slider:hover:enabled .unity-base-slider__dragger {
+    background-color: var(--debug-toolkit-color-accent-hover);
+}
+
+.debug-toolkit__master .unity-base-slider:active:enabled .unity-base-slider__dragger {
+    background-color: var(--debug-toolkit-color-accent-active);
+}
+
+.debug-toolkit__master .unity-base-slider:focus:enabled .unity-base-slider__dragger {
+    background-color: var(--debug-toolkit-color-focus);
+}
+
+.debug-toolkit__master .unity-base-slider:disabled .unity-base-slider__dragger {
+    background-color: var(--debug-toolkit-color-accent-disabled);
+}
+
+/* スライダーに付く数値入力欄は、単体の TextField より詰める。 */
+.debug-toolkit__master .unity-base-slider--horizontal .unity-text-field {
+    padding: 0;
+    margin: 5px;
+    flex-grow: 0;
+}
+
+.debug-toolkit__master .unity-base-slider--horizontal .unity-text-field #unity-text-input {
+    padding: 5px;
+    margin: 0;
+}
+
+/*--- ミニマックススライダー -------------------------------------------------*/
+.debug-toolkit__master .unity-min-max-slider {
+    margin-top: var(--debug-toolkit-px-space-small);
+    margin-bottom: var(--debug-toolkit-px-space-small);
+}
+
+.debug-toolkit__master .unity-min-max-slider__tracker {
+    margin-top: -2px;
+    height: 4px;
+    background-color: var(--debug-toolkit-color-surface-sunken);
+    border-width: 0;
+    border-radius: var(--debug-toolkit-px-radius-small);
+}
+
+.debug-toolkit__master .unity-min-max-slider__dragger {
+    margin-top: -2px;
+    height: 4px;
+    background-color: var(--debug-toolkit-color-accent);
+    border-width: 0;
+}
+
+.debug-toolkit__master .unity-min-max-slider__dragger > * {
+    margin-top: -10px;
+    height: 24px;
+    background-color: var(--debug-toolkit-color-accent);
+    border-width: 0;
+    border-radius: var(--debug-toolkit-px-radius-small);
+}
+
+.debug-toolkit__master .unity-min-max-slider:hover:enabled .unity-min-max-slider__dragger,
+.debug-toolkit__master .unity-min-max-slider:hover:enabled .unity-min-max-slider__dragger > * {
+    background-color: var(--debug-toolkit-color-accent-hover);
+}
+
+.debug-toolkit__master .unity-min-max-slider:active:enabled .unity-min-max-slider__dragger,
+.debug-toolkit__master .unity-min-max-slider:active:enabled .unity-min-max-slider__dragger > * {
+    background-color: var(--debug-toolkit-color-accent-active);
+}
+
+.debug-toolkit__master .unity-min-max-slider:focus:enabled .unity-min-max-slider__dragger,
+.debug-toolkit__master .unity-min-max-slider:focus:enabled .unity-min-max-slider__dragger > * {
+    background-color: var(--debug-toolkit-color-focus);
+}
+
+.debug-toolkit__master .unity-min-max-slider:disabled .unity-min-max-slider__dragger,
+.debug-toolkit__master .unity-min-max-slider:disabled .unity-min-max-slider__dragger > * {
+    background-color: var(--debug-toolkit-color-accent-disabled);
+}
+
+/*--- スクロールバー ---------------------------------------------------------*/
+.debug-toolkit__master .unity-scroller--vertical,
+.debug-toolkit__master .unity-scroller--horizontal {
+    background-color: var(--debug-toolkit-color-surface-sunken);
+    margin-top: var(--debug-toolkit-px-space-small);
+    margin-bottom: var(--debug-toolkit-px-space-small);
+}
+
+.debug-toolkit__master .unity-scroller > .unity-scroller__low-button,
+.debug-toolkit__master .unity-scroller > .unity-scroller__high-button {
+    background-color: var(--debug-toolkit-color-control);
+    border-width: 0;
+    -unity-background-image-tint-color: var(--debug-toolkit-color-text-dim);
+}
+
+.debug-toolkit__master .unity-scroller > .unity-scroller__low-button {
+    border-top-left-radius: var(--debug-toolkit-px-radius-small);
+    border-top-right-radius: var(--debug-toolkit-px-radius-small);
+}
+
+.debug-toolkit__master .unity-scroller > .unity-scroller__high-button {
+    border-bottom-left-radius: var(--debug-toolkit-px-radius-small);
+    border-bottom-right-radius: var(--debug-toolkit-px-radius-small);
+}
+
+.debug-toolkit__master .unity-scroller > .unity-scroller__low-button:hover:enabled,
+.debug-toolkit__master .unity-scroller > .unity-scroller__high-button:hover:enabled {
+    background-color: var(--debug-toolkit-color-control-hover);
+}
+
+.debug-toolkit__master .unity-scroller > .unity-scroller__low-button:active:enabled,
+.debug-toolkit__master .unity-scroller > .unity-scroller__high-button:active:enabled {
+    background-color: var(--debug-toolkit-color-control-active);
+}
+
+.debug-toolkit__master .unity-scroller--vertical .unity-base-slider__dragger {
+    background-color: var(--debug-toolkit-color-accent);
+    border-width: 0;
+    border-radius: var(--debug-toolkit-px-radius-small);
+}
+
+/* 横スクロールバーのつまみ。上の「横スライダー」の指定（高さ24px・margin-top -12px）
+   がそのまま効くと巨大なつまみになるので、ここで打ち消す。 */
+.debug-toolkit__master .unity-scroller--horizontal .unity-base-slider__dragger {
+    background-color: var(--debug-toolkit-color-accent);
+    border-width: 0;
+    border-radius: var(--debug-toolkit-px-radius-small);
+    height: 14px;
+    margin-top: 0;
+}
+
+.debug-toolkit__master .unity-scroller--vertical .unity-base-slider__tracker,
+.debug-toolkit__master .unity-scroller--horizontal .unity-base-slider__tracker {
+    background-color: var(--debug-toolkit-color-surface-sunken);
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+}
+
+/*--- ScrollView -------------------------------------------------------------*/
+.debug-toolkit__master .unity-scroll-view__content-viewport > .unity-scroll-view__content-container {
+    margin-right: var(--debug-toolkit-px-space-small);
+}
+
+/*--- プログレスバー ---------------------------------------------------------*/
+.debug-toolkit__master .unity-progress-bar {
+    margin: var(--debug-toolkit-px-space-medium);
+    margin-top: var(--debug-toolkit-px-space-small);
+    margin-bottom: var(--debug-toolkit-px-space-small);
+}
+
+.debug-toolkit__master .unity-progress-bar__background {
+    background-color: var(--debug-toolkit-color-surface-sunken);
+    border-radius: var(--debug-toolkit-px-radius-small);
+    border-width: var(--debug-toolkit-px-focus-border);
+    border-color: var(--debug-toolkit-color-border);
+}
+
+.debug-toolkit__master .unity-progress-bar__progress {
+    background-color: var(--debug-toolkit-color-accent);
+    border-radius: var(--debug-toolkit-px-radius-small);
+}
+
+.debug-toolkit__master .unity-progress-bar:disabled .unity-progress-bar__progress {
+    background-color: var(--debug-toolkit-color-accent-disabled);
+}
+
+.debug-toolkit__master .unity-progress-bar__title {
+    color: var(--debug-toolkit-color-text);
+}
