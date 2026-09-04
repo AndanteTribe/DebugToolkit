@@ -83,8 +83,19 @@
     background-color: var(--debug-toolkit-color-success-active);
 }
 
+/* フォーカスは上・左・右の枠で示す。下の枠は押し込みの立体感と ON/OFF を表す
+   ところなので、フォーカス色で塗り潰さずに success / danger のままにしておく。
+   枠が増える分は padding から差し引いてあるので、外形サイズは変わらない。 */
 .debug-toolkit__master .unity-toggle:focus:enabled {
-    border-color: var(--debug-toolkit-color-focus);
+    border-top-width: var(--debug-toolkit-px-focus-border);
+    border-left-width: var(--debug-toolkit-px-focus-border);
+    border-right-width: var(--debug-toolkit-px-focus-border);
+    border-top-color: var(--debug-toolkit-color-focus);
+    border-left-color: var(--debug-toolkit-color-focus);
+    border-right-color: var(--debug-toolkit-color-focus);
+    padding-top: 3px;
+    padding-left: 7px;
+    padding-right: 7px;
 }
 
 .debug-toolkit__master .unity-toggle:disabled {
