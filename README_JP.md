@@ -96,30 +96,6 @@ DebugToolkitを使用中、画面下に全表示非表示ボタンが表示さ�
 全表示非表示ボタンを押すことで、すべてのデバッグメニューの表示非表示を切り替えることができます。
 また、消してしまったウィンドウも再表示することができます。
 
-#### キーボードショートカット
-
-`ToggleAllVisibleKey`を設定すると、キー入力でも同じ切り替えができます。
-非表示にしてしまった固定のデバッグメニュー（マスターウィンドウ）も、このキーで呼び戻せます。
-デフォルトは`KeyCode.None`（無効）です。
-
-```csharp
-#if !DISABLE_DEBUGTOOLKIT
-_debugView = new MyDebugView
-{
-    // F1キーで全表示・全非表示を切り替える
-    ToggleAllVisibleKey = KeyCode.F1,
-
-    // 修飾キーが必要な場合（例: Shift + F1）
-    ToggleAllVisibleKeyModifiers = EventModifiers.Shift,
-};
-_debugView.Start();
-#endif
-```
-
-キーはDebugToolkitが描画しているパネルで受け取ります。
-他のUIToolkitパネルがキーボードフォーカスを持っている場合はショートカットが発火しないため、
-その場合は自前の入力処理から`DebugViewerBase.ToggleAllVisible()`を直接呼んでください。
-
 ## サンプル
 
 Package Managerから`Samples`をインポートすることで、サンプルをダウンロードすることができます。

@@ -93,29 +93,6 @@ public class DebugInitializer : MonoBehaviour
 ### Toggle All Visibility
 While using DebugToolkit, a toggle button is shown at the bottom of the screen. Pressing it toggles visibility of all debug windows. You can also restore windows that you’ve hidden.
 
-#### Keyboard shortcut
-
-Set `ToggleAllVisibleKey` to do the same from the keyboard. It also brings back the fixed debug menu
-(the master window) once you have hidden it. The default is `KeyCode.None`, which disables the shortcut.
-
-```csharp
-#if !DISABLE_DEBUGTOOLKIT
-_debugView = new MyDebugView
-{
-    // Toggle every debug window with F1.
-    ToggleAllVisibleKey = KeyCode.F1,
-
-    // Modifier keys, if you need them (e.g. Shift + F1).
-    ToggleAllVisibleKeyModifiers = EventModifiers.Shift,
-};
-_debugView.Start();
-#endif
-```
-
-The key is picked up by the panel DebugToolkit renders into. If another UI Toolkit panel holds the
-keyboard focus, the shortcut does not fire there; call `DebugViewerBase.ToggleAllVisible()` from your
-own input handling in that case.
-
 ## Samples
 
 You can import `Samples` from Package Manager to try sample scenes and scripts.

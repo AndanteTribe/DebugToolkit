@@ -106,42 +106,6 @@ namespace DebugToolkit.Tests
             Assert.That(toggleAllButton, Is.Not.Null, "Toggle all button should be visible.");
         }
 
-        // Test if the public API behind the toggle all button (and the keyboard shortcut) works
-        [Test]
-        public void ToggleAllVisible_TogglesAllWindowsVisibility()
-        {
-            foreach (var window in _debugViewWindowTest.Root.GetAllDebugWindows())
-            {
-                window.style.display = DisplayStyle.Flex;
-            }
-
-            _debugViewWindowTest.ToggleAllVisible();
-
-            foreach (var window in _debugViewWindowTest.Root.GetAllDebugWindows())
-            {
-                Assert.That(window.style.display.value, Is.EqualTo(DisplayStyle.None),
-                    "Window should be hidden after ToggleAllVisible.");
-            }
-
-            _debugViewWindowTest.ToggleAllVisible();
-
-            foreach (var window in _debugViewWindowTest.Root.GetAllDebugWindows())
-            {
-                Assert.That(window.style.display.value, Is.Not.EqualTo(DisplayStyle.None),
-                    "Window should be visible after toggling back.");
-            }
-        }
-
-        // Test that the keyboard shortcut is disabled by default
-        [Test]
-        public void ToggleAllVisibleKey_IsDisabledByDefault()
-        {
-            Assert.That(_debugViewWindowTest.ToggleAllVisibleKey, Is.EqualTo(KeyCode.None),
-                "The shortcut key should be opt-in.");
-            Assert.That(_debugViewWindowTest.ToggleAllVisibleKeyModifiers, Is.EqualTo(EventModifiers.None),
-                "No modifier key should be required by default.");
-        }
-
         // Test if the toggle all button functions correctly
         [Test]
         public async Task ToggleAllButton_TogglesAllWindowsVisibility()
