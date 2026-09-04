@@ -1,0 +1,313 @@
+/*  DebugToolkit / Fields ------------------------------------------------------
+    入力系。TextField / Toggle / RadioButton / Popup / Enum / Dropdown /
+    CompositeField(Vector・Rect) / Bounds。
+--------------------------------------------------------------------------- */
+
+/*--- テキストフィールド -----------------------------------------------------*/
+.debug-toolkit__master .unity-text-field,
+.debug-toolkit__master .unity-base-text-field {
+    margin-top: var(--debug-toolkit-px-space-small);
+    margin-bottom: var(--debug-toolkit-px-space-small);
+    margin-right: var(--debug-toolkit-px-space-medium);
+}
+
+.debug-toolkit__master .unity-base-text-field__input {
+    background-color: var(--debug-toolkit-color-surface-sunken);
+    border-color: var(--debug-toolkit-color-border);
+    border-width: var(--debug-toolkit-px-focus-border);
+    border-radius: var(--debug-toolkit-px-radius-small);
+    padding: 3px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: var(--debug-toolkit-color-text);
+    --unity-cursor-color: var(--debug-toolkit-color-text);
+    --unity-selection-color: var(--debug-toolkit-color-selected);
+}
+
+.debug-toolkit__master .unity-base-text-field__input > .unity-text-element {
+    padding-left: var(--debug-toolkit-px-space-small);
+}
+
+.debug-toolkit__master .unity-base-text-field__input--multiline {
+    white-space: normal;
+}
+
+.debug-toolkit__master .unity-base-text-field:hover:enabled .unity-base-text-field__input {
+    border-color: var(--debug-toolkit-color-border-strong);
+}
+
+.debug-toolkit__master .unity-base-text-field__input:focus,
+.debug-toolkit__master .unity-base-text-field:focus:enabled .unity-base-text-field__input {
+    border-color: var(--debug-toolkit-color-focus);
+}
+
+.debug-toolkit__master .unity-base-text-field:disabled .unity-base-text-field__input {
+    background-color: var(--debug-toolkit-color-control-disabled);
+    color: var(--debug-toolkit-color-text-disabled);
+}
+
+/*--- トグル -----------------------------------------------------------------
+    OFF=danger / ON=success の押し込みボタン。押し込み量で押下状態を表現するため、
+    border-bottom-width と margin-top は必ず対で動かす（合計の高さが変わらない）。 */
+.debug-toolkit__master .unity-toggle {
+    margin: var(--debug-toolkit-px-space-small);
+    background-color: var(--debug-toolkit-color-danger);
+    border-radius: var(--debug-toolkit-px-radius-small);
+    padding: 4px 8px;
+    border-color: var(--debug-toolkit-color-danger-active);
+    border-bottom-width: 6px;
+}
+
+.debug-toolkit__master .unity-toggle:hover:enabled {
+    background-color: var(--debug-toolkit-color-danger-hover);
+    border-bottom-width: var(--debug-toolkit-px-space-small);
+    margin-top: 6px;
+}
+
+.debug-toolkit__master .unity-toggle:active:enabled {
+    background-color: var(--debug-toolkit-color-danger-active);
+    border-bottom-width: var(--debug-toolkit-px-space-xsmall);
+    margin-top: 8px;
+}
+
+.debug-toolkit__master .unity-toggle:checked {
+    background-color: var(--debug-toolkit-color-success);
+    border-color: var(--debug-toolkit-color-success-active);
+}
+
+.debug-toolkit__master .unity-toggle:checked:hover:enabled {
+    background-color: var(--debug-toolkit-color-success-hover);
+}
+
+.debug-toolkit__master .unity-toggle:checked:active:enabled {
+    background-color: var(--debug-toolkit-color-success-active);
+}
+
+/* フォーカスは上・左・右の枠で示す。下の枠は押し込みの立体感と ON/OFF を表す
+   ところなので、フォーカス色で塗り潰さずに success / danger のままにしておく。
+   枠が増える分は padding から差し引いてあるので、外形サイズは変わらない。 */
+.debug-toolkit__master .unity-toggle:focus:enabled {
+    border-top-width: var(--debug-toolkit-px-focus-border);
+    border-left-width: var(--debug-toolkit-px-focus-border);
+    border-right-width: var(--debug-toolkit-px-focus-border);
+    border-top-color: var(--debug-toolkit-color-focus);
+    border-left-color: var(--debug-toolkit-color-focus);
+    border-right-color: var(--debug-toolkit-color-focus);
+    padding-top: 3px;
+    padding-left: 7px;
+    padding-right: 7px;
+}
+
+.debug-toolkit__master .unity-toggle:disabled {
+    background-color: var(--debug-toolkit-color-control-disabled);
+    border-color: var(--debug-toolkit-color-border);
+}
+
+.debug-toolkit__master .unity-toggle__checkmark {
+    background-color: var(--debug-toolkit-color-accent);
+    border-color: var(--debug-toolkit-color-border);
+    border-width: 0;
+    border-radius: var(--debug-toolkit-px-radius-small);
+    -unity-background-image-tint-color: var(--debug-toolkit-color-text);
+    display: none;
+}
+
+/*--- ラジオボタン -----------------------------------------------------------*/
+.debug-toolkit__master .unity-radio-button {
+    margin-top: var(--debug-toolkit-px-space-small);
+    margin-bottom: var(--debug-toolkit-px-space-small);
+}
+
+.debug-toolkit__master .unity-radio-button__checkmark-background {
+    background-color: var(--debug-toolkit-color-control);
+    padding-top: 5px;
+    width: 24px;
+    height: 24px;
+    border-radius: 12px;
+    border-width: var(--debug-toolkit-px-focus-border);
+    border-color: var(--debug-toolkit-color-border);
+}
+
+.debug-toolkit__master .unity-radio-button__checkmark {
+    background-color: var(--debug-toolkit-color-surface-sunken);
+    margin-top: 1px;
+    width: 12px;
+    height: 12px;
+}
+
+.debug-toolkit__master .unity-radio-button:checked .unity-radio-button__checkmark {
+    background-color: var(--debug-toolkit-color-accent);
+}
+
+.debug-toolkit__master .unity-radio-button__input:hover:enabled .unity-radio-button__checkmark-background {
+    background-color: var(--debug-toolkit-color-control-hover);
+    border-color: var(--debug-toolkit-color-border-strong);
+}
+
+.debug-toolkit__master .unity-radio-button__input:active:enabled .unity-radio-button__checkmark-background {
+    background-color: var(--debug-toolkit-color-control-active);
+}
+
+.debug-toolkit__master .unity-radio-button__input:focus:enabled .unity-radio-button__checkmark-background {
+    border-color: var(--debug-toolkit-color-focus);
+}
+
+.debug-toolkit__master .unity-radio-button:disabled .unity-radio-button__checkmark-background {
+    background-color: var(--debug-toolkit-color-control-disabled);
+}
+
+.debug-toolkit__master .unity-radio-button:disabled .unity-radio-button__checkmark {
+    background-color: var(--debug-toolkit-color-text-disabled);
+}
+
+.debug-toolkit__master .unity-radio-button__text {
+    margin-left: var(--debug-toolkit-px-space-small);
+}
+
+/*--- ポップアップ / Enum ----------------------------------------------------
+    EnumField には Unity が popup 系のクラスを付けないので、両方を並べて書く。 */
+.debug-toolkit__master .unity-popup-field,
+.debug-toolkit__master .unity-enum-field {
+    margin-top: var(--debug-toolkit-px-space-small);
+    margin-bottom: var(--debug-toolkit-px-space-small);
+}
+
+.debug-toolkit__master .unity-base-popup-field__input,
+.debug-toolkit__master .unity-popup-field__input,
+.debug-toolkit__master .unity-enum-field__input {
+    background-color: var(--debug-toolkit-color-control);
+    border-radius: var(--debug-toolkit-px-radius-small);
+    border-width: var(--debug-toolkit-px-focus-border);
+    border-color: var(--debug-toolkit-color-border);
+}
+
+.debug-toolkit__master .unity-base-popup-field:hover:enabled .unity-base-popup-field__input,
+.debug-toolkit__master .unity-popup-field:hover:enabled .unity-popup-field__input,
+.debug-toolkit__master .unity-enum-field:hover:enabled .unity-enum-field__input {
+    background-color: var(--debug-toolkit-color-control-hover);
+}
+
+.debug-toolkit__master .unity-base-popup-field:active:enabled .unity-base-popup-field__input,
+.debug-toolkit__master .unity-popup-field:active:enabled .unity-popup-field__input,
+.debug-toolkit__master .unity-enum-field:active:enabled .unity-enum-field__input {
+    background-color: var(--debug-toolkit-color-control-active);
+}
+
+.debug-toolkit__master .unity-base-popup-field:focus:enabled .unity-base-popup-field__input,
+.debug-toolkit__master .unity-popup-field:focus:enabled .unity-popup-field__input,
+.debug-toolkit__master .unity-enum-field:focus:enabled .unity-enum-field__input {
+    border-color: var(--debug-toolkit-color-focus);
+}
+
+.debug-toolkit__master .unity-base-popup-field:disabled .unity-base-popup-field__input,
+.debug-toolkit__master .unity-popup-field:disabled .unity-popup-field__input,
+.debug-toolkit__master .unity-enum-field:disabled .unity-enum-field__input {
+    background-color: var(--debug-toolkit-color-control-disabled);
+}
+
+.debug-toolkit__master .unity-base-popup-field__text,
+.debug-toolkit__master .unity-popup-field .unity-base-popup-field__text,
+.debug-toolkit__master .unity-enum-field .unity-enum-field__text {
+    color: var(--debug-toolkit-color-text);
+    padding-left: var(--debug-toolkit-px-space-medium);
+    padding-right: var(--debug-toolkit-px-space-medium);
+}
+
+.debug-toolkit__master .unity-base-popup-field__arrow,
+.debug-toolkit__master .unity-popup-field .unity-base-popup-field__arrow,
+.debug-toolkit__master .unity-enum-field .unity-enum-field__arrow {
+    -unity-background-image-tint-color: var(--debug-toolkit-color-text-dim);
+    margin-right: var(--debug-toolkit-px-space-medium);
+}
+
+/*--- ドロップダウンで開くリスト本体 -----------------------------------------
+    ポップアップは .debug-toolkit__master の外（パネル直下）に生成されるため、
+    ここだけはスコープを付けられない。このシートは DebugToolkit 専用の
+    PanelSettings に割り当てる前提なので、他パネルには影響しない。
+    背面が透けると選択肢が読めないので surface-overlay（ほぼ不透明）を使う。 */
+.unity-base-dropdown__container-outer {
+    background-color: var(--debug-toolkit-color-surface-overlay);
+    border-width: var(--debug-toolkit-px-focus-border);
+    border-color: var(--debug-toolkit-color-border);
+    border-radius: var(--debug-toolkit-px-radius-small);
+}
+
+.unity-base-dropdown__container-inner {
+    background-color: var(--debug-toolkit-color-surface-overlay);
+    padding: var(--debug-toolkit-px-space-small);
+}
+
+.unity-base-dropdown__item {
+    padding: var(--debug-toolkit-px-space-small);
+    color: var(--debug-toolkit-color-text);
+}
+
+.unity-base-dropdown__item:hover {
+    background-color: var(--debug-toolkit-color-control-hover);
+}
+
+.unity-base-dropdown__item--checked {
+    background-color: var(--debug-toolkit-color-selected);
+}
+
+.unity-base-dropdown__label {
+    color: var(--debug-toolkit-color-text);
+}
+
+.unity-base-dropdown__checkmark {
+    -unity-background-image-tint-color: var(--debug-toolkit-color-text);
+}
+
+/*--- CompositeField（Vector2/3/4・Rect など） -------------------------------
+    ラベルを上段に出し、成分は横一列。狭いデバッグウィンドウでも潰れない。 */
+.debug-toolkit__master .unity-composite-field {
+    flex-direction: column;
+    margin-top: var(--debug-toolkit-px-space-small);
+    margin-bottom: var(--debug-toolkit-px-space-small);
+}
+
+.debug-toolkit__master .unity-composite-field__label {
+    align-self: flex-start;
+}
+
+.debug-toolkit__master .unity-composite-field__input {
+    flex-direction: row;
+}
+
+.debug-toolkit__master .unity-composite-field--multi-line .unity-composite-field__input {
+    flex-direction: column;
+}
+
+.debug-toolkit__master .unity-composite-field__field-group {
+    flex-direction: row;
+}
+
+.debug-toolkit__master .unity-composite-field__field {
+    flex-grow: 1;
+    flex-basis: 0;
+    min-width: 0;
+    margin-right: var(--debug-toolkit-px-space-small);
+}
+
+/* X / Y / Z の頭文字ラベル。80px の共通ラベル幅だと成分が潰れるので上書きする。 */
+.debug-toolkit__master .unity-composite-field__input .unity-base-field__label {
+    min-width: 16px;
+    width: 16px;
+    margin-right: 0;
+    align-self: center;
+    -unity-text-align: middle-center;
+    color: var(--debug-toolkit-color-text-dim);
+}
+
+/*--- BoundsField / BoundsIntField -------------------------------------------*/
+.debug-toolkit__master .unity-bounds-field,
+.debug-toolkit__master .unity-bounds-int-field {
+    flex-direction: column;
+    margin-top: var(--debug-toolkit-px-space-small);
+    margin-bottom: var(--debug-toolkit-px-space-small);
+}
+
+.debug-toolkit__master .unity-bounds-field__label,
+.debug-toolkit__master .unity-bounds-int-field__label {
+    align-self: flex-start;
+}

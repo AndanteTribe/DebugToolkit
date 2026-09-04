@@ -68,7 +68,7 @@ namespace DebugToolkit.Tests
 
             Assert.That(testWindow.style.display.value, Is.EqualTo(DisplayStyle.None),
                 "Window should be visible first time.");
-            Assert.That(toggle.style.backgroundColor.value, Is.EqualTo(new Color(0.6f, 0.2f, 0.2f)),
+            Assert.That(toggle.style.backgroundColor.value, Is.EqualTo(DebugConst.StyleColor.WindowHidden.value),
                 "Toggle color for hidden window is incorrect.");
 
 
@@ -77,14 +77,14 @@ namespace DebugToolkit.Tests
 
             Assert.That(testWindow.style.display.value, Is.EqualTo(DisplayStyle.Flex),
                 "Window should be visible after toggle.");
-            Assert.That(toggle.style.backgroundColor.value, Is.EqualTo(new Color(0.4f, 0.8f, 0.4f)),
+            Assert.That(toggle.style.backgroundColor.value, Is.EqualTo(DebugConst.StyleColor.WindowVisible.value),
                 "Toggle color for visible window is incorrect.");
 
             await ClickAtPositionAsync(mouse, new Vector2(screenPosX, screenPosY));
 
             Assert.That(testWindow.style.display.value, Is.EqualTo(DisplayStyle.None),
                 "Window should be hidden after toggle.");
-            Assert.That(toggle.style.backgroundColor.value, Is.EqualTo(new Color(0.6f, 0.2f, 0.2f)),
+            Assert.That(toggle.style.backgroundColor.value, Is.EqualTo(DebugConst.StyleColor.WindowHidden.value),
                 "Toggle color for hidden window is incorrect.");
         }
 
@@ -238,14 +238,14 @@ namespace DebugToolkit.Tests
 
             Assert.That(window.style.display.value, Is.EqualTo(DisplayStyle.Flex),
                 "Window should be visible initially.");
-            Assert.That(toggle.style.backgroundColor.value, Is.EqualTo(new Color(0.4f, 0.8f, 0.4f)),
+            Assert.That(toggle.style.backgroundColor.value, Is.EqualTo(DebugConst.StyleColor.WindowVisible.value),
                 "Toggle color should indicate visible window.");
 
             await ClickAtPositionAsync(mouse, new Vector2(screenPosX, screenPosY));
 
             Assert.That(window.style.display.value, Is.EqualTo(DisplayStyle.None),
                 "Window should be hidden after clicking close button.");
-            Assert.That(toggle.style.backgroundColor.value, Is.EqualTo(new Color(0.6f, 0.2f, 0.2f)),
+            Assert.That(toggle.style.backgroundColor.value, Is.EqualTo(DebugConst.StyleColor.WindowHidden.value),
                 "Toggle color should indicate hidden window.");
         }
     }

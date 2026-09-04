@@ -1,0 +1,82 @@
+/*  DebugToolkit / Buttons -----------------------------------------------------
+    枠線は常に 1px 引き、focus では色だけを変える（幅を変えるとレイアウトがずれる）。
+    枠線分の 1px は padding から差し引いてあるので、外形サイズは枠なしの時と同じ。
+--------------------------------------------------------------------------- */
+
+/*--- Button -----------------------------------------------------------------*/
+.debug-toolkit__master .unity-button {
+    background-color: var(--debug-toolkit-color-control);
+    border-width: var(--debug-toolkit-px-focus-border);
+    border-color: var(--debug-toolkit-color-border);
+    margin: var(--debug-toolkit-px-space-medium);
+    margin-top: var(--debug-toolkit-px-space-small);
+    margin-bottom: var(--debug-toolkit-px-space-small);
+    padding: 3px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    border-radius: var(--debug-toolkit-px-radius-small);
+    color: var(--debug-toolkit-color-text);
+    -unity-font-style: bold;
+}
+
+.debug-toolkit__master .unity-button:hover:enabled {
+    background-color: var(--debug-toolkit-color-control-hover);
+}
+
+.debug-toolkit__master .unity-button:active:enabled {
+    background-color: var(--debug-toolkit-color-control-active);
+}
+
+.debug-toolkit__master .unity-button:focus:enabled {
+    border-color: var(--debug-toolkit-color-focus);
+}
+
+.debug-toolkit__master .unity-button:checked {
+    background-color: var(--debug-toolkit-color-selected);
+}
+
+.debug-toolkit__master .unity-button:checked:hover:enabled {
+    background-color: var(--debug-toolkit-color-selected-hover);
+}
+
+.debug-toolkit__master .unity-button:disabled {
+    background-color: var(--debug-toolkit-color-control-disabled);
+    border-color: var(--debug-toolkit-color-border);
+    color: var(--debug-toolkit-color-text-disabled);
+}
+
+/*--- ButtonGroup ------------------------------------------------------------*/
+.debug-toolkit__master .unity-button-group__button {
+    border-radius: 0;
+    margin: 0;
+}
+
+.debug-toolkit__master .unity-button-group__button--leftmost {
+    border-top-left-radius: var(--debug-toolkit-px-radius-small);
+    border-bottom-left-radius: var(--debug-toolkit-px-radius-small);
+}
+
+.debug-toolkit__master .unity-button-group__button--rightmost {
+    border-top-right-radius: var(--debug-toolkit-px-radius-small);
+    border-bottom-right-radius: var(--debug-toolkit-px-radius-small);
+}
+
+.debug-toolkit__master .unity-button-group__button:checked,
+.debug-toolkit__master .unity-button-group__button:checked:focus:enabled {
+    background-color: var(--debug-toolkit-color-selected);
+}
+
+.debug-toolkit__master .unity-button-group__button:checked:hover:enabled {
+    background-color: var(--debug-toolkit-color-selected-hover);
+}
+
+/*--- ToggleButtonGroup ------------------------------------------------------*/
+.debug-toolkit__master .unity-toggle-button-group {
+    margin-top: var(--debug-toolkit-px-space-small);
+    margin-bottom: var(--debug-toolkit-px-space-small);
+}
+
+.debug-toolkit__master .unity-toggle-button-group__container {
+    background-color: var(--debug-toolkit-color-surface-sunken);
+    border-radius: var(--debug-toolkit-px-radius-small);
+}

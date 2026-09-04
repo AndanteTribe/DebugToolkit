@@ -1,0 +1,65 @@
+/*  DebugToolkit / Base --------------------------------------------------------
+    ウィンドウの器と、あらゆる要素の土台になる Label / BaseField / TextElement。
+    ここより後のシートがこれを上書きする。
+--------------------------------------------------------------------------- */
+
+/*--- ウィンドウの器 ---------------------------------------------------------*/
+.debug-toolkit__master {
+    flex-grow: 1;
+    font-size: 12px;
+    position: absolute;
+    border-radius: var(--debug-toolkit-px-radius-medium);
+    height: auto;
+    min-width: var(--debug-toolkit-panel-min-width);
+    max-height: var(--debug-toolkit-panel-max-height);
+    color: var(--debug-toolkit-color-text);
+    background-color: var(--debug-toolkit-color-surface);
+    border-width: 1px;
+    border-color: var(--debug-toolkit-color-border);
+    transition-property: position;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-in;
+    padding-left: var(--debug-toolkit-px-space-medium);
+    padding-right: var(--debug-toolkit-px-space-medium);
+}
+
+.debug-toolkit__master * {
+    margin: 0;
+    padding: 0;
+}
+
+/*--- テキスト ---------------------------------------------------------------*/
+.debug-toolkit__master .unity-text-element {
+    color: var(--debug-toolkit-color-text);
+}
+
+.debug-toolkit__master .unity-label {
+    color: var(--debug-toolkit-color-text);
+    padding: var(--debug-toolkit-px-space-small);
+    margin: var(--debug-toolkit-px-space-small);
+}
+
+.debug-toolkit__master .unity-text-element:disabled,
+.debug-toolkit__master .unity-label:disabled {
+    color: var(--debug-toolkit-color-text-disabled);
+}
+
+/*--- 全フィールド共通 -------------------------------------------------------*/
+.debug-toolkit__master .unity-base-field__label {
+    min-width: 80px;
+    margin-right: var(--debug-toolkit-px-space-small);
+    color: var(--debug-toolkit-color-text);
+}
+
+.debug-toolkit__master .unity-base-field:focus:enabled > .unity-base-field__label {
+    color: var(--debug-toolkit-color-focus);
+}
+
+.debug-toolkit__master .unity-base-field:disabled .unity-base-field__label {
+    color: var(--debug-toolkit-color-text-disabled);
+}
+
+/*--- 縦積みの ScrollView（ウィンドウ内の主要な入れ物） ----------------------*/
+.debug-toolkit__master .unity-scroll-view {
+    flex-grow: 1;
+}

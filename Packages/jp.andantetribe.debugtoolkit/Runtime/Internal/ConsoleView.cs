@@ -77,9 +77,9 @@ namespace DebugToolkit
             var (_, _, type, _) = entry;
             element.style.backgroundColor = type switch
             {
-                LogType.Warning => DebugConst.StyleColor.Warning,
-                LogType.Error or LogType.Assert or LogType.Exception => DebugConst.StyleColor.Error,
-                _ => DebugConst.StyleColor.White,
+                LogType.Warning => DebugConst.StyleColor.LogWarning,
+                LogType.Error or LogType.Assert or LogType.Exception => DebugConst.StyleColor.LogError,
+                _ => DebugConst.StyleColor.Log,
             };
 
             var label = (Label)element;
@@ -104,7 +104,7 @@ namespace DebugToolkit
         private static void ShowCopyFeedback(Label label)
         {
             label.style.borderLeftWidth = 6;
-            label.style.borderLeftColor = new Color(0f, 0.68f, 0.71f);
+            label.style.borderLeftColor = DebugConst.StyleColor.Accent;
             label.style.unityFontStyleAndWeight = FontStyle.Bold;
             label.schedule.Execute(() => ResetCopyFeedback(label)).StartingIn(CopyFeedbackDurationMs);
         }

@@ -185,16 +185,9 @@ namespace DebugToolkit
         /// </summary>
         /// <param name="window">The window element.</param>
         private static StyleColor GetWindowStateColor(VisualElement window)
-        {
-            if (window.style.display == DisplayStyle.Flex)
-            {
-                return new StyleColor(new Color(0.4f, 0.8f, 0.4f)); // highlight green color
-            }
-            else
-            {
-                return new StyleColor(new Color(0.6f, 0.2f, 0.2f)); // dark red color
-            }
-        }
+            => window.style.display == DisplayStyle.Flex
+                ? DebugConst.StyleColor.WindowVisible
+                : DebugConst.StyleColor.WindowHidden;
 
         /// <summary>
         /// Adds a header to a window.
