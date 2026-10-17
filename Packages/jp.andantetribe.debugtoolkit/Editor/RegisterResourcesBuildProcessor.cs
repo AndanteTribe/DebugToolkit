@@ -7,11 +7,44 @@ using UnityEditor.Build.Reporting;
 
 namespace DebugToolkit.Editor
 {
-    internal sealed class RegisterResourcesBuildProcessor : IPreprocessBuildWithReport, IPostprocessBuildWithReport
+    internal sealed class RegisterResourcesBuildProcessor :
+#if UNITY_6000_3_OR_NEWER
+        IPreprocessBuildWithContext, IPostprocessBuildWithContext
+#else
+        IPreprocessBuildWithReport, IPostprocessBuildWithReport
+#endif
     {
         int IOrderedCallback.callbackOrder => 0;
 
+#if UNITY_6000_3_OR_NEWER
+        void IPreprocessBuildWithContext.OnPreprocessBuild(BuildCallbackContext context)
+        {
+            if (context.IsPlayerBuild)
+            {
+                Register();
+            }
+        }
+
+        void IPostprocessBuildWithContext.OnPostprocessBuild(BuildCallbackContext context)
+        {
+            if (context.IsPlayerBuild)
+            {
+                Unregister();
+            }
+        }
+#else
         void IPreprocessBuildWithReport.OnPreprocessBuild(BuildReport _)
+        {
+            Register();
+        }
+
+        void IPostprocessBuildWithReport.OnPostprocessBuild(BuildReport _)
+        {
+            Unregister();
+        }
+#endif
+
+        private static void Register()
         {
             var prevAssets = PlayerSettings.GetPreloadedAssets();
             var assets = new UnityEngine.Object[prevAssets.Length + 1];
@@ -20,7 +53,7 @@ namespace DebugToolkit.Editor
             PlayerSettings.SetPreloadedAssets(assets);
         }
 
-        void IPostprocessBuildWithReport.OnPostprocessBuild(BuildReport _)
+        private static void Unregister()
         {
             var prevAssets = PlayerSettings.GetPreloadedAssets();
             var assets = new UnityEngine.Object[prevAssets.Length - 1];
