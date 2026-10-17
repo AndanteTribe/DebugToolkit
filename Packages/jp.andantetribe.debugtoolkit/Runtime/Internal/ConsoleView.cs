@@ -150,12 +150,27 @@ namespace DebugToolkit
 
         private static void CreateViewGUI(ConsoleView self)
         {
+#if UNITY_2022_3_OR_NEWER
             var listView = new ListView(self._filteredLogs, makeItem: static () => CreateLogLabel(), bindItem: static (_, _) => { })
+#else
+            var listView = new ListView(self._filteredLogs, makeItem: static () => CreateLogLabel(), bindItem: (element, index) =>
+            {
+                if (index >= 0 && index < self._filteredLogs.Count)
+                    OnBindItem(self, element, self._filteredLogs[index]);
+                else
+                {
+                    element.style.backgroundColor = DebugConst.StyleColor.Log;
+                    ((Label)element).text = "";
+                }
+            })
+#endif
             {
                 virtualizationMethod = CollectionVirtualizationMethod.DynamicHeight
             };
+#if UNITY_2022_3_OR_NEWER
             listView.SetViewController(new BindListViewController<LogEntry, ConsoleView>(
                 self, static (view, element, arg3) => OnBindItem(view, element, arg3)));
+#endif
             listView.itemsSource = self._filteredLogs;
 
             // every per frame update _filterLogs from s_logs
