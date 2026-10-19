@@ -1,3 +1,4 @@
+#if UNITY_2022_3_OR_NEWER
 #nullable enable
 
 using System;
@@ -44,3 +45,4 @@ namespace DebugToolkit
         }
     }
 }
+#endif
