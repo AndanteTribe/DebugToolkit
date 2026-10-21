@@ -9,12 +9,11 @@ on:
         default: false
         type: boolean
 
-permissions:
-  contents: write
-
 jobs:
   echo:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
     # ghasec-ignore: unpinned-action
     - uses: AndanteTribe/Actions/actions/checkout@main # zizmor: ignore[unpinned-uses] repository-local action reference is intentionally tracked on @main
