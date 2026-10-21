@@ -21,13 +21,12 @@ jobs:
       id: extract_version
       run: |
         version=$(jq -r '.version' Packages/jp.andantetribe.debugtoolkit/package.json)
-        echo "PACKAGE_VERSION=${version}" >> $GITHUB_ENV
         echo "package_version=${version}" >> $GITHUB_OUTPUT
       # ghasec-ignore: unpinned-action
     - uses: AndanteTribe/Actions/actions/build-unitypackage@main # zizmor: ignore[unpinned-uses] repository-local action reference is intentionally tracked on @main
       with:
         package-path: Packages
-        output-path: "a/DebugToolkit.${{ env.PACKAGE_VERSION }}.unitypackage"
+        output-path: "a/DebugToolkit.${{ steps.extract_version.outputs.package_version }}.unitypackage"
     # ghasec-ignore: unpinned-action
     - uses: AndanteTribe/Actions/actions/upload-artifact@main # zizmor: ignore[unpinned-uses] repository-local action reference is intentionally tracked on @main
       with:
