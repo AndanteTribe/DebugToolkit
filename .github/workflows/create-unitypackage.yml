@@ -58,6 +58,11 @@ jobs:
           exit 1
         fi
         if gh release view "$tag" >/dev/null 2>&1; then
+          is_draft=$(gh release view "$tag" --json isDraft --jq '.isDraft')
+          if [ "$is_draft" != "true" ]; then
+            echo "Release '$tag' already exists and is not a draft." >&2
+            exit 1
+          fi
           gh release upload "$tag" "$package_file" --clobber
         else
           gh release create "$tag" "$package_file" \
