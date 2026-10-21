@@ -52,7 +52,12 @@ jobs:
         PACKAGE_VERSION: ${{ needs.build.outputs.package_version }}
       run: |
         tag="v${PACKAGE_VERSION}"
-        gh release create "$tag" a/*.unitypackage \
+        package_file=$(find a -maxdepth 1 -type f -name '*.unitypackage' | head -n 1)
+        if [ -z "$package_file" ]; then
+          echo "No unitypackage file found in artifact directory." >&2
+          exit 1
+        fi
+        gh release create "$tag" "$package_file" \
           --title "$tag" \
           --draft \
           --generate-notes
