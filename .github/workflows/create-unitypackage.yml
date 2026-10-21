@@ -1,7 +1,16 @@
 name: Create Unity Package
 
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      create_draft_release:
+        description: Create a draft release with the built unitypackage
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
 
 jobs:
   echo:
@@ -24,3 +33,13 @@ jobs:
         path: a
         name: package
         retention-days: 2
+    - name: Create draft release
+      if: ${{ github.event.inputs.create_draft_release == 'true' }}
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        tag="v${PACKAGE_VERSION}"
+        gh release create "$tag" "a/DebugToolkit.${PACKAGE_VERSION}.unitypackage" \
+          --title "$tag" \
+          --draft \
+          --generate-notes
