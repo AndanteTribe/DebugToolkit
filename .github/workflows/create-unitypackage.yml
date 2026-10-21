@@ -57,8 +57,12 @@ jobs:
           echo "No unitypackage file found in artifact directory." >&2
           exit 1
         fi
-        gh release create "$tag" "$package_file" \
-          --title "$tag" \
-          --target "$RELEASE_TARGET_SHA" \
-          --draft \
-          --generate-notes
+        if gh release view "$tag" >/dev/null 2>&1; then
+          gh release upload "$tag" "$package_file" --clobber
+        else
+          gh release create "$tag" "$package_file" \
+            --title "$tag" \
+            --target "$RELEASE_TARGET_SHA" \
+            --draft \
+            --generate-notes
+        fi
