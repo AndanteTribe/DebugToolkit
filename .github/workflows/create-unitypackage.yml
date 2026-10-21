@@ -50,6 +50,7 @@ jobs:
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         PACKAGE_VERSION: ${{ needs.build.outputs.package_version }}
+        RELEASE_TARGET_SHA: ${{ github.sha }}
       run: |
         tag="v${PACKAGE_VERSION}"
         package_file=$(find a -maxdepth 1 -type f -name '*.unitypackage' | head -n 1)
@@ -59,5 +60,6 @@ jobs:
         fi
         gh release create "$tag" "$package_file" \
           --title "$tag" \
+          --target "$RELEASE_TARGET_SHA" \
           --draft \
           --generate-notes
