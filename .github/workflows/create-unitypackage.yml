@@ -12,15 +12,17 @@ on:
 jobs:
   echo:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    outputs:
+      package_version: ${{ steps.extract_version.outputs.package_version }}
     steps:
     # ghasec-ignore: unpinned-action
     - uses: AndanteTribe/Actions/actions/checkout@main # zizmor: ignore[unpinned-uses] repository-local action reference is intentionally tracked on @main
     - name: Extract version from package.json
+      id: extract_version
       run: |
         version=$(jq -r '.version' Packages/jp.andantetribe.debugtoolkit/package.json)
         echo "PACKAGE_VERSION=${version}" >> $GITHUB_ENV
+        echo "package_version=${version}" >> $GITHUB_OUTPUT
       # ghasec-ignore: unpinned-action
     - uses: AndanteTribe/Actions/actions/build-unitypackage@main # zizmor: ignore[unpinned-uses] repository-local action reference is intentionally tracked on @main
       with:
@@ -32,10 +34,23 @@ jobs:
         path: a
         name: package
         retention-days: 2
-    - name: Create draft release
-      if: ${{ github.event.inputs.create_draft_release == 'true' }}
+  create-draft-release:
+    if: ${{ github.event.inputs.create_draft_release == 'true' }}
+    runs-on: ubuntu-latest
+    needs: echo
+    permissions:
+      actions: read
+      contents: write
+    steps:
+    - name: Download package artifact
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        gh run download "${{ github.run_id }}" --name package --dir a
+    - name: Create draft release
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        PACKAGE_VERSION: ${{ needs.echo.outputs.package_version }}
       run: |
         tag="v${PACKAGE_VERSION}"
         gh release create "$tag" "a/DebugToolkit.${PACKAGE_VERSION}.unitypackage" \
