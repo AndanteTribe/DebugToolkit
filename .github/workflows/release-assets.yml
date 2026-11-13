@@ -1,0 +1,79 @@
+name: Upload Unity release assets
+on:
+  release:
+    types: [published]
+
+permissions: {}
+
+env:
+  RELEASE_TAG: ${{ github.event.release.tag_name }}
+
+concurrency:
+  group: release-assets-${{ github.event.release.tag_name }}
+  cancel-in-progress: false
+
+jobs:
+  unitypackage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout release tag
+        # ghasec-ignore: unpinned-action
+        uses: AndanteTribe/Actions/actions/checkout@main # zizmor: ignore[unpinned-uses] organization-managed action reference is intentionally tracked on @main
+        with:
+          ref: refs/tags/${{ env.RELEASE_TAG }}
+
+      - name: Build unitypackage
+        # ghasec-ignore: unpinned-action
+        uses: AndanteTribe/Actions/actions/build-unitypackage@main # zizmor: ignore[unpinned-uses] organization-managed action reference is intentionally tracked on @main
+        with:
+          package-path: Packages/jp.andantetribe.debugtoolkit
+          root-path: .
+          output-path: dist/DebugToolkit.${{ env.RELEASE_TAG }}.unitypackage
+
+      - name: Upload unitypackage
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: gh release upload "$RELEASE_TAG" "dist/DebugToolkit.${RELEASE_TAG}.unitypackage"
+
+  signed-upm:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout release tag
+        # ghasec-ignore: unpinned-action
+        uses: AndanteTribe/Actions/actions/checkout@main # zizmor: ignore[unpinned-uses] organization-managed action reference is intentionally tracked on @main
+        with:
+          ref: refs/tags/${{ env.RELEASE_TAG }}
+
+      - name: Sign and upload UPM package
+        # ghasec-ignore: unpinned-action
+        uses: AndanteTribe/Actions/actions/sign-upm-release@main # zizmor: ignore[unpinned-uses] organization-managed action reference is intentionally tracked on @main
+        with:
+          package-path: Packages/jp.andantetribe.debugtoolkit
+          tag: ${{ env.RELEASE_TAG }}
+          organization-id: ${{ secrets.UPM_ORG_ID }}
+          service-account-key-id: ${{ secrets.UPM_SERVICE_ACCOUNT_KEY_ID }}
+          service-account-key-secret: ${{ secrets.UPM_SERVICE_ACCOUNT_KEY_SECRET }}
+
+  openupm:
+    needs: [unitypackage, signed-upm]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      id-token: write
+    steps:
+      - name: Refresh OpenUPM and wait for publication
+        # ghasec-ignore: unpinned-action
+        uses: AndanteTribe/Actions/actions/openupm-action@main # zizmor: ignore[unpinned-uses] organization-managed action reference is intentionally tracked on @main
+        with:
+          package: jp.andantetribe.debugtoolkit
+          tag: ${{ env.RELEASE_TAG }}
+          timeout-minutes: '15'
+          poll-interval-seconds: '15'
